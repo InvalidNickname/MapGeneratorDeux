@@ -1,0 +1,158 @@
+{
+  "data": [
+    {
+      "type": "Ocean",
+      "archtype": "Water",
+      "name": {
+        "no_level": "Coastal waters",
+        "low_level": "Shallow water",
+        "medium_level": "Ocean",
+        "high_level": "Deep ocean"
+      },
+      "color": {
+        "base": {
+          "no_level": "0x55c7ffff",
+          "low_level": "0x55c0ffff",
+          "medium_level": "0x55b3ffff",
+          "high_level": "0x50afffff"
+        },
+        "biome": "0x55b2feff"
+      },
+      "generator_info": {
+        "above_sea_level": "false"
+      }
+    },
+    {
+      "type": "Plains",
+      "archtype": "Plains",
+      "name": {
+        "no_level": "Plains",
+        "low_level": "Hills",
+        "medium_level": "High hills",
+        "high_level": "Mountains"
+      },
+      "color": {
+        "base": {
+          "no_level": "0x00bf46ff",
+          "low_level": "0x00b146ff",
+          "medium_level": "0x00a746ff",
+          "high_level": "0x009c46ff"
+        },
+        "biome": "0x00bf46ff"
+      },
+      "generator_info": {
+        "above_sea_level": "true"
+      }
+    },
+    {
+      "type": "Jungle",
+      "archtype": "Plains",
+      "name": {
+        "no_level": "Jungle",
+        "low_level": "Jungle hills",
+        "medium_level": "High jungle hills",
+        "high_level": "Jungle mountains"
+      },
+      "color": {
+        "base": {
+          "no_level": "0x00aa3fff",
+          "low_level": "0x009f3fff",
+          "medium_level": "0x00953fff",
+          "high_level": "0x008b3fff"
+        },
+        "biome": "0x00aa3fff"
+      },
+      "generator_info": {
+        "above_sea_level": "true"
+      }
+    },
+    {
+      "type": "Taiga",
+      "archtype": "Plains",
+      "name": {
+        "no_level": "Taiga",
+        "low_level": "Taiga hills",
+        "medium_level": "High taiga hills",
+        "high_level": "Taiga mountains"
+      },
+      "color": {
+        "base": {
+          "no_level": "0x00bf7fff",
+          "low_level": "0x00b17fff",
+          "medium_level": "0x00a77fff",
+          "high_level": "0x009c7fff"
+        },
+        "biome": "0x00b17fff"
+      },
+      "generator_info": {
+        "above_sea_level": "true"
+      }
+    },
+    {
+      "type": "Ice",
+      "archtype": "Ice",
+      "name": {
+        "no_level": "Ice",
+        "low_level": "Icy hills",
+        "medium_level": "High icy hills",
+        "high_level": "Icy mountains"
+      },
+      "color": {
+        "base": {
+          "no_level": "0xc5f7ffff",
+          "low_level": "0xb4e4f4ff",
+          "medium_level": "0xcdedefff",
+          "high_level": "0xc3e3efff"
+        },
+        "biome": "0xc5f7ffff"
+      },
+      "generator_info": {
+        "above_sea_level": "true"
+      }
+    },
+    {
+      "type": "Desert",
+      "archtype": "Desert",
+      "name": {
+        "no_level": "Desert",
+        "low_level": "Desert hills",
+        "medium_level": "High desert hills",
+        "high_level": "Dunes"
+      },
+      "color": {
+        "base": {
+          "no_level": "0xffd84aff",
+          "low_level": "0xfecd4aff",
+          "medium_level": "0xfbc640ff",
+          "high_level": "0xfbb940ff"
+        },
+        "biome": "0xffd84aff"
+      },
+      "generator_info": {
+        "above_sea_level": "true"
+      }
+    },
+    {
+      "type": "Semi-desert",
+      "archtype": "Desert",
+      "name": {
+        "no_level": "Semi desert",
+        "low_level": "Semi desert hills",
+        "medium_level": "High semi desert hills",
+        "high_level": "Semi desert mountains"
+      },
+      "color": {
+        "base": {
+          "no_level": "0xd2d84aff",
+          "low_level": "0xc5d400ff",
+          "medium_level": "0xc3ca00ff",
+          "high_level": "0xc1c000ff"
+        },
+        "biome": "0xd2d84aff"
+      },
+      "generator_info": {
+        "above_sea_level": "true"
+      }
+    }
+  ]
+}
