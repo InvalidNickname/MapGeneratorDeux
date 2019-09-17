@@ -11,14 +11,12 @@ int main() {
     window.setVerticalSyncEnabled(true);
 
     // запуск splashscreen
-    ScreenManager screenManager{};
-    screenManager.setActiveScreen(new SplashScreen());
+    ScreenManager screenManager(new SplashScreen(&window));
 
     // отрисовка и прочие вещи
     while (window.isOpen()) {
         window.clear(Color::Black);
         screenManager.drawActiveScreen();
-        //TODO отрисовка графики
         window.display();
     }
     return 0;
