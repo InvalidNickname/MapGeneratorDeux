@@ -8,13 +8,13 @@ using namespace sf;
 class ScreenManager {
 
 private:
-    Screen *activeScreen;
+    Screen *activeScreen{};
 
 public:
     void drawActiveScreen();
 
-    explicit ScreenManager(Screen *activeScreen);
+    explicit ScreenManager(Screen *_screen);
 
-    void setActiveScreen(Screen *screen);
+    void setActiveScreen(Screen *_screen);
 
 };

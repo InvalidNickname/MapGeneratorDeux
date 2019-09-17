@@ -5,10 +5,8 @@
 class SplashScreen : public Screen {
 
 private:
-    RenderWindow *window;
-
     void draw() override;
 
 public:
-    explicit SplashScreen(RenderWindow *_window);
+    explicit SplashScreen(RenderWindow *_window) : Screen(_window) {};
 };

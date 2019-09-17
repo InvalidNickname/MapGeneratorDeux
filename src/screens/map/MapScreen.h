@@ -5,8 +5,6 @@
 class MapScreen : public Screen {
 
 private:
-    RenderWindow *window;
-
     void draw() override;
 
 public:
