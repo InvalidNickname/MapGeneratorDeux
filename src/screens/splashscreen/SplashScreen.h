@@ -1,12 +1,13 @@
 #pragma once
 
 #include "../Screen.h"
+#include "../map/objects/tiles/Tileset.h"
 
 class SplashScreen : public Screen {
 
-private:
+  private:
     void draw() override;
 
-public:
-    explicit SplashScreen(RenderWindow *_window) : Screen(_window) {};
+  public:
+    explicit SplashScreen(RenderWindow *renderWindow) : Screen(renderWindow) {};
 };

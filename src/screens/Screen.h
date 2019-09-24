@@ -8,11 +8,11 @@ using namespace sf;
 
 class Screen {
 
-protected:
+  protected:
     RenderWindow *window;
     std::function<void(Screen *)> move;
 
-public:
+  public:
     virtual void draw() = 0;
 
     explicit Screen(RenderWindow *_window) : window(_window) {}

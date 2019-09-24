@@ -1,5 +1,6 @@
 #include "SplashScreen.h"
+#include <iostream>
 
 void SplashScreen::draw() {
-    //TODO отрисовка загрузочного экрана
+    //TODO РѕС‚СЂРёСЃРѕРІРєР° Р·Р°РіСЂСѓР·РѕС‡РЅРѕРіРѕ СЌРєСЂР°РЅР°
 }

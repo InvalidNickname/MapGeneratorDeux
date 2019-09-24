@@ -1,7 +1,5 @@
 #include "MapScreen.h"
 
 void MapScreen::draw() {
-    //TODO отрисовка карты
+    //TODO РѕС‚СЂРёСЃРѕРІРєР° РєР°СЂС‚С‹
 }
-
-MapScreen::MapScreen(RenderWindow *_window) : Screen(_window) {}

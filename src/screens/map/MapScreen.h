@@ -8,5 +8,5 @@ private:
     void draw() override;
 
 public:
-    explicit MapScreen(RenderWindow *_window);
+    explicit MapScreen(RenderWindow *renderWindow) : Screen(renderWindow) {};
 };
