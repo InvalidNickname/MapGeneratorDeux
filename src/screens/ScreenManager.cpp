@@ -14,3 +14,7 @@ void ScreenManager::setActiveScreen(Screen *_screen) {
 ScreenManager::ScreenManager(Screen *_screen) {
     setActiveScreen(_screen);
 }
+
+void ScreenManager::doActiveScreenActions() {
+    activeScreen->doAction();
+}

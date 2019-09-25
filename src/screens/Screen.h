@@ -15,6 +15,8 @@ class Screen {
   public:
     virtual void draw() = 0;
 
+    virtual void doAction() = 0;
+
     explicit Screen(RenderWindow *_window) : window(_window) {}
 
     void setMoveFunction(std::function<void(Screen *)> _move) {

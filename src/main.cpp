@@ -15,6 +15,7 @@ int main() {
 
     // отрисовка и прочие вещи
     while (window.isOpen()) {
+        screenManager.doActiveScreenActions();
         window.clear(Color::Black);
         screenManager.drawActiveScreen();
         window.display();

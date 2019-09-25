@@ -13,6 +13,8 @@ private:
 public:
     void drawActiveScreen();
 
+    void doActiveScreenActions();
+
     explicit ScreenManager(Screen *_screen);
 
     void setActiveScreen(Screen *_screen);
