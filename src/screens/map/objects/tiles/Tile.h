@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Type.h"
 #include <screens/map/MapParameters.h>
 #include <SFML/Graphics.hpp>
@@ -6,7 +8,7 @@ using namespace sf;
 
 class Tile {
   private:
-    const int x, y;
+    int x, y;
     int z;
     float latitude, longitude;
     float tileX, tileY;
@@ -28,6 +30,8 @@ class Tile {
     int getZ();
 
     Type getType();
+
+    Tile() = default;
 
   private:
     void drawTile(RenderWindow *_window);

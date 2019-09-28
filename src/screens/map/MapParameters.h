@@ -1,15 +1,18 @@
+#pragma once
+
 #include <cmath>
 
-struct MapParameters {
-  public:
-    constexpr static float TILE_HEIGHT = 80;
-    constexpr static float TILE_WIDTH = 69.282032302755091741097853660235;
+const float TILE_HEIGHT = 80.f;
+const float TILE_WIDTH = 69.282032302755091741097853660235f;
 
-    const static int MAP_WIDTH = 300;
-    const static int MAP_HEIGHT = 180;
+const int MAP_WIDTH = 60;
+const int MAP_HEIGHT = 36;
 
-    constexpr static int LAND_BORDER = (int) (0.07 * MAP_HEIGHT);
+const int LAND_BORDER = (int) (0.07 * MAP_HEIGHT);
 
-    const static int TEMPERATURE_MIN = -10;
-    const static int TEMPERATURE_MAX = 50;
+const int TEMPERATURE_MIN = -10;
+const int TEMPERATURE_MAX = 50;
+
+enum MapMode {
+    NORMAL, TEMPERATURE, HEIGHT, BIOMES
 };
