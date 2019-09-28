@@ -4,8 +4,6 @@
 #include <screens/map/objects/DrawableGrid.h>
 #include "MapParameters.h"
 
-#define isKeyPressed Keyboard::isKeyPressed
-
 class MapScreen : public Screen {
 
   public:
@@ -25,6 +23,8 @@ class MapScreen : public Screen {
     void doAction() override;
 
     void handleInput();
+
+    inline static bool isKeyPressed(Keyboard::Key key);
 
   public:
     explicit MapScreen(RenderWindow *renderWindow);

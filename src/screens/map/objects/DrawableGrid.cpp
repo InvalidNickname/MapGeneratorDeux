@@ -40,21 +40,23 @@ void DrawableGrid::render(RenderWindow *_window, int x0, int y0, int x1, int y1)
 }
 
 Vector2i DrawableGrid::getTileByCoordinates(Vector2f coords) {
+    // relative - положение точки внутри тайла, единица длины - сторона тайла
+
     float tempY = coords.y / (TILE_HEIGHT / 2.f);
-    float relativeY = tempY - (int) (tempY / 1.5) * 1.5f;
+    float relativeY = fmod(tempY, 1.5f);
     int tileY;
 
     float tempX = coords.x / (TILE_WIDTH);
     if (tempX < 0.5) tempX -= 1;
-    float relativeX = fmod(tempX, 1);
+    float relativeX = fmod(tempX, 1.f);
     if (relativeX < 0) relativeX++;
     int tileX;
 
     if (relativeY >= 0.5 && relativeY < 1.5)
-        // нажатие на центральную часть гекса
+        // точка нахожится в центральной части гекса
         tileY = (int) (tempY / 1.5);
     else {
-        // нажатие на верхнюю или нижнюю часть гекса
+        // в верхней или нижней части гекса
         // четный ряд
         if (fmod(tempY, 1) > 0.5 && fmod(tempY, 1) < 1) {
             if (relativeX < 0.5) {
@@ -66,9 +68,7 @@ Vector2i DrawableGrid::getTileByCoordinates(Vector2f coords) {
                     tileY = (int) (tempY / 1.5) - 1;
                 else tileY = (int) (tempY / 1.5);
             }
-        }
-            // нечетный ряд
-        else {
+        } else { // нечетный ряд, есть смещение гексов
             if (relativeX < 0.5) {
                 if (relativeY < 0.5 - relativeX)
                     tileY = (int) (tempY / 1.5) - 1;
@@ -81,11 +81,7 @@ Vector2i DrawableGrid::getTileByCoordinates(Vector2f coords) {
         }
     }
 
-    if (tileY % 2 == 0) {
-        tileX = (int) tempX;
-    } else {
-        tileX = (int) (tempX - 0.5);
-    }
+    tileX = (int) (tempX - (tileY % 2 == 0 ? 0 : 0.5));
 
     return {tileX, tileY};
 }

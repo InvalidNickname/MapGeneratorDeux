@@ -1,8 +1,6 @@
 #include <screens/map/objects/tiles/Tile.h>
 #include "MapScreen.h"
 
-#include <iostream>
-
 void MapScreen::draw() {
     Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(0, 0)));
     Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(
@@ -73,4 +71,8 @@ void MapScreen::handleInput() {
         view.setCenter((TILE_WIDTH * (MAP_WIDTH)) - windowWidth / 4.f * zoom, view.getCenter().y);
     if (view.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + windowWidth * zoom / 4.f)
         view.setCenter(windowWidth * zoom / 4.f + TILE_WIDTH * 0.5f, view.getCenter().y);
+}
+
+bool MapScreen::isKeyPressed(Keyboard::Key key) {
+    return Keyboard::isKeyPressed(key);
 }
