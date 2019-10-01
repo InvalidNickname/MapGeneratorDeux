@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Type.h"
+#include "type/Type.h"
 #include <screens/map/MapParameters.h>
 #include <SFML/Graphics.hpp>
 
@@ -13,7 +13,7 @@ class Tile {
     float latitude, longitude;
     float tileX, tileY;
     float temperature;
-    Type type;
+    Type *type;
   public:
     Tile(int x, int y);
 
@@ -29,7 +29,7 @@ class Tile {
 
     int getZ();
 
-    Type getType();
+    Type *getType();
 
     Tile() = default;
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <screens/Screen.h>
-#include <screens/map/objects/tiles/Tileset.h>
+#include <screens/map/objects/tiles/type/Tileset.h>
 #include <screens/map/MapScreen.h>
 
 using namespace sf;

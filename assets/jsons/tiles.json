@@ -19,7 +19,7 @@
         "biome": "0x55b2feff"
       },
       "generator_info": {
-        "above_sea_level": "false"
+        "above_sea_level": false
       }
     },
     {
@@ -41,7 +41,7 @@
         "biome": "0x00bf46ff"
       },
       "generator_info": {
-        "above_sea_level": "true"
+        "above_sea_level": true
       }
     },
     {
@@ -63,7 +63,7 @@
         "biome": "0x00aa3fff"
       },
       "generator_info": {
-        "above_sea_level": "true"
+        "above_sea_level": true
       }
     },
     {
@@ -85,7 +85,7 @@
         "biome": "0x00b17fff"
       },
       "generator_info": {
-        "above_sea_level": "true"
+        "above_sea_level": true
       }
     },
     {
@@ -107,7 +107,7 @@
         "biome": "0xc5f7ffff"
       },
       "generator_info": {
-        "above_sea_level": "true"
+        "above_sea_level": true
       }
     },
     {
@@ -129,7 +129,7 @@
         "biome": "0xffd84aff"
       },
       "generator_info": {
-        "above_sea_level": "true"
+        "above_sea_level": true
       }
     },
     {
@@ -151,7 +151,7 @@
         "biome": "0xd2d84aff"
       },
       "generator_info": {
-        "above_sea_level": "true"
+        "above_sea_level": true
       }
     }
   ]

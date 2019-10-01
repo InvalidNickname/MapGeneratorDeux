@@ -73,6 +73,7 @@ void MapScreen::handleInput() {
         view.setCenter(windowWidth * zoom / 4.f + TILE_WIDTH * 0.5f, view.getCenter().y);
 }
 
+// чисто для сокращения с Keyboard::isKeyPressed() до isKeyPressed()
 bool MapScreen::isKeyPressed(Keyboard::Key key) {
     return Keyboard::isKeyPressed(key);
 }

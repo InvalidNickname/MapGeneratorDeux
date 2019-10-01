@@ -11,5 +11,8 @@ void SplashScreen::doAction() {
             window->close();
         }
     }
+    // первоначальная загрузка тайлсета из json
+    Tileset::get();
+    // переключение на экран карты
     move(new MapScreen(window));
 }

@@ -7,10 +7,7 @@ using namespace sf;
 
 class ScreenManager {
 
-private:
-    Screen *activeScreen{};
-
-public:
+  public:
     void drawActiveScreen();
 
     void doActiveScreenActions();
@@ -18,5 +15,8 @@ public:
     explicit ScreenManager(Screen *_screen);
 
     void setActiveScreen(Screen *_screen);
+
+  private:
+    Screen *activeScreen{};
 
 };

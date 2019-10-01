@@ -42,6 +42,6 @@ int Tile::getZ() {
     return z;
 }
 
-Type Tile::getType() {
+Type *Tile::getType() {
     return type;
 }

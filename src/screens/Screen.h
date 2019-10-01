@@ -8,10 +8,6 @@ using namespace sf;
 
 class Screen {
 
-  protected:
-    RenderWindow *window;
-    std::function<void(Screen *)> move;
-
   public:
     virtual void draw() = 0;
 
@@ -22,5 +18,9 @@ class Screen {
     void setMoveFunction(std::function<void(Screen *)> _move) {
         move = std::move(_move);
     }
+
+  protected:
+    RenderWindow *window;
+    std::function<void(Screen *)> move;
 
 };
