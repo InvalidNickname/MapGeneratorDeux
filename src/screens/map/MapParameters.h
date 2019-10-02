@@ -10,6 +10,9 @@ const int MAP_HEIGHT = 180;
 
 const int LAND_BORDER = (int) (0.07 * MAP_HEIGHT);
 
+// уровень моря, 0 - нет моря, 1 - море по средней высоте мира
+const float OCEAN_LEVEL = 1.08f;
+
 const int TEMPERATURE_MIN = -10;
 const int TEMPERATURE_MAX = 50;
 

@@ -10,6 +10,8 @@ class TileGrid {
 
     Tile *getNeighbour(int direction, int x, int y);
 
+    Tile *getNeighbour(int direction, Tile *tile);
+
     int getMaxZ();
 
     void setMaxZ(int maxZ);

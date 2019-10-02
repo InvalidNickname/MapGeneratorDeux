@@ -1,13 +1,14 @@
-#include <screens/map/objects/tiles/type/Tileset.h>
 #include "Tile.h"
 
 Tile::Tile(int x, int y) : x(x), y(y) {
     tileY = TILE_HEIGHT * ((float) y - (float) (y / 2) / 2 - (y % 2 == 1 ? 0.25f : 0));
     shape = VertexArray(TriangleFan, 8);
+    latitude = 90 * (1 - 2.f * y / MAP_HEIGHT > 1 ? 2 - 2.f * y / MAP_HEIGHT : 2.f * y / MAP_HEIGHT);
+    longitude = 180 * (1 - 2.f * x / MAP_WIDTH > 1 ? 2 - 2.f * x / MAP_WIDTH : 2.f * x / MAP_WIDTH);
 }
 
 void Tile::render(RenderWindow *_window, MapMode mode, int _x, int _y, int maxZ, int minZ) {
-    float temp;
+    double temp;
     Color color;
     switch (mode) {
         case NORMAL:
@@ -17,7 +18,7 @@ void Tile::render(RenderWindow *_window, MapMode mode, int _x, int _y, int maxZ,
             //TODO карта температур
             break;
         case HEIGHT:
-            temp = (float) (z - minZ) / ((float) maxZ - (float) minZ + 1.f);
+            temp = (z - minZ) / (maxZ - minZ + 1.);
             color = Color((1 - temp) * 255, (1 - temp) * 255, 255);
             break;
         case BIOMES:

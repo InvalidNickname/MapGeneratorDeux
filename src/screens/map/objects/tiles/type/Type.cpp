@@ -7,13 +7,13 @@ Type::Type(string t, string at, vector<string> n, Color bic, vector<Color> bac, 
 string Type::getName(Level level) {
     switch (level) {
         case NO:
-            return name.at(0);
-        case SMALL:
-            return name.at(1);
-        case MEDIUM:
-            return name.at(2);
-        case HIGH:
             return name.at(3);
+        case SMALL:
+            return name.at(2);
+        case MEDIUM:
+            return name.at(1);
+        case HIGH:
+            return name.at(0);
     }
 }
 
@@ -24,13 +24,13 @@ Color Type::getBiomeColor() {
 Color Type::getBaseColor(Level level) {
     switch (level) {
         case NO:
-            return baseColor.at(0);
-        case SMALL:
-            return baseColor.at(1);
-        case MEDIUM:
-            return baseColor.at(2);
-        case HIGH:
             return baseColor.at(3);
+        case SMALL:
+            return baseColor.at(2);
+        case MEDIUM:
+            return baseColor.at(1);
+        case HIGH:
+            return baseColor.at(0);
     }
 }
 

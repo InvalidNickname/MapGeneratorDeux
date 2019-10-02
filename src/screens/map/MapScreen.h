@@ -1,7 +1,7 @@
 #pragma once
 
 #include <screens/Screen.h>
-#include <screens/map/objects/DrawableGrid.h>
+#include "DrawableGrid.h"
 #include "MapParameters.h"
 
 class MapScreen : public Screen {
@@ -11,7 +11,6 @@ class MapScreen : public Screen {
 
   private:
     float windowHeight, windowWidth;
-
     View view;
     MapMode mapMode{MapMode::NORMAL};
     float zoom;

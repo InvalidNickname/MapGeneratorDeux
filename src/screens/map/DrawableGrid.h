@@ -1,6 +1,6 @@
 #include <screens/map/objects/tiles/TileGrid.h>
 #include <screens/map/MapParameters.h>
-#include "../Generator.h"
+#include "Generator.h"
 
 class DrawableGrid {
   public:

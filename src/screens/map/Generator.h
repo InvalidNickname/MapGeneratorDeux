@@ -13,12 +13,10 @@ class Generator {
   private:
     TileGrid *grid;
     int continentSize;
-    int oceanLevel, maxZ, minZ;
+    int oceanLevel, maxZ{0}, minZ{2147483647};
     default_random_engine engine;
 
-    void findOceanLevel();
-
-    void setTerrainElevation();
+    void setTerrainLevel();
 
     void flattenTerrain();
 
@@ -29,13 +27,14 @@ class Generator {
     // рекурсивное удаление гексов, имеющих только 2 соседей того же типа
     void deleteTilePaths(const String &type, const String &changeTo, Tile *tile);
 
+    // определение максимальной, минимальной высоты и уровня моря
     void findZLimits();
 
-    int tileSurroundedByType(const String &type, Tile *tile);
-
-    int tileSurroundedByArchtype(const String &archtype, Tile *tile);
+    int countNeighboursWithType(const String &type, Tile *tile);
 
     void raiseTerrain(int size);
+
+    void setTerrainFromTileset();
 
     int random(int x, int y);
 };

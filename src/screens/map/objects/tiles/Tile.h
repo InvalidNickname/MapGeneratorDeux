@@ -3,6 +3,8 @@
 #include "type/Type.h"
 #include <screens/map/MapParameters.h>
 #include <SFML/Graphics.hpp>
+#include "type/Tileset.h"
+#include <cmath>
 
 using namespace sf;
 
@@ -11,7 +13,7 @@ class Tile {
     int x, y;
     int z{0};
     float latitude, longitude;
-    float tileX, tileY;
+    float tileX{0}, tileY{0};
     float temperature;
     Type *type;
     Level level{Level::NO};

@@ -10,7 +10,10 @@ Tileset::Tileset() {
     Json baseFile;
     input >> baseFile;
     baseFile = baseFile.at("data");
-    tileset.reserve(baseFile.size());
+    // тип суши для генератора
+    tileset.push_back(new Type("GenLand", "GenLand", vector<string>(), Color(), vector<Color>(), true));
+    // тип воды для генератора
+    tileset.push_back(new Type("GenWater", "GenWater", vector<string>(), Color(), vector<Color>(), false));
     for (Json temp : baseFile) {
         Json colorValue = temp.at("color");
         Json nameValue = temp.at("name");

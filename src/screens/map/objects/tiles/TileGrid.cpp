@@ -6,13 +6,17 @@ TileGrid::TileGrid() {
         grid->at(i) = new std::vector<Tile *>(MAP_HEIGHT);
         for (int j = 0; j < MAP_HEIGHT; j++) {
             grid->at(i)->at(j) = new Tile(i, j);
-            getTile(i, j)->setType("Ocean");
+            getTile(i, j)->setType("GenWater");
         }
     }
 }
 
 Tile *TileGrid::getTile(int x, int y) {
     return grid->at(x)->at(y);
+}
+
+Tile *TileGrid::getNeighbour(int direction, Tile *tile) {
+    return getNeighbour(direction, tile->getX(), tile->getY());
 }
 
 Tile *TileGrid::getNeighbour(int direction, int x, int y) {
@@ -44,6 +48,8 @@ Tile *TileGrid::getNeighbour(int direction, int x, int y) {
                     return getTile(x - 1, y - 1);
                 else if (y > 0)
                     return getTile(MAP_WIDTH - 1, y - 1);
+            default:
+                return nullptr;
         }
     } else {
         switch (direction) {
@@ -73,9 +79,10 @@ Tile *TileGrid::getNeighbour(int direction, int x, int y) {
             case 5:
                 if (y > 0)
                     return getTile(x, y - 1);
+            default:
+                return nullptr;
         }
     }
-    return nullptr;
 }
 
 int TileGrid::getMaxZ() {
