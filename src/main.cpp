@@ -7,7 +7,7 @@ int main() {
             "Map Generator",
             sf::Style::Fullscreen);
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(30);
 
     // запуск splashscreen
     ScreenManager screenManager(new SplashScreen(&window));

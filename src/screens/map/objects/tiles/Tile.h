@@ -15,7 +15,7 @@ class Tile {
     float temperature;
     Type *type;
     Level level{Level::NO};
-    ConvexShape tileShape;
+    VertexArray shape;
   public:
     Tile(int x, int y);
 
@@ -40,5 +40,5 @@ class Tile {
     void increaseZ(int z);
 
   private:
-    void drawTile(RenderWindow *_window);
+    void drawTile(RenderWindow *_window, Color color);
 };
