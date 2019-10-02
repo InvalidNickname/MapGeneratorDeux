@@ -5,8 +5,6 @@ Tileset &Tileset::get() {
     return s;
 }
 
-#include <iostream>
-
 Tileset::Tileset() {
     std::ifstream input("jsons/tiles.json");
     Json baseFile;

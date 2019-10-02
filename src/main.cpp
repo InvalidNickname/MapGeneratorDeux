@@ -8,7 +8,6 @@ int main() {
             sf::Style::Fullscreen);
 
     window.setFramerateLimit(60);
-    window.setVerticalSyncEnabled(false);
 
     // запуск splashscreen
     ScreenManager screenManager(new SplashScreen(&window));

@@ -9,15 +9,17 @@ using namespace sf;
 class Tile {
   private:
     int x, y;
-    int z;
+    int z{0};
     float latitude, longitude;
     float tileX, tileY;
     float temperature;
     Type *type;
+    Level level{Level::NO};
+    ConvexShape tileShape;
   public:
     Tile(int x, int y);
 
-    void render(RenderWindow *_window, int _x, int _y);
+    void render(RenderWindow *_window, MapMode mode, int _x, int _y, int maxZ, int minZ);
 
     float getLatitude();
 
@@ -31,7 +33,11 @@ class Tile {
 
     Type *getType();
 
-    Tile() = default;
+    void setLevel(Level _level);
+
+    void setType(const string &type);
+
+    void increaseZ(int z);
 
   private:
     void drawTile(RenderWindow *_window);

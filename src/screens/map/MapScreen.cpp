@@ -1,11 +1,11 @@
-#include <screens/map/objects/tiles/Tile.h>
 #include "MapScreen.h"
 
 void MapScreen::draw() {
     Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(0, 0)));
     Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(
             window->mapPixelToCoords(Vector2i(windowWidth, windowHeight)));
-    drawableGrid->render(window, lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
+    drawableGrid->render(window, mapMode,
+                         lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
 }
 
 void MapScreen::doAction() {
@@ -57,8 +57,8 @@ void MapScreen::handleInput() {
     // перемещение карты
     if (isKeyPressed(Keyboard::Left) || Mouse::getPosition().x < 5) view.move(-6 * zoom, 0);
     if (isKeyPressed(Keyboard::Right) || Mouse::getPosition().x > window->getSize().x - 5) view.move(6 * zoom, 0);
-    if (isKeyPressed(Keyboard::Down) || Mouse::getPosition().y > window->getSize().y - 5) view.move(0, -6 * zoom);
-    if (isKeyPressed(Keyboard::Up) || Mouse::getPosition().y < 5) view.move(0, 6 * zoom);
+    if (isKeyPressed(Keyboard::Down) || Mouse::getPosition().y < 5) view.move(0, -6 * zoom);
+    if (isKeyPressed(Keyboard::Up) || Mouse::getPosition().y > window->getSize().y - 5) view.move(0, 6 * zoom);
     // максимальный и минимальный зум
     if (zoom < 0.5) zoom = 0.5;
     if (zoom > minZoom) zoom = minZoom;
