@@ -1,5 +1,11 @@
 #include "SplashScreen.h"
 
+SplashScreen::SplashScreen(RenderWindow *renderWindow) : Screen(renderWindow) {
+    loadingThread = std::thread([this]() {
+        load();
+    });
+}
+
 void SplashScreen::draw() {
     //TODO отрисовка загрузочного экрана
 }
@@ -11,8 +17,14 @@ void SplashScreen::doAction() {
             window->close();
         }
     }
+    if (loadingThread.joinable()) {
+        loadingThread.join();
+        // переключение на экран карты
+        move(new MapScreen(window));
+    }
+}
+
+void SplashScreen::load() {
     // первоначальная загрузка тайлсета из json
     Tileset::get();
-    // переключение на экран карты
-    move(new MapScreen(window));
 }

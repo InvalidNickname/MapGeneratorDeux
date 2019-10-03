@@ -1,8 +1,8 @@
 #pragma once
 
 #include <screens/Screen.h>
-#include "DrawableGrid.h"
-#include "MapParameters.h"
+#include "screens/map/drawables/DrawableGrid.h"
+#include "screens/map/generator/GenerationParameters.h"
 
 class MapScreen : public Screen {
 

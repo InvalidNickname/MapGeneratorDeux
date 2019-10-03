@@ -1,21 +1,16 @@
 #include "Generator.h"
 
-Generator::Generator(int seed) {
+Generator Generator::setSeed(int seed) {
     engine = default_random_engine{static_cast<long unsigned int>(seed)};
+    return *this;
 }
 
 TileGrid *Generator::generate() {
     grid = new TileGrid();
-    // общее количество клеток суши
-    int landBudget = MAP_HEIGHT * MAP_WIDTH;
-    // количество начальных точек континентов
-    int size = random(40, 60);
-    // точек в континенте
-    continentSize = landBudget / size;
-    raiseTerrain(size);
+    raiseTerrain();
     flattenTerrain();
     findZLimits();
-    setTerrainTypes();
+    setLand();
     flattenContinentBorders();
     setTerrainLevel();
     setTerrainFromTileset();
@@ -23,14 +18,15 @@ TileGrid *Generator::generate() {
 }
 
 void Generator::setTerrainLevel() {
-    for (int i = 0; i < MAP_HEIGHT; i++)
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            Tile *tile = grid->getTile(j, i);
+    for (int i = 0; i < MAP_WIDTH; i++)
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            Tile *tile = grid->getTile(i, j);
             double relativeElevation;
-            if (tile->getType()->isAboveSeaLevel())
+            if (tile->getType()->isAboveSeaLevel()) {
                 relativeElevation = (double) (tile->getZ() - oceanLevel) / (maxZ - oceanLevel);
-            else
+            } else {
                 relativeElevation = (double) (oceanLevel - tile->getZ()) / (oceanLevel - minZ);
+            }
             if (relativeElevation > 0.35) {
                 tile->setLevel(Level::HIGH);
             } else if (relativeElevation > 0.2) {
@@ -43,13 +39,13 @@ void Generator::setTerrainLevel() {
         }
 }
 
+// сглаживание суши, эрозия
 void Generator::flattenTerrain() {
-    // эрозия
-    for (int i = 0; i < MAP_HEIGHT; i++)
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            Tile *tile = grid->getTile(j, i);
+    for (int i = 0; i < MAP_WIDTH; i++)
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            Tile *tile = grid->getTile(i, j);
             for (int k = 0; k < 6; k++) {
-                Tile *neighbour = grid->getNeighbour(k, j, i);
+                Tile *neighbour = grid->getNeighbour(k, i, j);
                 if (neighbour != nullptr)
                     if (tile->getZ() - neighbour->getZ() > 3) {
                         tile->increaseZ(-1);
@@ -59,11 +55,12 @@ void Generator::flattenTerrain() {
         }
 }
 
+// сглаживание границ континентов, удаление полосок тайлов
 void Generator::flattenContinentBorders() {
     for (int z = 0; z < 4; z++) {
-        for (int i = 0; i < MAP_HEIGHT; i++)
-            for (int j = 0; j < MAP_WIDTH; j++) {
-                Tile *tile = grid->getTile(j, i);
+        for (int i = 0; i < MAP_WIDTH; i++)
+            for (int j = 0; j < MAP_HEIGHT; j++) {
+                Tile *tile = grid->getTile(i, j);
                 if (tile->getType()->getTypeName() == "GenWater" && countNeighboursWithType("GenWater", tile) <= 2) {
                     deleteTilePaths("GenWater", "GenLand", tile);
                 } else if (tile->getType()->getTypeName() == "GenLand" &&
@@ -74,11 +71,11 @@ void Generator::flattenContinentBorders() {
     }
 }
 
-void Generator::setTerrainTypes() {
-    // установка суши по уровню океана
-    for (int i = 0; i < MAP_HEIGHT; i++)
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            Tile *tile = grid->getTile(j, i);
+// установка суши по уровню океана
+void Generator::setLand() {
+    for (int i = 0; i < MAP_WIDTH; i++)
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            Tile *tile = grid->getTile(i, j);
             if (tile->getZ() >= oceanLevel) {
                 tile->setType("GenLand");
             }
@@ -112,9 +109,9 @@ void Generator::deleteTilePaths(const String &type, const String &changeTo, Tile
 void Generator::findZLimits() {
     // общая высота всех тайлов
     int terrainMass = 0;
-    for (int i = 0; i < MAP_HEIGHT; i++)
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            Tile *tile = grid->getTile(j, i);
+    for (int i = 0; i < MAP_WIDTH; i++)
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            Tile *tile = grid->getTile(i, j);
             if (tile->getZ() > grid->getMaxZ()) {
                 grid->setMaxZ(tile->getZ());
                 maxZ = tile->getZ();
@@ -138,7 +135,13 @@ int Generator::countNeighboursWithType(const String &type, Tile *tile) {
     return count;
 }
 
-void Generator::raiseTerrain(int size) {
+void Generator::raiseTerrain() {
+    // общее количество клеток суши
+    int landBudget = MAP_HEIGHT * MAP_WIDTH;
+    // количество начальных точек континентов
+    int size = random(40, 60);
+    // количество точек в континенте
+    int continentSize = landBudget / size;
     for (int i = 0; i < size; i++) {
         // определение центрального гекса континента
         int prevY = random(LAND_BORDER, MAP_HEIGHT - LAND_BORDER - 1);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "type/Type.h"
-#include <screens/map/MapParameters.h>
+#include <screens/map/generator/GenerationParameters.h>
 #include <SFML/Graphics.hpp>
 #include "type/Tileset.h"
 #include <cmath>

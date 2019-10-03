@@ -1,19 +1,19 @@
 #include <vector>
 #include <screens/map/objects/tiles/Tile.h>
-#include "objects/tiles/TileGrid.h"
-#include "MapParameters.h"
+#include <screens/map/objects/tiles/TileGrid.h>
+#include "GenerationParameters.h"
 #include <random>
 
 class Generator {
   public:
-    explicit Generator(int seed);
 
     TileGrid *generate();
 
+    Generator setSeed(int seed);
+
   private:
-    TileGrid *grid;
-    int continentSize;
-    int oceanLevel, maxZ{0}, minZ{2147483647};
+    TileGrid *grid{nullptr};
+    int oceanLevel{0}, maxZ{0}, minZ{2147483647};
     default_random_engine engine;
 
     void setTerrainLevel();
@@ -22,7 +22,7 @@ class Generator {
 
     void flattenContinentBorders();
 
-    void setTerrainTypes();
+    void setLand();
 
     // рекурсивное удаление гексов, имеющих только 2 соседей того же типа
     void deleteTilePaths(const String &type, const String &changeTo, Tile *tile);
@@ -32,7 +32,7 @@ class Generator {
 
     int countNeighboursWithType(const String &type, Tile *tile);
 
-    void raiseTerrain(int size);
+    void raiseTerrain();
 
     void setTerrainFromTileset();
 

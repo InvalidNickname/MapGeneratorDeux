@@ -1,7 +1,7 @@
 #include "DrawableGrid.h"
 
 DrawableGrid::DrawableGrid() {
-    tileGrid = Generator(2).generate();
+    tileGrid = Generator().setSeed(2).generate();
     maxZ = tileGrid->getMaxZ();
     minZ = tileGrid->getMinZ();
 }
