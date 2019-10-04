@@ -10,21 +10,23 @@ void MapScreen::prepare() {
     initialHeight = windowHeight / 2.f;
     initialWidth = windowWidth / 2.f;
     // установка камеры
-    view.setSize(initialWidth, initialHeight);
+    mapView.setSize(initialWidth, initialHeight);
     float camX = TILE_WIDTH * (0.5f + MAP_WIDTH) / 2;
     float camY = 0.125f * TILE_HEIGHT * (1 + 3 * MAP_HEIGHT);
-    view.setCenter(camX, camY);
-    // минимвльный зум - сетка полностью помещается на экран по высоте
+    mapView.setCenter(camX, camY);
+    // минимальный зум - сетка полностью помещается на экран по высоте
     minZoom = camY * 2 / initialHeight;
-    view.zoom(minZoom);
+    mapView.zoom(minZoom);
     zoom = minZoom;
-    window->setView(view);
+    // создание GUI
+    gui = new GUI(windowWidth, windowHeight);
+    // установка view для интерфейса
+    uiView.setSize(windowWidth, windowHeight);
+    uiView.setCenter(initialWidth, initialHeight);
 }
 
 int MapScreen::doAction() {
     handleInput();
-    view.setSize(initialWidth * zoom, initialHeight * zoom);
-    window->setView(view);
     return THIS_STATE;
 }
 
@@ -35,6 +37,7 @@ void MapScreen::handleInput() {
             case Event::MouseWheelScrolled:
                 if (event.mouseWheelScroll.delta < 0) zoom += 0.4f;
                 else zoom -= 0.4f;
+                zoomAtPoint({event.mouseWheelScroll.x, event.mouseWheelScroll.y});
                 break;
         }
     }
@@ -49,35 +52,58 @@ void MapScreen::handleInput() {
     if (Keyboard::isKeyPressed(Keyboard::Add)) zoom -= 0.06f;
     // перемещение карты
     if (Keyboard::isKeyPressed(Keyboard::Left) || Mouse::getPosition().x < 5) {
-        view.move(-6 * zoom, 0);
+        mapView.move(-6 * zoom, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Right) || Mouse::getPosition().x > window->getSize().x - 5) {
-        view.move(6 * zoom, 0);
+        mapView.move(6 * zoom, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Down) || Mouse::getPosition().y < 5) {
-        view.move(0, -6 * zoom);
+        mapView.move(0, -6 * zoom);
     }
     if (Keyboard::isKeyPressed(Keyboard::Up) || Mouse::getPosition().y > window->getSize().y - 5) {
-        view.move(0, 6 * zoom);
+        mapView.move(0, 6 * zoom);
     }
     // максимальный и минимальный зум
     if (zoom < 0.5) zoom = 0.5;
     if (zoom > minZoom) zoom = minZoom;
     // запрет на прокрутку за пределы карты по вертикали
-    if (view.getCenter().y < windowHeight * zoom / 4) view.setCenter(view.getCenter().x, windowHeight * zoom / 4);
-    if (view.getCenter().y > 0.25 * TILE_HEIGHT * (1 + 3 * MAP_HEIGHT) - windowHeight / 4. * zoom)
-        view.setCenter(view.getCenter().x, 0.25f * TILE_HEIGHT * (1 + 3 * MAP_HEIGHT) - windowHeight / 4.f * zoom);
+    if (mapView.getCenter().y < windowHeight * zoom / 4)
+        mapView.setCenter(mapView.getCenter().x, windowHeight * zoom / 4);
+    if (mapView.getCenter().y > 0.25 * TILE_HEIGHT * (1 + 3 * MAP_HEIGHT) - windowHeight / 4. * zoom)
+        mapView.setCenter(mapView.getCenter().x,
+                          0.25f * TILE_HEIGHT * (1 + 3 * MAP_HEIGHT) - windowHeight / 4.f * zoom);
     // бесконечная прокрутка по горизонтали
-    if (view.getCenter().x <= -windowWidth * zoom / 4)
-        view.setCenter((TILE_WIDTH * (MAP_WIDTH)) - windowWidth / 4.f * zoom, view.getCenter().y);
-    if (view.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + windowWidth * zoom / 4.f)
-        view.setCenter(windowWidth * zoom / 4.f + TILE_WIDTH * 0.5f, view.getCenter().y);
+    if (mapView.getCenter().x <= -windowWidth * zoom / 4)
+        mapView.setCenter((TILE_WIDTH * (MAP_WIDTH)) - windowWidth / 4.f * zoom, mapView.getCenter().y);
+    if (mapView.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + windowWidth * zoom / 4.f)
+        mapView.setCenter(windowWidth * zoom / 4.f + TILE_WIDTH * 0.5f, mapView.getCenter().y);
 }
 
+
 void MapScreen::draw() {
+    // отрисовка карты
+    window->setView(mapView);
     Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(0, 0)));
     Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(
             window->mapPixelToCoords(Vector2i(windowWidth, windowHeight)));
     drawableGrid->render(window, mapMode,
                          lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
+    // отрисовка интерфейса
+    window->setView(uiView);
+    gui->render(window);
+}
+
+void MapScreen::zoomAtPoint(Vector2i point) {
+    if (zoom < 0.5) zoom = 0.5;
+    if (zoom > minZoom) zoom = minZoom;
+    // установка mapView, чтобы убедиться что расчеты не будут проведены для другого view
+    window->setView(mapView);
+    Vector2 worldCoordinatesBeforeZoom = window->mapPixelToCoords(point);
+    mapView.setSize(initialWidth * zoom, initialHeight * zoom);
+    // зум
+    window->setView(mapView);
+    Vector2 worldCoordinatesAfterZoom = window->mapPixelToCoords(point);
+    Vector2 diff = worldCoordinatesBeforeZoom - worldCoordinatesAfterZoom;
+    mapView.move(diff);
+    window->setView(mapView);
 }

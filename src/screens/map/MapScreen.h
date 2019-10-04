@@ -3,6 +3,7 @@
 #include <screens/Screen.h>
 #include <screens/map/drawables/DrawableGrid.h>
 #include <screens/map/generator/GenerationParameters.h>
+#include <screens/map/drawables/GUI.h>
 
 class MapScreen : public Screen {
 
@@ -13,11 +14,12 @@ class MapScreen : public Screen {
 
   private:
     float windowHeight, windowWidth;
-    View view;
+    View mapView, uiView;
     MapMode mapMode{MapMode::NORMAL};
     float zoom;
     float initialWidth, initialHeight;
     DrawableGrid *drawableGrid;
+    GUI *gui;
 
     void draw() override;
 
@@ -26,4 +28,6 @@ class MapScreen : public Screen {
     void prepare() override;
 
     void handleInput();
+
+    void zoomAtPoint(Vector2i point);
 };

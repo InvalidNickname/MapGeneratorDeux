@@ -63,7 +63,8 @@
         "biome": "0x00aa3fff"
       },
       "generator_info": {
-        "above_sea_level": true
+        "above_sea_level": true,
+        "temp_min": 30
       }
     },
     {
@@ -85,7 +86,8 @@
         "biome": "0x00b17fff"
       },
       "generator_info": {
-        "above_sea_level": true
+        "above_sea_level": true,
+        "temp_max": 10
       }
     },
     {
@@ -107,7 +109,8 @@
         "biome": "0xc5f7ffff"
       },
       "generator_info": {
-        "above_sea_level": true
+        "above_sea_level": true,
+        "temp_max": 0
       }
     },
     {
@@ -129,7 +132,8 @@
         "biome": "0xffd84aff"
       },
       "generator_info": {
-        "above_sea_level": true
+        "above_sea_level": true,
+        "temp_min": 40
       }
     },
     {
@@ -151,7 +155,9 @@
         "biome": "0xd2d84aff"
       },
       "generator_info": {
-        "above_sea_level": true
+        "above_sea_level": true,
+        "temp_min": 30,
+        "neighbour": "Desert"
       }
     }
   ]

@@ -8,6 +8,8 @@
 #include <screens/map/objects/tiles/type/Tileset.h>
 #include <screens/map/MapScreen.h>
 
+#include "AssetLoader.h"
+
 using namespace sf;
 
 class SplashScreen : public Screen {
