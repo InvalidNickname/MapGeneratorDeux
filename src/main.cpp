@@ -7,10 +7,12 @@ int main() {
             "Map Generator",
             sf::Style::Fullscreen);
 
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(60);
 
     // запуск splashscreen
-    ScreenManager screenManager(new SplashScreen(&window));
+    ScreenManager screenManager(SPLASHSCREEN, 2);
+    screenManager.addScreen(SPLASHSCREEN, new SplashScreen(&window));
+    screenManager.addScreen(MAP_SCREEN, new MapScreen(&window));
 
     // отрисовка и прочие вещи
     while (window.isOpen()) {

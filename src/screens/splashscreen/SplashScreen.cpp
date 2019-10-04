@@ -1,30 +1,32 @@
 #include "SplashScreen.h"
 
-SplashScreen::SplashScreen(RenderWindow *renderWindow) : Screen(renderWindow) {
-    loadingThread = std::thread([this]() {
+void SplashScreen::prepare() {
+    loadingThread = std::async(std::launch::async, [this] {
         load();
     });
 }
 
-void SplashScreen::draw() {
-    //TODO отрисовка загрузочного экрана
+void SplashScreen::load() {
+    // первоначальная загрузка тайлсета из json
+    Tileset::get();
 }
 
-void SplashScreen::doAction() {
+int SplashScreen::doAction() {
     Event event{};
     while (window->pollEvent(event)) {
         if (event.type == Event::Closed) {
             window->close();
         }
     }
-    if (loadingThread.joinable()) {
-        loadingThread.join();
+    auto status = loadingThread.wait_for(0ms);
+    if (status == std::future_status::ready) {
+        loadingThread.get();
         // переключение на экран карты
-        move(new MapScreen(window));
+        return MAP_SCREEN;
     }
+    return THIS_STATE;
 }
 
-void SplashScreen::load() {
-    // первоначальная загрузка тайлсета из json
-    Tileset::get();
+void SplashScreen::draw() {
+    //TODO отрисовка загрузочного экрана
 }

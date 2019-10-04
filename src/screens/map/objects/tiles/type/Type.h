@@ -1,9 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics/Color.hpp>
 #include <string>
 #include <vector>
 #include <utility>
+#include <SFML/Graphics/Color.hpp>
+
 #include "Level.h"
 
 using namespace std;

@@ -1,10 +1,12 @@
 #pragma once
 
 #include <screens/Screen.h>
-#include "screens/map/drawables/DrawableGrid.h"
-#include "screens/map/generator/GenerationParameters.h"
+#include <screens/map/drawables/DrawableGrid.h>
+#include <screens/map/generator/GenerationParameters.h>
 
 class MapScreen : public Screen {
+
+    using Screen::Screen;
 
   public:
     float minZoom;
@@ -19,12 +21,9 @@ class MapScreen : public Screen {
 
     void draw() override;
 
-    void doAction() override;
+    int doAction() override;
+
+    void prepare() override;
 
     void handleInput();
-
-    inline static bool isKeyPressed(Keyboard::Key key);
-
-  public:
-    explicit MapScreen(RenderWindow *renderWindow);
 };

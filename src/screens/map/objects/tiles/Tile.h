@@ -9,15 +9,6 @@
 using namespace sf;
 
 class Tile {
-  private:
-    int x, y;
-    int z{0};
-    float latitude, longitude;
-    float tileX{0}, tileY{0};
-    float temperature;
-    Type *type;
-    Level level{Level::NO};
-    VertexArray shape;
   public:
     Tile(int x, int y);
 
@@ -42,5 +33,13 @@ class Tile {
     void increaseZ(int z);
 
   private:
+    int x, y, z{0};
+    float latitude, longitude;
+    float tileX{0}, tileY{0};
+    float temperature;
+    Type *type;
+    Level level{Level::NO};
+    VertexArray shape;
+
     void drawTile(RenderWindow *_window, Color color);
 };

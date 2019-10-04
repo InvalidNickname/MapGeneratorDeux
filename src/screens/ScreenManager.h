@@ -1,22 +1,24 @@
 #pragma once
 
-#include "Screen.h"
 #include <SFML/Graphics.hpp>
+
+#include "Screen.h"
 
 using namespace sf;
 
 class ScreenManager {
 
   public:
-    void drawActiveScreen();
+    explicit ScreenManager(int initialKey, int length);
+
+    void addScreen(int _key, Screen *screen);
 
     void doActiveScreenActions();
 
-    explicit ScreenManager(Screen *_screen);
-
-    void setActiveScreen(Screen *_screen);
+    void drawActiveScreen();
 
   private:
-    Screen *activeScreen{};
+    int key, tempKey{0}, prevKey{-1};
+    std::vector<Screen *> screens;
 
 };

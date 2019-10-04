@@ -1,26 +1,23 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <functional>
-#include <utility>
+
+#include "GameState.h"
 
 using namespace sf;
 
 class Screen {
 
   public:
-    virtual void draw() = 0;
-
-    virtual void doAction() = 0;
-
     explicit Screen(RenderWindow *_window) : window(_window) {}
 
-    void setMoveFunction(std::function<void(Screen *)> _move) {
-        move = std::move(_move);
-    }
+    virtual void prepare() = 0;
+
+    virtual int doAction() = 0;
+
+    virtual void draw() = 0;
 
   protected:
     RenderWindow *window;
-    std::function<void(Screen *)> move;
 
 };

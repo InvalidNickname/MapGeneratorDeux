@@ -1,6 +1,7 @@
 #include "Tile.h"
 
 Tile::Tile(int x, int y) : x(x), y(y) {
+    setType("GenWater");
     tileY = TILE_HEIGHT * ((float) y - (float) (y / 2) / 2 - (y % 2 == 1 ? 0.25f : 0));
     shape = VertexArray(TriangleFan, 8);
     latitude = 90 * (1 - 2.f * y / MAP_HEIGHT > 1 ? 2 - 2.f * y / MAP_HEIGHT : 2.f * y / MAP_HEIGHT);

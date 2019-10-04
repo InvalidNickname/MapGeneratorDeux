@@ -1,23 +1,27 @@
 #pragma once
 
+#include <thread>
+#include <future>
+#include <chrono>
+
 #include <screens/Screen.h>
 #include <screens/map/objects/tiles/type/Tileset.h>
 #include <screens/map/MapScreen.h>
-#include <thread>
 
 using namespace sf;
 
 class SplashScreen : public Screen {
 
+    using Screen::Screen;
+
   private:
-    std::thread loadingThread;
+    std::future<void> loadingThread;
 
-    void draw() override;
-
-    void doAction() override;
+    void prepare() override;
 
     void load();
 
-  public:
-    explicit SplashScreen(RenderWindow *renderWindow);
+    int doAction() override;
+
+    void draw() override;
 };

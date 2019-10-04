@@ -6,7 +6,6 @@ TileGrid::TileGrid() {
         grid->at(i) = new std::vector<Tile *>(MAP_HEIGHT);
         for (int j = 0; j < MAP_HEIGHT; j++) {
             grid->at(i)->at(j) = new Tile(i, j);
-            getTile(i, j)->setType("GenWater");
         }
     }
 }

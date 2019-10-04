@@ -1,7 +1,9 @@
 #pragma once
 
-#include <json.hpp>
 #include <fstream> // для считывания json-файла
+
+#include <json.hpp>
+
 #include "Type.h"
 
 using Json = nlohmann::json;

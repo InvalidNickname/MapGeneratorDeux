@@ -1,20 +1,30 @@
 #include "ScreenManager.h"
 
-void ScreenManager::drawActiveScreen() {
-    activeScreen->draw();
+ScreenManager::ScreenManager(int initialKey, int length) : key(initialKey) {
+    screens.reserve(length);
 }
 
-void ScreenManager::setActiveScreen(Screen *_screen) {
-    activeScreen = _screen;
-    activeScreen->setMoveFunction([this](Screen *screen) {
-        setActiveScreen(screen);
-    });
-}
-
-ScreenManager::ScreenManager(Screen *_screen) {
-    setActiveScreen(_screen);
+void ScreenManager::addScreen(int _key, Screen *screen) {
+    screens[_key] = screen;
 }
 
 void ScreenManager::doActiveScreenActions() {
-    activeScreen->doAction();
+    if (key >= 0) {
+        // если это новый экран - подготовить
+        if (key != prevKey) {
+            screens[key]->prepare();
+            prevKey = key;
+        }
+        tempKey = screens[key]->doAction();
+        if (tempKey != THIS_STATE) {
+            key = tempKey;
+        }
+    }
+}
+
+void ScreenManager::drawActiveScreen() {
+    // если этот экран подоготовлен - отрисовка
+    if (key >= 0 && key == prevKey) {
+        screens[key]->draw();
+    }
 }

@@ -1,9 +1,4 @@
-#include "screens/map/objects/tiles/type/Tileset.h"
-
-Tileset &Tileset::get() {
-    static Tileset s;
-    return s;
-}
+#include "Tileset.h"
 
 Tileset::Tileset() {
     std::ifstream input("jsons/tiles.json");
@@ -38,6 +33,11 @@ Tileset::Tileset() {
         bool aboveSeaLevel = genInfo.at("above_sea_level");
         tileset.push_back(new Type(type, archtype, name, biomeColor, baseColor, aboveSeaLevel));
     }
+}
+
+Tileset &Tileset::get() {
+    static Tileset s;
+    return s;
 }
 
 Type *Tileset::getType(const string &type) {

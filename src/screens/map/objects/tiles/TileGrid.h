@@ -21,8 +21,7 @@ class TileGrid {
     void setMinZ(int minZ);
 
   private:
-    int maxZ, minZ;
-
     std::vector<std::vector<Tile *> *> *grid;
+    int maxZ{0}, minZ{2147483647};
 
 };

@@ -1,20 +1,6 @@
 #include "MapScreen.h"
 
-void MapScreen::draw() {
-    Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(0, 0)));
-    Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(
-            window->mapPixelToCoords(Vector2i(windowWidth, windowHeight)));
-    drawableGrid->render(window, mapMode,
-                         lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
-}
-
-void MapScreen::doAction() {
-    handleInput();
-    view.setSize(initialWidth * zoom, initialHeight * zoom);
-    window->setView(view);
-}
-
-MapScreen::MapScreen(RenderWindow *renderWindow) : Screen(renderWindow) {
+void MapScreen::prepare() {
     // размеры экрана
     windowHeight = window->getSize().y;
     windowWidth = window->getSize().x;
@@ -35,6 +21,13 @@ MapScreen::MapScreen(RenderWindow *renderWindow) : Screen(renderWindow) {
     window->setView(view);
 }
 
+int MapScreen::doAction() {
+    handleInput();
+    view.setSize(initialWidth * zoom, initialHeight * zoom);
+    window->setView(view);
+    return THIS_STATE;
+}
+
 void MapScreen::handleInput() {
     Event event{};
     while (window->pollEvent(event)) {
@@ -46,19 +39,27 @@ void MapScreen::handleInput() {
         }
     }
     // смена режимов карты
-    if (isKeyPressed(Keyboard::Q)) mapMode = MapMode::NORMAL;
-    else if (isKeyPressed(Keyboard::T)) mapMode = MapMode::TEMPERATURE;
-    else if (isKeyPressed(Keyboard::H)) mapMode = MapMode::HEIGHT;
-    else if (isKeyPressed(Keyboard::B)) mapMode = MapMode::BIOMES;
+    if (Keyboard::isKeyPressed(Keyboard::Q)) mapMode = MapMode::NORMAL;
+    else if (Keyboard::isKeyPressed(Keyboard::T)) mapMode = MapMode::TEMPERATURE;
+    else if (Keyboard::isKeyPressed(Keyboard::H)) mapMode = MapMode::HEIGHT;
+    else if (Keyboard::isKeyPressed(Keyboard::B)) mapMode = MapMode::BIOMES;
     // отдаление
-    if (isKeyPressed(Keyboard::Subtract)) zoom += 0.06f;
+    if (Keyboard::isKeyPressed(Keyboard::Subtract)) zoom += 0.06f;
     // приближение
-    if (isKeyPressed(Keyboard::Add)) zoom -= 0.06f;
+    if (Keyboard::isKeyPressed(Keyboard::Add)) zoom -= 0.06f;
     // перемещение карты
-    if (isKeyPressed(Keyboard::Left) || Mouse::getPosition().x < 5) view.move(-6 * zoom, 0);
-    if (isKeyPressed(Keyboard::Right) || Mouse::getPosition().x > window->getSize().x - 5) view.move(6 * zoom, 0);
-    if (isKeyPressed(Keyboard::Down) || Mouse::getPosition().y < 5) view.move(0, -6 * zoom);
-    if (isKeyPressed(Keyboard::Up) || Mouse::getPosition().y > window->getSize().y - 5) view.move(0, 6 * zoom);
+    if (Keyboard::isKeyPressed(Keyboard::Left) || Mouse::getPosition().x < 5) {
+        view.move(-6 * zoom, 0);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Right) || Mouse::getPosition().x > window->getSize().x - 5) {
+        view.move(6 * zoom, 0);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Down) || Mouse::getPosition().y < 5) {
+        view.move(0, -6 * zoom);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Up) || Mouse::getPosition().y > window->getSize().y - 5) {
+        view.move(0, 6 * zoom);
+    }
     // максимальный и минимальный зум
     if (zoom < 0.5) zoom = 0.5;
     if (zoom > minZoom) zoom = minZoom;
@@ -73,7 +74,10 @@ void MapScreen::handleInput() {
         view.setCenter(windowWidth * zoom / 4.f + TILE_WIDTH * 0.5f, view.getCenter().y);
 }
 
-// чисто для сокращения с Keyboard::isKeyPressed() до isKeyPressed()
-bool MapScreen::isKeyPressed(Keyboard::Key key) {
-    return Keyboard::isKeyPressed(key);
+void MapScreen::draw() {
+    Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(0, 0)));
+    Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(
+            window->mapPixelToCoords(Vector2i(windowWidth, windowHeight)));
+    drawableGrid->render(window, mapMode,
+                         lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
 }
