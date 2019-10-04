@@ -19,10 +19,22 @@ void MapScreen::prepare() {
     mapView.zoom(minZoom);
     zoom = minZoom;
     // создание GUI
-    gui = new GUI(windowWidth, windowHeight);
+    setGUI();
     // установка view для интерфейса
     uiView.setSize(windowWidth, windowHeight);
     uiView.setCenter(initialWidth, initialHeight);
+}
+
+void MapScreen::setGUI() {
+    gui = new GUI(windowWidth, windowHeight);
+    gui->addButton(new Button(
+            windowWidth - 41 - 41, windowHeight - 200 - 31, 41, 31,
+            AssetLoader::get().getTexture("map_mode_default_0"), AssetLoader::get().getTexture("map_mode_default_1"),
+            [this]() { mapMode = MapMode::NORMAL; }));
+    gui->addButton(new Button(
+            windowWidth - 41, windowHeight - 200 - 31, 41, 31,
+            AssetLoader::get().getTexture("map_mode_biomes_0"), AssetLoader::get().getTexture("map_mode_biomes_1"),
+            [this]() { mapMode = MapMode::BIOMES; }));
 }
 
 int MapScreen::doAction() {
@@ -40,6 +52,9 @@ void MapScreen::handleInput() {
                 zoomAtPoint({event.mouseWheelScroll.x, event.mouseWheelScroll.y});
                 break;
         }
+    }
+    if (Mouse::isButtonPressed(Mouse::Left)) {
+        gui->checkClick(Mouse::getPosition().x, Mouse::getPosition().y);
     }
     // смена режимов карты
     if (Keyboard::isKeyPressed(Keyboard::Q)) mapMode = MapMode::NORMAL;

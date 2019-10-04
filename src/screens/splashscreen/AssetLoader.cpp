@@ -11,7 +11,7 @@ AssetLoader::AssetLoader() {
     t1->setSmooth(true);
     textureMap.insert(pair("map_mode_default_0", t1));
     auto *t2 = new Texture();
-    t2->loadFromFile("graphics/interface/map_mode_default.png", IntRect(0, 0, 41, 31));
+    t2->loadFromFile("graphics/interface/map_mode_default.png", IntRect(41, 0, 41, 31));
     t2->setSmooth(true);
     textureMap.insert(pair("map_mode_default_1", t2));
     auto *t3 = new Texture();
@@ -19,7 +19,7 @@ AssetLoader::AssetLoader() {
     t3->setSmooth(true);
     textureMap.insert(pair("map_mode_biomes_0", t3));
     auto *t4 = new Texture();
-    t4->loadFromFile("graphics/interface/map_mode_biomes.png", IntRect(0, 0, 41, 31));
+    t4->loadFromFile("graphics/interface/map_mode_biomes.png", IntRect(41, 0, 41, 31));
     t4->setSmooth(true);
     textureMap.insert(pair("map_mode_biomes_1", t4));
 }

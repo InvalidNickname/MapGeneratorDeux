@@ -1,3 +1,5 @@
+#include <vector>
+
 #include <ui/Button.h>
 #include <screens/splashscreen/AssetLoader.h>
 
@@ -9,8 +11,10 @@ class GUI {
 
     bool checkClick(int _x, int _y);
 
+    void addButton(Button *button);
+
   private:
     int windowWidth, windowHeight;
-    Button *mapModeDefault, *mapModeBiomes;
+    std::vector<Button *> buttons;
 
 };

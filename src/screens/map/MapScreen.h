@@ -27,6 +27,8 @@ class MapScreen : public Screen {
 
     void prepare() override;
 
+    void setGUI();
+
     void handleInput();
 
     void zoomAtPoint(Vector2i point);
