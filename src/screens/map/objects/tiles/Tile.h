@@ -1,10 +1,14 @@
 #pragma once
 
-#include "type/Type.h"
-#include <screens/map/generator/GenerationParameters.h>
-#include <SFML/Graphics.hpp>
-#include "type/Tileset.h"
 #include <cmath>
+
+#include <SFML/Graphics.hpp>
+
+#include <utils/GenerationParameters.h>
+#include <utils/Random.h>
+
+#include "type/Type.h"
+#include "type/Tileset.h"
 
 using namespace sf;
 
@@ -32,12 +36,16 @@ class Tile {
 
     void increaseZ(int z);
 
+    float getTemperature();
+
+    void setTemperature(int oceanLevel, int maxZ);
+
   private:
     int x, y, z{0};
     float latitude, longitude;
     float tileX{0}, tileY{0};
     float temperature;
-    Type *type;
+    Type *type{nullptr};
     Level level{Level::NO};
     VertexArray shape;
 

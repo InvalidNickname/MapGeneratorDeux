@@ -1,7 +1,7 @@
 #pragma once
 
 #include <screens/map/objects/tiles/TileGrid.h>
-#include <screens/map/generator/GenerationParameters.h>
+#include <utils/GenerationParameters.h>
 #include <screens/map/generator/Generator.h>
 
 class DrawableGrid {

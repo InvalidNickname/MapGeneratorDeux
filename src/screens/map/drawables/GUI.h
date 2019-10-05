@@ -1,6 +1,6 @@
 #include <map>
 
-#include <screens/splashscreen/AssetLoader.h>
+#include <utils/AssetLoader.h>
 #include <ui/UIDrawable.h>
 
 class GUI {

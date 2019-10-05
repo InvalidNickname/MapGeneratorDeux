@@ -2,15 +2,15 @@
 
 TileGrid::TileGrid() {
     grid = new std::vector<std::vector<Tile *> *>(MAP_WIDTH);
-    for (int i = 0; i < MAP_WIDTH; i++) {
+    for (unsigned i = 0; i < MAP_WIDTH; i++) {
         grid->at(i) = new std::vector<Tile *>(MAP_HEIGHT);
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+        for (unsigned j = 0; j < MAP_HEIGHT; j++) {
             grid->at(i)->at(j) = new Tile(i, j);
         }
     }
 }
 
-Tile *TileGrid::getTile(int x, int y) {
+Tile *TileGrid::getTile(unsigned x, unsigned y) {
     return grid->at(x)->at(y);
 }
 

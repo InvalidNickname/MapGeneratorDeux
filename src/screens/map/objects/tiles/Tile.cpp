@@ -4,8 +4,8 @@ Tile::Tile(int x, int y) : x(x), y(y) {
     setType("GenWater");
     tileY = TILE_HEIGHT * ((float) y - (float) (y / 2) / 2 - (y % 2 == 1 ? 0.25f : 0));
     shape = VertexArray(TriangleFan, 8);
-    latitude = 90 * (1 - 2.f * y / MAP_HEIGHT > 1 ? 2 - 2.f * y / MAP_HEIGHT : 2.f * y / MAP_HEIGHT);
-    longitude = 180 * (1 - 2.f * x / MAP_WIDTH > 1 ? 2 - 2.f * x / MAP_WIDTH : 2.f * x / MAP_WIDTH);
+    latitude = 90 * (1 - (2.f * y / MAP_HEIGHT > 1 ? 2 - 2.f * y / MAP_HEIGHT : 2.f * y / MAP_HEIGHT));
+    longitude = 180 * (1 - (2.f * x / MAP_WIDTH > 1 ? 2 - 2.f * x / MAP_WIDTH : 2.f * x / MAP_WIDTH));
 }
 
 void Tile::render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ, int minZ) {
@@ -16,7 +16,9 @@ void Tile::render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ,
             color = type->getBaseColor(level);
             break;
         case TEMPERATURE:
-            //TODO карта температур
+            temp = (temperature + (float) abs(TEMPERATURE_MIN) + 1) /
+                   ((float) abs(TEMPERATURE_MIN) + (float) abs(TEMPERATURE_MAX) + 2.f);
+            color = Color(255, (1 - temp) * 255, (1 - temp) * 255, 255);
             break;
         case HEIGHT:
             temp = (z - minZ) / (maxZ - minZ + 1.);
@@ -36,8 +38,6 @@ void Tile::render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ,
     tileX = TILE_WIDTH * ((float) _x + (_y % 2 == 1 ? 0.5f : 0));
     drawTile(_target, color);
 }
-
-#include <iostream>
 
 void Tile::drawTile(RenderTarget *_target, Color color) {
     shape[0].position = Vector2f(tileX + TILE_WIDTH / 2, tileY + TILE_HEIGHT / 2);
@@ -93,4 +93,14 @@ void Tile::setType(const string &_type) {
 
 void Tile::increaseZ(int _z) {
     z += _z;
+}
+
+float Tile::getTemperature() {
+    return temperature;
+}
+
+void Tile::setTemperature(int oceanLevel, int maxZ) {
+    temperature = TEMPERATURE_MIN + (1 - latitude / 90.f) * (TEMPERATURE_MAX - TEMPERATURE_MIN);
+    temperature *= 1 - abs((float) oceanLevel - (float) z) / (float) (maxZ + 1);
+    temperature += (float) Random::get().getInt(-100, 100) / 100;
 }

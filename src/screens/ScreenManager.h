@@ -9,7 +9,7 @@ using namespace sf;
 class ScreenManager {
 
   public:
-    explicit ScreenManager(int initialKey, int length);
+    explicit ScreenManager(int initialKey, unsigned length);
 
     void addScreen(int _key, Screen *screen);
 

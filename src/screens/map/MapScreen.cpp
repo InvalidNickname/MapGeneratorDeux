@@ -29,15 +29,20 @@ void MapScreen::setGUI() {
     gui = new GUI(windowWidth, windowHeight);
     gui->addObject("map_mode", new RadioButtons(new map<string, Button *>{
             pair("default", new Button(
-                    windowWidth - 41 - 41, windowHeight - 190 - 31, 41, 31,
+                    windowWidth - 123, windowHeight - 190 - 31, 41, 31,
                     AssetLoader::get().getTexture("map_mode_default_0"),
                     AssetLoader::get().getTexture("map_mode_default_1"),
                     [this]() { mapMode = MapMode::NORMAL; })),
             pair("biomes", new Button(
-                    windowWidth - 41, windowHeight - 190 - 31, 41, 31,
+                    windowWidth - 82, windowHeight - 190 - 31, 41, 31,
                     AssetLoader::get().getTexture("map_mode_biomes_0"),
                     AssetLoader::get().getTexture("map_mode_biomes_1"),
-                    [this]() { mapMode = MapMode::BIOMES; }))
+                    [this]() { mapMode = MapMode::BIOMES; })),
+            pair("temperature", new Button(
+                    windowWidth - 41, windowHeight - 190 - 31, 41, 31,
+                    AssetLoader::get().getTexture("map_mode_temperature_0"),
+                    AssetLoader::get().getTexture("map_mode_temperature_1"),
+                    [this]() { mapMode = MapMode::TEMPERATURE; }))
     }, "default"));
     gui->addObject("minimap", new Minimap(windowWidth, windowHeight, drawableGrid));
 }
@@ -67,6 +72,7 @@ void MapScreen::handleInput() {
         ((RadioButtons *) (gui->get("map_mode")))->setClicked("default");
     } else if (Keyboard::isKeyPressed(Keyboard::T)) {
         mapMode = MapMode::TEMPERATURE;
+        ((RadioButtons *) (gui->get("map_mode")))->setClicked("temperature");
     } else if (Keyboard::isKeyPressed(Keyboard::H)) {
         mapMode = MapMode::HEIGHT;
     } else if (Keyboard::isKeyPressed(Keyboard::B)) {

@@ -1,22 +1,19 @@
 #pragma once
 
 #include <vector>
-#include <random>
 
 #include <screens/map/objects/tiles/Tile.h>
 #include <screens/map/objects/tiles/TileGrid.h>
-#include "GenerationParameters.h"
+#include <utils/GenerationParameters.h>
+#include <utils/Random.h>
 
 class Generator {
   public:
     TileGrid *generate();
 
-    Generator setSeed(int seed);
-
   private:
     TileGrid *grid{nullptr};
     int oceanLevel{0};
-    default_random_engine engine;
 
     void raiseTerrain();
 
@@ -24,6 +21,8 @@ class Generator {
 
     // определение максимальной, минимальной высоты и уровня моря
     void findZLimits();
+
+    void setTemperature();
 
     void setLand();
 
@@ -37,6 +36,4 @@ class Generator {
     void deleteTilePaths(const String &type, const String &changeTo, Tile *tile);
 
     int countNeighboursWithType(const String &type, Tile *tile);
-
-    int random(int x, int y);
 };

@@ -1,16 +1,10 @@
 #include "Minimap.h"
 
 void Minimap::render(RenderWindow *window) {
-    window->draw(minimapBackground);
     window->draw(minimap);
 }
 
 Minimap::Minimap(float windowWidth, float windowHeight, DrawableGrid *drawableGrid) {
-    minimapBackground.setTexture(*AssetLoader::get().getTexture("minimap_background"));
-    minimapBackground.setScale(300.f / minimapBackground.getTexture()->getSize().x,
-                               190.f / minimapBackground.getTexture()->getSize().y);
-    minimapBackground.setPosition(windowWidth - 300, windowHeight - 190);
-
     float height = 0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT);
     float width = TILE_WIDTH * (0.5f + MAP_WIDTH);
     float camX = width / 2;
@@ -24,7 +18,18 @@ Minimap::Minimap(float windowWidth, float windowHeight, DrawableGrid *drawableGr
     minimapTexture->create((unsigned) windowWidth, (unsigned) windowHeight);
     minimapTexture->setView(view);
 
+    Sprite background;
+    background.setTexture(*AssetLoader::get().getTexture("minimap_background"));
+    background.setScale(width / background.getTexture()->getSize().x, height / background.getTexture()->getSize().y);
+
+    Sprite overlay;
+    overlay.setTexture(*AssetLoader::get().getTexture("minimap_overlay"));
+    overlay.setScale(width / overlay.getTexture()->getSize().x, height / overlay.getTexture()->getSize().y);
+    overlay.setColor(Color(0, 0, 0, 80));
+
+    minimapTexture->draw(background);
     drawableGrid->render(minimapTexture, MapMode::MINIMAP, 0, MAP_WIDTH);
+    minimapTexture->draw(overlay);
     minimapTexture->display();
 
     minimap.setTexture(minimapTexture->getTexture());

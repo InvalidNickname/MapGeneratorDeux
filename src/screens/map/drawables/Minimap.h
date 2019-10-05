@@ -2,8 +2,8 @@
 
 #include <ui/UIDrawable.h>
 
-#include <screens/splashscreen/AssetLoader.h>
-#include <screens/map/generator/GenerationParameters.h>
+#include <utils/AssetLoader.h>
+#include <utils/GenerationParameters.h>
 
 #include "DrawableGrid.h"
 
@@ -20,7 +20,6 @@ class Minimap : public UIDrawable {
     bool checkClicked(float _x, float _y) override { return false; };
 
   private:
-    Sprite minimapBackground;
     RenderTexture *minimapTexture;
     Sprite minimap;
 

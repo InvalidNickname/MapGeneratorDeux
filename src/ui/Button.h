@@ -11,7 +11,7 @@ class Button : public UIDrawable {
 
   public:
     Button(float x, float y, float width, float height, Texture *normal, Texture *clicked,
-           std::function<void()> onClick);
+           const std::function<void()> &onClick);
 
     void render(RenderWindow *window) override;
 

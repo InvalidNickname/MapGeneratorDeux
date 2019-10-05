@@ -1,7 +1,7 @@
 #include "Button.h"
 
 Button::Button(float x, float y, float width, float height, Texture *normal, Texture *clicked,
-               std::function<void()> onClick)
+               const std::function<void()> &onClick)
         : x(x), y(y), width(width), height(height), normal(normal), clicked(clicked), onClick(std::move(onClick)) {
     sprite.setTexture(*normal);
     auto size = sprite.getTexture()->getSize();

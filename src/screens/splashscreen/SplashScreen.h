@@ -8,7 +8,7 @@
 #include <screens/map/objects/tiles/type/Tileset.h>
 #include <screens/map/MapScreen.h>
 
-#include "AssetLoader.h"
+#include "utils/AssetLoader.h"
 
 using namespace sf;
 
