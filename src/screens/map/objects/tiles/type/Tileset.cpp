@@ -2,8 +2,7 @@
 
 Tileset::Tileset() {
     std::ifstream input("jsons/tiles.json");
-    Json baseFile;
-    input >> baseFile;
+    Json baseFile = Json::parse(input);
     baseFile = baseFile.at("data");
     // тип суши для генератора
     tileset.push_back(new Type("GenLand", "GenLand", vector<string>(), Color(), vector<Color>(), true));

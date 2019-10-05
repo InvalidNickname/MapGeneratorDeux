@@ -16,7 +16,7 @@ DrawableGrid::DrawableGrid() {
     view.setSize(width, height);
 
     center = new RenderTexture();
-    center->create((unsigned) width, (unsigned) height);
+    center->create(Texture::getMaximumSize() / 2, (Texture::getMaximumSize() / 2) / 300 * 190);
     center->setView(view);
     center->setSmooth(true);
 

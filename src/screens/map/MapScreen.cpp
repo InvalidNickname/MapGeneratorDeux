@@ -112,6 +112,7 @@ void MapScreen::draw() {
     Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(0, 0)));
     Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(
             window->mapPixelToCoords(Vector2i(windowWidth, windowHeight)));
+    // при приближении отрисовываются векторные тайлы, при отдалении - одна текстура карты
     if (zoom < 5) {
         drawableGrid->render(window, mapMode,
                              lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
