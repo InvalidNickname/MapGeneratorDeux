@@ -1,23 +1,22 @@
 #include "GUI.h"
 
-GUI::GUI(int windowWidth, int windowHeight) : windowHeight(windowHeight), windowWidth(windowWidth) {}
+GUI::GUI(float windowWidth, float windowHeight) : windowHeight(windowHeight), windowWidth(windowWidth) {}
 
 void GUI::render(RenderWindow *window) {
-    for (Button *i : buttons) {
+    for (UIDrawable *i : drawables) {
         i->render(window);
     }
 }
 
-bool GUI::checkClick(int _x, int _y) {
-    bool check = false;
-    for (Button *i : buttons) {
+bool GUI::checkClicked(float _x, float _y) {
+    for (UIDrawable *i : drawables) {
         if (i->checkClicked(_x, _y)) {
-            check = true;
+            return true;
         }
     }
-    return check;
+    return false;
 }
 
-void GUI::addButton(Button *button) {
-    buttons.push_back(button);
+void GUI::addDrawables(UIDrawable *drawable) {
+    drawables.push_back(drawable);
 }

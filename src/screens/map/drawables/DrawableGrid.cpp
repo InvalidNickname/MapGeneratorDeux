@@ -1,34 +1,34 @@
 #include "DrawableGrid.h"
 
 DrawableGrid::DrawableGrid() {
-    tileGrid = Generator().setSeed(2).generate();
+    tileGrid = Generator().setSeed(1).generate();
     maxZ = tileGrid->getMaxZ();
     minZ = tileGrid->getMinZ();
 }
 
-void DrawableGrid::render(RenderWindow *_window, MapMode mode, int x0, int y0, int x1, int y1) {
+void DrawableGrid::render(RenderTarget *_target, MapMode mode, int x0, int y0, int x1, int y1) {
     if (y0 < 0) y0 = 0;
     if (y1 > MAP_HEIGHT) y1 = MAP_HEIGHT;
 
     if (x0 < 0) {
         for (int i = y0; i < y1; i++) {
             for (int j = 0; j < x1; j++)
-                tileGrid->getTile(j, i)->render(_window, mode, j, i, maxZ, minZ);
+                tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
             for (int j = MAP_WIDTH + x0; j < MAP_WIDTH; j++)
-                tileGrid->getTile(j, i)->render(_window, mode, j - MAP_WIDTH, i, maxZ, minZ);
+                tileGrid->getTile(j, i)->render(_target, mode, j - MAP_WIDTH, i, maxZ, minZ);
         }
     } else if (x1 > MAP_WIDTH) {
         x1 = x1 % MAP_WIDTH;
         for (int i = y0; i < y1; i++) {
             for (int j = 0; j < x1; j++)
-                tileGrid->getTile(j, i)->render(_window, mode, j + MAP_WIDTH, i, maxZ, minZ);
+                tileGrid->getTile(j, i)->render(_target, mode, j + MAP_WIDTH, i, maxZ, minZ);
             for (int j = x0; j < MAP_WIDTH; j++)
-                tileGrid->getTile(j, i)->render(_window, mode, j, i, maxZ, minZ);
+                tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
         }
     } else {
         for (int i = y0; i < y1; i++)
             for (int j = x0; j < x1; j++)
-                tileGrid->getTile(j, i)->render(_window, mode, j, i, maxZ, minZ);
+                tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
     }
 }
 

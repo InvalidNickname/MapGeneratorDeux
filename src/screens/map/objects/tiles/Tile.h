@@ -12,7 +12,7 @@ class Tile {
   public:
     Tile(int x, int y);
 
-    void render(RenderWindow *_window, MapMode mode, int _x, int _y, int maxZ, int minZ);
+    void render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ, int minZ);
 
     float getLatitude();
 
@@ -41,5 +41,5 @@ class Tile {
     Level level{Level::NO};
     VertexArray shape;
 
-    void drawTile(RenderWindow *_window, Color color);
+    void drawTile(RenderTarget *_target, Color color);
 };

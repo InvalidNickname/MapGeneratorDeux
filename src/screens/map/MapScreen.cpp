@@ -12,7 +12,7 @@ void MapScreen::prepare() {
     // установка камеры
     mapView.setSize(initialWidth, initialHeight);
     float camX = TILE_WIDTH * (0.5f + MAP_WIDTH) / 2;
-    float camY = 0.125f * TILE_HEIGHT * (1 + 3 * MAP_HEIGHT);
+    float camY = 0.125f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1);
     mapView.setCenter(camX, camY);
     // минимальный зум - сетка полностью помещается на экран по высоте
     minZoom = camY * 2 / initialHeight;
@@ -27,14 +27,18 @@ void MapScreen::prepare() {
 
 void MapScreen::setGUI() {
     gui = new GUI(windowWidth, windowHeight);
-    gui->addButton(new Button(
-            windowWidth - 41 - 41, windowHeight - 200 - 31, 41, 31,
-            AssetLoader::get().getTexture("map_mode_default_0"), AssetLoader::get().getTexture("map_mode_default_1"),
-            [this]() { mapMode = MapMode::NORMAL; }));
-    gui->addButton(new Button(
-            windowWidth - 41, windowHeight - 200 - 31, 41, 31,
-            AssetLoader::get().getTexture("map_mode_biomes_0"), AssetLoader::get().getTexture("map_mode_biomes_1"),
-            [this]() { mapMode = MapMode::BIOMES; }));
+    gui->addDrawables(new RadioButtons(
+            {new Button(
+                    windowWidth - 41 - 41, windowHeight - 190 - 31, 41, 31,
+                    AssetLoader::get().getTexture("map_mode_default_0"),
+                    AssetLoader::get().getTexture("map_mode_default_1"),
+                    [this]() { mapMode = MapMode::NORMAL; }),
+             new Button(
+                     windowWidth - 41, windowHeight - 190 - 31, 41, 31,
+                     AssetLoader::get().getTexture("map_mode_biomes_0"),
+                     AssetLoader::get().getTexture("map_mode_biomes_1"),
+                     [this]() { mapMode = MapMode::BIOMES; })}, 0));
+    gui->addDrawables(new Minimap(windowWidth, windowHeight, minZoom, drawableGrid));
 }
 
 int MapScreen::doAction() {
@@ -54,7 +58,7 @@ void MapScreen::handleInput() {
         }
     }
     if (Mouse::isButtonPressed(Mouse::Left)) {
-        gui->checkClick(Mouse::getPosition().x, Mouse::getPosition().y);
+        gui->checkClicked(Mouse::getPosition().x, Mouse::getPosition().y);
     }
     // смена режимов карты
     if (Keyboard::isKeyPressed(Keyboard::Q)) mapMode = MapMode::NORMAL;
@@ -72,28 +76,27 @@ void MapScreen::handleInput() {
     if (Keyboard::isKeyPressed(Keyboard::Right) || Mouse::getPosition().x > window->getSize().x - 5) {
         mapView.move(6 * zoom, 0);
     }
-    if (Keyboard::isKeyPressed(Keyboard::Down) || Mouse::getPosition().y < 5) {
+    if (Keyboard::isKeyPressed(Keyboard::Up) || Mouse::getPosition().y < 5) {
         mapView.move(0, -6 * zoom);
     }
-    if (Keyboard::isKeyPressed(Keyboard::Up) || Mouse::getPosition().y > window->getSize().y - 5) {
+    if (Keyboard::isKeyPressed(Keyboard::Down) || Mouse::getPosition().y > window->getSize().y - 5) {
         mapView.move(0, 6 * zoom);
     }
     // максимальный и минимальный зум
     if (zoom < 0.5) zoom = 0.5;
     if (zoom > minZoom) zoom = minZoom;
     // запрет на прокрутку за пределы карты по вертикали
-    if (mapView.getCenter().y < windowHeight * zoom / 4)
-        mapView.setCenter(mapView.getCenter().x, windowHeight * zoom / 4);
-    if (mapView.getCenter().y > 0.25 * TILE_HEIGHT * (1 + 3 * MAP_HEIGHT) - windowHeight / 4. * zoom)
+    if (mapView.getCenter().y < 0.25 * TILE_HEIGHT + windowHeight * zoom / 4)
+        mapView.setCenter(mapView.getCenter().x, 0.25f * TILE_HEIGHT + windowHeight * zoom / 4);
+    if (mapView.getCenter().y > 0.25 * TILE_HEIGHT * (3 * MAP_HEIGHT) - windowHeight / 4. * zoom)
         mapView.setCenter(mapView.getCenter().x,
-                          0.25f * TILE_HEIGHT * (1 + 3 * MAP_HEIGHT) - windowHeight / 4.f * zoom);
+                          0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT) - windowHeight / 4.f * zoom);
     // бесконечная прокрутка по горизонтали
     if (mapView.getCenter().x <= -windowWidth * zoom / 4)
         mapView.setCenter((TILE_WIDTH * (MAP_WIDTH)) - windowWidth / 4.f * zoom, mapView.getCenter().y);
     if (mapView.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + windowWidth * zoom / 4.f)
         mapView.setCenter(windowWidth * zoom / 4.f + TILE_WIDTH * 0.5f, mapView.getCenter().y);
 }
-
 
 void MapScreen::draw() {
     // отрисовка карты

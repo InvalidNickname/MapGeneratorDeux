@@ -1,20 +1,20 @@
 #include <vector>
 
-#include <ui/Button.h>
 #include <screens/splashscreen/AssetLoader.h>
+#include <ui/UIDrawable.h>
 
 class GUI {
   public:
-    GUI(int windowWidth, int windowHeight);
+    GUI(float windowWidth, float windowHeight);
 
     void render(RenderWindow *window);
 
-    bool checkClick(int _x, int _y);
+    bool checkClicked(float _x, float _y);
 
-    void addButton(Button *button);
+    void addDrawables(UIDrawable *drawable);
 
   private:
-    int windowWidth, windowHeight;
-    std::vector<Button *> buttons;
+    float windowWidth, windowHeight;
+    std::vector<UIDrawable *> drawables;
 
 };

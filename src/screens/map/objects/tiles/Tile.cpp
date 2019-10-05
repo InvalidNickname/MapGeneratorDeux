@@ -8,7 +8,7 @@ Tile::Tile(int x, int y) : x(x), y(y) {
     longitude = 180 * (1 - 2.f * x / MAP_WIDTH > 1 ? 2 - 2.f * x / MAP_WIDTH : 2.f * x / MAP_WIDTH);
 }
 
-void Tile::render(RenderWindow *_window, MapMode mode, int _x, int _y, int maxZ, int minZ) {
+void Tile::render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ, int minZ) {
     double temp;
     Color color;
     switch (mode) {
@@ -25,13 +25,21 @@ void Tile::render(RenderWindow *_window, MapMode mode, int _x, int _y, int maxZ,
         case BIOMES:
             color = type->getBiomeColor();
             break;
+        case MINIMAP:
+            if (type->getArchtype() == "Water") {
+                return;
+            } else {
+                color = Color(108, 106, 68);
+            }
     }
     // координаты для отрисовки
     tileX = TILE_WIDTH * ((float) _x + (_y % 2 == 1 ? 0.5f : 0));
-    drawTile(_window, color);
+    drawTile(_target, color);
 }
 
-void Tile::drawTile(RenderWindow *_window, Color color) {
+#include <iostream>
+
+void Tile::drawTile(RenderTarget *_target, Color color) {
     shape[0].position = Vector2f(tileX + TILE_WIDTH / 2, tileY + TILE_HEIGHT / 2);
     shape[0].color = color;
     shape[1].position = Vector2f(tileX + TILE_WIDTH / 2, tileY + TILE_HEIGHT);
@@ -48,7 +56,7 @@ void Tile::drawTile(RenderWindow *_window, Color color) {
     shape[6].color = color;
     shape[7].position = Vector2f(tileX + TILE_WIDTH / 2, tileY + TILE_HEIGHT);
     shape[7].color = color;
-    _window->draw(shape);
+    _target->draw(shape);
 }
 
 float Tile::getLatitude() {

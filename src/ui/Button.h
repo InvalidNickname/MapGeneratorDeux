@@ -5,20 +5,25 @@
 
 #include <SFML/Graphics.hpp>
 
-using namespace sf;
+#include "UIDrawable.h"
 
-class Button {
+class Button : public UIDrawable {
 
   public:
-    Button(int x, int y, int width, int height, Texture *normal, Texture *clicked, std::function<void()> onClick);
+    Button(float x, float y, float width, float height, Texture *normal, Texture *clicked,
+           std::function<void()> onClick);
 
-    void render(RenderWindow *window);
+    void render(RenderWindow *window) override;
 
-    bool checkClicked(int _x, int _y);
+    bool checkClicked(float _x, float _y) override;
+
+    void setClicked(bool _clicked);
+
+    bool isClickable() override { return true; }
 
   private:
     Sprite sprite;
-    int x, y, width, height;
+    float x, y, width, height;
     Texture *normal, *clicked;
     std::function<void()> onClick;
 

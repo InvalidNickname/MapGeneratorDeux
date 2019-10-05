@@ -25,4 +25,6 @@ class AssetLoader {
 
     ~AssetLoader() = default;
 
+    void loadTexture(const string &pathname, const string &name, IntRect position = IntRect());
+
 };

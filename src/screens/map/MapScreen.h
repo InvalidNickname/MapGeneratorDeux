@@ -4,6 +4,8 @@
 #include <screens/map/drawables/DrawableGrid.h>
 #include <screens/map/generator/GenerationParameters.h>
 #include <screens/map/drawables/GUI.h>
+#include <screens/map/drawables/Minimap.h>
+#include <ui/RadioButtons.h>
 
 class MapScreen : public Screen {
 
