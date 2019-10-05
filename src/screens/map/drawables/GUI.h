@@ -1,4 +1,4 @@
-#include <vector>
+#include <map>
 
 #include <screens/splashscreen/AssetLoader.h>
 #include <ui/UIDrawable.h>
@@ -11,10 +11,12 @@ class GUI {
 
     bool checkClicked(float _x, float _y);
 
-    void addDrawables(UIDrawable *drawable);
+    void addObject(const string &name, UIDrawable *drawable);
+
+    UIDrawable *get(const string &name);
 
   private:
     float windowWidth, windowHeight;
-    std::vector<UIDrawable *> drawables;
+    map<string, UIDrawable *> drawables;
 
 };

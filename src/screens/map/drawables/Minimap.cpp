@@ -5,20 +5,28 @@ void Minimap::render(RenderWindow *window) {
     window->draw(minimap);
 }
 
-Minimap::Minimap(float windowWidth, float windowHeight, float minZoom, DrawableGrid *drawableGrid) {
+Minimap::Minimap(float windowWidth, float windowHeight, DrawableGrid *drawableGrid) {
     minimapBackground.setTexture(*AssetLoader::get().getTexture("minimap_background"));
     minimapBackground.setScale(300.f / minimapBackground.getTexture()->getSize().x,
                                190.f / minimapBackground.getTexture()->getSize().y);
     minimapBackground.setPosition(windowWidth - 300, windowHeight - 190);
-    // отдельный view для захвата текстуры миникарты
-    View minimapView;
-    minimapView.setSize(windowWidth / 2, windowHeight / 2);
-    minimapView.setCenter(TILE_WIDTH * (0.5f + MAP_WIDTH) / 2, 0.125f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1));
-    minimapView.zoom(minZoom);
+
+    float height = 0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT);
+    float width = TILE_WIDTH * (0.5f + MAP_WIDTH);
+    float camX = width / 2;
+    float camY = 0.125f * TILE_HEIGHT * (3 * MAP_HEIGHT);
+
+    View view;
+    view.setCenter(camX, camY);
+    view.setSize(width, height);
+
     minimapTexture = new RenderTexture();
     minimapTexture->create((unsigned) windowWidth, (unsigned) windowHeight);
-    minimapTexture->setView(minimapView);
-    drawableGrid->render(minimapTexture, MapMode::MINIMAP, 0, 0, MAP_WIDTH, MAP_HEIGHT);
+    minimapTexture->setView(view);
+
+    drawableGrid->render(minimapTexture, MapMode::MINIMAP, 0, MAP_WIDTH);
+    minimapTexture->display();
+
     minimap.setTexture(minimapTexture->getTexture());
     minimap.setScale(300.f / minimapTexture->getTexture().getSize().x,
                      190.f / minimapTexture->getTexture().getSize().y);

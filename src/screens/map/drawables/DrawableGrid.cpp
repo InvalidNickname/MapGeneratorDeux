@@ -2,14 +2,52 @@
 
 DrawableGrid::DrawableGrid() {
     tileGrid = Generator().setSeed(1).generate();
+
     maxZ = tileGrid->getMaxZ();
     minZ = tileGrid->getMinZ();
+
+    float height = 0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT);
+    float width = TILE_WIDTH * (0.5f + MAP_WIDTH);
+    float camX = width / 2;
+    float camY = height / 2;
+
+    View view;
+    view.setCenter(camX, camY);
+    view.setSize(width, height);
+
+    center = new RenderTexture();
+    center->create((unsigned) width, (unsigned) height);
+    center->setView(view);
+    center->setSmooth(true);
+
+    updateTexture(MapMode::NORMAL);
+
+    sCenter.setTexture(center->getTexture());
+    sCenter.scale(width / sCenter.getTexture()->getSize().x, height / sCenter.getTexture()->getSize().y);
+    sCenter.setPosition(0, 0);
+
+    sRight.setTexture(center->getTexture());
+    sRight.scale(width / sRight.getTexture()->getSize().x, height / sRight.getTexture()->getSize().y);
+    sRight.setPosition(width - TILE_WIDTH, 0);
+
+    sLeft.setTexture(center->getTexture());
+    sLeft.scale(width / sLeft.getTexture()->getSize().x, height / sLeft.getTexture()->getSize().y);
+    sLeft.setPosition(-width + TILE_WIDTH, 0);
+}
+
+void DrawableGrid::render(RenderTarget *_target, MapMode mode, int x0, int x1) {
+    if (prev != mode) {
+        updateTexture(mode);
+        prev = mode;
+    }
+    _target->draw(sCenter);
+    if (x1 > MAP_WIDTH) _target->draw(sRight);
+    if (x0 < 0) _target->draw(sLeft);
 }
 
 void DrawableGrid::render(RenderTarget *_target, MapMode mode, int x0, int y0, int x1, int y1) {
     if (y0 < 0) y0 = 0;
     if (y1 > MAP_HEIGHT) y1 = MAP_HEIGHT;
-
     if (x0 < 0) {
         for (int i = y0; i < y1; i++) {
             for (int j = 0; j < x1; j++)
@@ -30,6 +68,15 @@ void DrawableGrid::render(RenderTarget *_target, MapMode mode, int x0, int y0, i
             for (int j = x0; j < x1; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
     }
+}
+
+void DrawableGrid::updateTexture(MapMode mode) {
+    center->clear(Color::Transparent);
+    for (int i = 0; i < MAP_WIDTH; i++) {
+        for (int j = 0; j < MAP_HEIGHT; j++)
+            tileGrid->getTile(i, j)->render(center, mode, i, j, maxZ, minZ);
+    }
+    center->display();
 }
 
 Vector2i DrawableGrid::getTileByCoordinates(Vector2f coords) {

@@ -1,21 +1,28 @@
 #include "RadioButtons.h"
 
-RadioButtons::RadioButtons(std::vector<Button *> buttons, int clicked) : buttons(buttons) {
-    buttons.at(clicked)->setClicked(true);
+RadioButtons::RadioButtons(map<string, Button *> *buttons, const string &name) : buttons(buttons) {
+    buttons->at(name)->setClicked(true);
 }
 
 void RadioButtons::render(RenderWindow *window) {
-    for (Button *i : buttons) {
-        i->render(window);
+    for (auto &i : *buttons) {
+        i.second->render(window);
     }
 }
 
 bool RadioButtons::checkClicked(float _x, float _y) {
     bool check = false;
-    for (Button *i : buttons) {
-        if (i->checkClicked(_x, _y)) {
+    for (auto &i : *buttons) {
+        if (i.second->checkClicked(_x, _y)) {
             check = true;
         }
     }
     return check;
+}
+
+void RadioButtons::setClicked(const string &name) {
+    for (auto &i : *buttons) {
+        i.second->setClicked(false);
+    }
+    buttons->at(name)->setClicked(true);
 }

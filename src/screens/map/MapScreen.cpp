@@ -12,7 +12,7 @@ void MapScreen::prepare() {
     // установка камеры
     mapView.setSize(initialWidth, initialHeight);
     float camX = TILE_WIDTH * (0.5f + MAP_WIDTH) / 2;
-    float camY = 0.125f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1);
+    float camY = 0.125f * TILE_HEIGHT * (3 * MAP_HEIGHT - 2);
     mapView.setCenter(camX, camY);
     // минимальный зум - сетка полностью помещается на экран по высоте
     minZoom = camY * 2 / initialHeight;
@@ -27,18 +27,19 @@ void MapScreen::prepare() {
 
 void MapScreen::setGUI() {
     gui = new GUI(windowWidth, windowHeight);
-    gui->addDrawables(new RadioButtons(
-            {new Button(
+    gui->addObject("map_mode", new RadioButtons(new map<string, Button *>{
+            pair("default", new Button(
                     windowWidth - 41 - 41, windowHeight - 190 - 31, 41, 31,
                     AssetLoader::get().getTexture("map_mode_default_0"),
                     AssetLoader::get().getTexture("map_mode_default_1"),
-                    [this]() { mapMode = MapMode::NORMAL; }),
-             new Button(
-                     windowWidth - 41, windowHeight - 190 - 31, 41, 31,
-                     AssetLoader::get().getTexture("map_mode_biomes_0"),
-                     AssetLoader::get().getTexture("map_mode_biomes_1"),
-                     [this]() { mapMode = MapMode::BIOMES; })}, 0));
-    gui->addDrawables(new Minimap(windowWidth, windowHeight, minZoom, drawableGrid));
+                    [this]() { mapMode = MapMode::NORMAL; })),
+            pair("biomes", new Button(
+                    windowWidth - 41, windowHeight - 190 - 31, 41, 31,
+                    AssetLoader::get().getTexture("map_mode_biomes_0"),
+                    AssetLoader::get().getTexture("map_mode_biomes_1"),
+                    [this]() { mapMode = MapMode::BIOMES; }))
+    }, "default"));
+    gui->addObject("minimap", new Minimap(windowWidth, windowHeight, drawableGrid));
 }
 
 int MapScreen::doAction() {
@@ -61,10 +62,17 @@ void MapScreen::handleInput() {
         gui->checkClicked(Mouse::getPosition().x, Mouse::getPosition().y);
     }
     // смена режимов карты
-    if (Keyboard::isKeyPressed(Keyboard::Q)) mapMode = MapMode::NORMAL;
-    else if (Keyboard::isKeyPressed(Keyboard::T)) mapMode = MapMode::TEMPERATURE;
-    else if (Keyboard::isKeyPressed(Keyboard::H)) mapMode = MapMode::HEIGHT;
-    else if (Keyboard::isKeyPressed(Keyboard::B)) mapMode = MapMode::BIOMES;
+    if (Keyboard::isKeyPressed(Keyboard::Q)) {
+        mapMode = MapMode::NORMAL;
+        ((RadioButtons *) (gui->get("map_mode")))->setClicked("default");
+    } else if (Keyboard::isKeyPressed(Keyboard::T)) {
+        mapMode = MapMode::TEMPERATURE;
+    } else if (Keyboard::isKeyPressed(Keyboard::H)) {
+        mapMode = MapMode::HEIGHT;
+    } else if (Keyboard::isKeyPressed(Keyboard::B)) {
+        mapMode = MapMode::BIOMES;
+        ((RadioButtons *) (gui->get("map_mode")))->setClicked("biomes");
+    }
     // отдаление
     if (Keyboard::isKeyPressed(Keyboard::Subtract)) zoom += 0.06f;
     // приближение
@@ -88,9 +96,9 @@ void MapScreen::handleInput() {
     // запрет на прокрутку за пределы карты по вертикали
     if (mapView.getCenter().y < 0.25 * TILE_HEIGHT + windowHeight * zoom / 4)
         mapView.setCenter(mapView.getCenter().x, 0.25f * TILE_HEIGHT + windowHeight * zoom / 4);
-    if (mapView.getCenter().y > 0.25 * TILE_HEIGHT * (3 * MAP_HEIGHT) - windowHeight / 4. * zoom)
+    if (mapView.getCenter().y > 0.25 * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - windowHeight / 4. * zoom)
         mapView.setCenter(mapView.getCenter().x,
-                          0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT) - windowHeight / 4.f * zoom);
+                          0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - windowHeight / 4.f * zoom);
     // бесконечная прокрутка по горизонтали
     if (mapView.getCenter().x <= -windowWidth * zoom / 4)
         mapView.setCenter((TILE_WIDTH * (MAP_WIDTH)) - windowWidth / 4.f * zoom, mapView.getCenter().y);
@@ -104,8 +112,12 @@ void MapScreen::draw() {
     Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(0, 0)));
     Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(
             window->mapPixelToCoords(Vector2i(windowWidth, windowHeight)));
-    drawableGrid->render(window, mapMode,
-                         lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
+    if (zoom < 5) {
+        drawableGrid->render(window, mapMode,
+                             lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
+    } else {
+        drawableGrid->render(window, mapMode, lowerLeftTile.x - 1, upperRightTile.x + 2);
+    }
     // отрисовка интерфейса
     window->setView(uiView);
     gui->render(window);
@@ -116,12 +128,12 @@ void MapScreen::zoomAtPoint(Vector2i point) {
     if (zoom > minZoom) zoom = minZoom;
     // установка mapView, чтобы убедиться что расчеты не будут проведены для другого view
     window->setView(mapView);
-    Vector2 worldCoordinatesBeforeZoom = window->mapPixelToCoords(point);
+    Vector2f worldCoordinatesBeforeZoom = window->mapPixelToCoords(point);
     mapView.setSize(initialWidth * zoom, initialHeight * zoom);
     // зум
     window->setView(mapView);
-    Vector2 worldCoordinatesAfterZoom = window->mapPixelToCoords(point);
-    Vector2 diff = worldCoordinatesBeforeZoom - worldCoordinatesAfterZoom;
+    Vector2f worldCoordinatesAfterZoom = window->mapPixelToCoords(point);
+    Vector2f diff = worldCoordinatesBeforeZoom - worldCoordinatesAfterZoom;
     mapView.move(diff);
     window->setView(mapView);
 }

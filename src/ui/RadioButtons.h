@@ -1,9 +1,14 @@
+#include <map>
+#include <string>
+
 #include "UIDrawable.h"
 #include "Button.h"
 
+using namespace std;
+
 class RadioButtons : public UIDrawable {
   public:
-    RadioButtons(std::vector<Button *> buttons, int clicked);
+    RadioButtons(map<string, Button *> *buttons, const string &name);
 
     void render(RenderWindow *window) override;
 
@@ -11,6 +16,8 @@ class RadioButtons : public UIDrawable {
 
     bool isClickable() override { return true; }
 
+    void setClicked(const string &name);
+
   private:
-    std::vector<Button *> buttons;
+    map<string, Button *> *buttons;
 };

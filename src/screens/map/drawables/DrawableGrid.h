@@ -8,6 +8,8 @@ class DrawableGrid {
   public:
     DrawableGrid();
 
+    void render(RenderTarget *_target, MapMode mode, int x0, int x1);
+
     void render(RenderTarget *_target, MapMode mode, int x0, int y0, int x1, int y1);
 
     Vector2i static getTileByCoordinates(Vector2f coords);
@@ -16,5 +18,10 @@ class DrawableGrid {
     TileGrid *tileGrid;
     int selectedX{-1}, selectedY{-1};
     int maxZ, minZ;
+    RenderTexture *center;
+    Sprite sLeft, sCenter, sRight;
+    MapMode prev{};
+
+    void updateTexture(MapMode mode);
 
 };
