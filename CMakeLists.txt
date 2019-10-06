@@ -7,8 +7,8 @@ set(SOURCE_FILES src/main.cpp src/screens/ScreenManager.cpp src/screens/splashsc
         src/screens/map/MapScreen.cpp src/screens/map/objects/tiles/type/Tileset.cpp src/screens/map/objects/tiles/Tile.cpp
         src/screens/map/objects/tiles/type/Type.cpp src/screens/map/drawables/DrawableGrid.cpp
         src/screens/map/objects/tiles/TileGrid.cpp src/screens/map/generator/Generator.cpp
-        src/screens/map/drawables/GUI.cpp src/ui/Button.cpp src/utils/AssetLoader.cpp
-        src/ui/RadioButtons.cpp src/screens/map/drawables/Minimap.cpp)
+        src/ui/GUI.cpp src/ui/Button.cpp src/utils/AssetLoader.cpp src/ui/RadioButtons.cpp
+        src/screens/map/drawables/Minimap.cpp src/utils/PerlinNoise.cpp)
 set(SFML_DIR "libs/SFML-2.5.1/lib/cmake/SFML")
 
 find_package(SFML COMPONENTS system window graphics network audio main REQUIRED)

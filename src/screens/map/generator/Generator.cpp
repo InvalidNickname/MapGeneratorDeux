@@ -9,6 +9,7 @@ TileGrid *Generator::generate() {
     setLand();
     flattenContinentBorders();
     setTerrainLevel();
+    setMoisture();
     setTerrainFromTileset();
     return grid;
 }
@@ -85,9 +86,27 @@ void Generator::findZLimits() {
 }
 
 void Generator::setTemperature() {
+    PerlinNoise perlinNoise = PerlinNoise(Random::get().getSeed() * 2);
+    float maxTemperature = 0;
     for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++)
-            grid->getTile(i, j)->setTemperature(oceanLevel, grid->getMaxZ());
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            Tile *tile = grid->getTile(i, j);
+            float temperature = (1 - tile->getLatitude() / 90.f) * 20.f;
+            temperature = temperature * perlinNoise.noise(0.015f * (float) i, 0.015f * (float) j, 0.5f);
+            temperature *= 1 - pow(abs(
+                    (float) oceanLevel - (float) tile->getZ()) / (float) (grid->getMaxZ() - oceanLevel), 2);
+            temperature = TEMPERATURE_MIN + temperature * (TEMPERATURE_MAX - TEMPERATURE_MIN);
+            tile->setTemperature((int) temperature);
+            if (temperature > maxTemperature) maxTemperature = temperature;
+        }
+    // т.к. температура зависит от положения тайла и уменьшается к экватору, максимальная температура будет меньше 50
+    // поэтому надо распределить получившуюся температуру от -10 до 50
+    for (int i = 0; i < MAP_WIDTH; i++)
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            Tile *tile = grid->getTile(i, j);
+            if (tile->getTemperature() > 0)
+                tile->setTemperature(TEMPERATURE_MAX * tile->getTemperature() / maxTemperature);
+        }
 }
 
 // установка суши по уровню океана
@@ -95,7 +114,7 @@ void Generator::setLand() {
     for (int i = 0; i < MAP_WIDTH; i++)
         for (int j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
-            if (tile->getZ() >= oceanLevel) {
+            if (tile->getZ() > oceanLevel) {
                 tile->setType("GenLand");
             }
         }
@@ -139,21 +158,48 @@ void Generator::setTerrainLevel() {
         }
 }
 
-void Generator::setTerrainFromTileset() {
-    // TODO установка типов тайлов в соответствии с тайлсетом
-    for (int i = 0; i < MAP_HEIGHT; i++)
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            Tile *tile = grid->getTile(j, i);
-            if (tile->getType()->getTypeName() == "GenLand") {
-                tile->setType("Plains");
-            } else if (tile->getType()->getTypeName() == "GenWater") {
-                tile->setType("Ocean");
-            }
+void Generator::setMoisture() {
+    PerlinNoise perlinNoise = PerlinNoise(Random::get().getSeed());
+    float maxMoisture = 0;
+    for (int i = 0; i < MAP_WIDTH; i++)
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            Tile *tile = grid->getTile(i, j);
+            float moisture = 1 - tile->getLatitude() / 90.f;
+            moisture = moisture * perlinNoise.noise(0.015f * (float) i, 0.015f * (float) j, 0.4f);
+            tile->setMoisture(moisture);
+            if (moisture > maxMoisture) maxMoisture = moisture;
         }
+    // т.к. влажность зависит от положения тайла и уменьшается к экватору, максимальная влажность будет меньше 1
+    // поэтому надо распределить получившуюся влажность от 0 до 1
+    for (int i = 0; i < MAP_WIDTH; i++)
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            Tile *tile = grid->getTile(i, j);
+            tile->setMoisture(tile->getMoisture() / maxMoisture);
+        }
+}
+
+void Generator::setTerrainFromTileset() {
+    for (int i = 0; i < Tileset::get().getSize(); i++) {
+        Type *type = Tileset::get().getType(i);
+        for (int j = 0; j < MAP_WIDTH; j++)
+            for (int k = 0; k < MAP_HEIGHT; k++) {
+                Tile *tile = grid->getTile(j, k);
+                if (tile->getZ() > oceanLevel == type->isAboveSeaLevel() &&
+                    tile->getTemperature() >= type->getTemperatureRange()->first &&
+                    tile->getTemperature() <= type->getTemperatureRange()->second &&
+                    tile->getMoisture() >= type->getMoistureRange()->first &&
+                    tile->getMoisture() <= type->getMoistureRange()->second &&
+                    ((type->getNeighbour() == "nullptr") || (countNeighboursWithType(type->getNeighbour(), tile)))) {
+                    tile->setType(type->getTypeName());
+                }
+            }
+    }
 }
 
 void Generator::deleteTilePaths(const String &type, const String &changeTo, Tile *tile) {
     tile->setType(changeTo);
+    if (Tileset::get().getType(changeTo)->isAboveSeaLevel()) tile->increaseZ(oceanLevel + 1 - tile->getZ());
+    else tile->increaseZ(oceanLevel - 1 - tile->getZ());
     if (countNeighboursWithType(type, tile) <= 2)
         for (int i = 0; i < 6; i++) {
             Tile *neighbour = grid->getNeighbour(i, tile);

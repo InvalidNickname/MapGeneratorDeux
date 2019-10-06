@@ -33,6 +33,10 @@ void Tile::render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ,
             } else {
                 color = Color(108, 106, 68);
             }
+            break;
+        case MOISTURE:
+            color = Color((1 - moisture) * 255, (1 - moisture) * 255, 255, 255);
+            break;
     }
     // координаты для отрисовки
     tileX = TILE_WIDTH * ((float) _x + (_y % 2 == 1 ? 0.5f : 0));
@@ -99,8 +103,14 @@ float Tile::getTemperature() {
     return temperature;
 }
 
-void Tile::setTemperature(int oceanLevel, int maxZ) {
-    temperature = TEMPERATURE_MIN + (1 - latitude / 90.f) * (TEMPERATURE_MAX - TEMPERATURE_MIN);
-    temperature *= 1 - abs((float) oceanLevel - (float) z) / (float) (maxZ + 1);
-    temperature += (float) Random::get().getInt(-100, 100) / 100;
+void Tile::setTemperature(int _temperature) {
+    temperature = _temperature;
+}
+
+float Tile::getMoisture() {
+    return moisture;
+}
+
+void Tile::setMoisture(float _moisture) {
+    moisture = _moisture;
 }

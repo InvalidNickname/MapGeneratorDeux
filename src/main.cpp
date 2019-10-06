@@ -14,6 +14,8 @@ int main() {
     screenManager.addScreen(SPLASHSCREEN, new SplashScreen(&window));
     screenManager.addScreen(MAP_SCREEN, new MapScreen(&window));
 
+    Random::get().setSeed(1);
+
     // отрисовка и прочие вещи
     while (window.isOpen()) {
         screenManager.doActiveScreenActions();

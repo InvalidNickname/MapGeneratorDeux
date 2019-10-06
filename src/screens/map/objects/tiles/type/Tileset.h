@@ -14,6 +14,10 @@ class Tileset {
 
     Type *getType(const string &type);
 
+    Type *getType(const int &index);
+
+    int getSize();
+
     Tileset(Tileset const &) = delete;
 
     Tileset &operator=(Tileset const &) = delete;

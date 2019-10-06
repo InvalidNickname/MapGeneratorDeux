@@ -3,7 +3,7 @@
 #include <screens/Screen.h>
 #include <screens/map/drawables/DrawableGrid.h>
 #include <utils/GenerationParameters.h>
-#include <screens/map/drawables/GUI.h>
+#include <ui/GUI.h>
 #include <screens/map/drawables/Minimap.h>
 #include <ui/RadioButtons.h>
 

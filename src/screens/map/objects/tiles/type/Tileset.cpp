@@ -1,13 +1,19 @@
 #include "Tileset.h"
 
+#include <iostream>
+
 Tileset::Tileset() {
     std::ifstream input("jsons/tiles.json");
     Json baseFile = Json::parse(input);
     baseFile = baseFile.at("data");
     // тип суши для генератора
-    tileset.push_back(new Type("GenLand", "GenLand", vector<string>(), Color(), vector<Color>(), true));
+    tileset.push_back(
+            new Type("GenLand", "GenLand", vector<string>(), Color::Green, vector<Color>(4, Color::Green), true, 0,
+                     new pair{TEMPERATURE_MIN, TEMPERATURE_MAX}, new pair{0.f, 1.f}, "nullptr"));
     // тип воды для генератора
-    tileset.push_back(new Type("GenWater", "GenWater", vector<string>(), Color(), vector<Color>(), false));
+    tileset.push_back(
+            new Type("GenWater", "GenWater", vector<string>(), Color::Blue, vector<Color>(4, Color::Blue), false, 0,
+                     new pair{TEMPERATURE_MIN, TEMPERATURE_MAX}, new pair{0.f, 1.f}, "nullptr"));
     for (Json temp : baseFile) {
         Json colorValue = temp.at("color");
         Json nameValue = temp.at("name");
@@ -30,8 +36,23 @@ Tileset::Tileset() {
                                    stoi(color.substr(6, 2), nullptr, 16));
         }
         bool aboveSeaLevel = genInfo.at("above_sea_level");
-        tileset.push_back(new Type(type, archtype, name, biomeColor, baseColor, aboveSeaLevel));
+        int priority = genInfo.at("priority");
+        auto *temperatureRange = new pair{TEMPERATURE_MIN, TEMPERATURE_MAX};
+        if (genInfo.contains("temp_min")) temperatureRange->first = genInfo.at("temp_min");
+        if (genInfo.contains("temp_max")) temperatureRange->second = genInfo.at("temp_max");
+        auto *moistureRange = new pair{0.f, 1.f};
+        if (genInfo.contains("moisture_min")) moistureRange->first = genInfo.at("moisture_min");
+        if (genInfo.contains("moisture_max")) moistureRange->second = genInfo.at("moisture_max");
+        string neighbour = "nullptr";
+        if (genInfo.contains("neighbour")) neighbour = genInfo.at("neighbour");
+        tileset.push_back(
+                new Type(type, archtype, name, biomeColor, baseColor, aboveSeaLevel, priority, temperatureRange,
+                         moistureRange, neighbour));
     }
+    // сортировка тайлсета по приоритету генерации
+    sort(tileset.begin(), tileset.end(), [](Type *type1, Type *type2) -> bool {
+        return type1->getPriority() < type2->getPriority();
+    });
 }
 
 Tileset &Tileset::get() {
@@ -46,4 +67,12 @@ Type *Tileset::getType(const string &type) {
         }
     }
     return nullptr;
+}
+
+int Tileset::getSize() {
+    return tileset.size();
+}
+
+Type *Tileset::getType(const int &index) {
+    return tileset.at(index);
 }

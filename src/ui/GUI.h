@@ -1,7 +1,7 @@
 #include <map>
 
 #include <utils/AssetLoader.h>
-#include <ui/UIDrawable.h>
+#include "UIDrawable.h"
 
 class GUI {
   public:

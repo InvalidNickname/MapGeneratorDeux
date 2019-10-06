@@ -13,8 +13,9 @@ class Random {
 
     Random &operator=(Random const &) = delete;
 
-    void setSeed(int seed) {
-        engine = std::default_random_engine{static_cast<long unsigned int>(seed)};
+    void setSeed(long unsigned int _seed) {
+        seed = _seed;
+        engine = std::default_random_engine{seed};
     }
 
     int getInt(int x, int y) {
@@ -22,7 +23,13 @@ class Random {
         return distribution(engine);
     }
 
+    long unsigned int getSeed() {
+        return seed;
+    }
+
   private:
+    long unsigned int seed{0};
+
     Random() = default;
 
     std::default_random_engine engine;

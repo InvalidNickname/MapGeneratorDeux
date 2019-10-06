@@ -1,8 +1,10 @@
 #include "Type.h"
 
-Type::Type(string t, string at, vector<string> n, Color bic, vector<Color> bac, bool asl)
+Type::Type(string t, string at, vector<string> n, Color bic, vector<Color> bac, bool asl, int priority,
+           pair<int, int> *tr, pair<float, float> *mr, string neighbour)
         : type(std::move(t)), archtype(std::move(at)), name(std::move(n)), biomeColor(bic), baseColor(std::move(bac)),
-          aboveSeaLevel(asl) {}
+          aboveSeaLevel(asl), priority(priority), temperatureRange(tr), moistureRange(mr),
+          neighbour(std::move(neighbour)) {}
 
 string Type::getName(Level level) {
     switch (level) {
@@ -44,4 +46,20 @@ string Type::getTypeName() {
 
 bool Type::isAboveSeaLevel() {
     return aboveSeaLevel;
+}
+
+int Type::getPriority() {
+    return priority;
+}
+
+const pair<int, int> *Type::getTemperatureRange() {
+    return temperatureRange;
+}
+
+const pair<float, float> *Type::getMoistureRange() {
+    return moistureRange;
+}
+
+string Type::getNeighbour() {
+    return neighbour;
 }

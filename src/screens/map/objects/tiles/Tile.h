@@ -38,13 +38,17 @@ class Tile {
 
     float getTemperature();
 
-    void setTemperature(int oceanLevel, int maxZ);
+    void setTemperature(int temperature);
+
+    float getMoisture();
+
+    void setMoisture(float _moisture);
 
   private:
     int x, y, z{0};
     float latitude, longitude;
     float tileX{0}, tileY{0};
-    float temperature;
+    float temperature{0}, moisture{0};
     Type *type{nullptr};
     Level level{Level::NO};
     VertexArray shape;

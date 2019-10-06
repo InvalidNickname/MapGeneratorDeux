@@ -78,6 +78,8 @@ void MapScreen::handleInput() {
     } else if (Keyboard::isKeyPressed(Keyboard::B)) {
         mapMode = MapMode::BIOMES;
         ((RadioButtons *) (gui->get("map_mode")))->setClicked("biomes");
+    } else if (Keyboard::isKeyPressed(Keyboard::M)) {
+        mapMode = MapMode::MOISTURE;
     }
     // отдаление
     if (Keyboard::isKeyPressed(Keyboard::Subtract)) zoom += 0.06f;

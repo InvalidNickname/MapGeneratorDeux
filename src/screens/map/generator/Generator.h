@@ -6,6 +6,7 @@
 #include <screens/map/objects/tiles/TileGrid.h>
 #include <utils/GenerationParameters.h>
 #include <utils/Random.h>
+#include <utils/PerlinNoise.h>
 
 class Generator {
   public:
@@ -29,6 +30,8 @@ class Generator {
     void flattenContinentBorders();
 
     void setTerrainLevel();
+
+    void setMoisture();
 
     void setTerrainFromTileset();
 
