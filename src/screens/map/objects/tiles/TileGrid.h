@@ -8,7 +8,7 @@ class TileGrid {
 
     Tile *getTile(unsigned x, unsigned y);
 
-    Tile *getNeighbour(int direction, int x, int y);
+    Tile *getNeighbour(int direction, unsigned short x, unsigned short y);
 
     Tile *getNeighbour(int direction, Tile *tile);
 

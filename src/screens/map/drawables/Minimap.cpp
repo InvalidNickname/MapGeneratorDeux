@@ -28,7 +28,7 @@ Minimap::Minimap(float windowWidth, float windowHeight, DrawableGrid *drawableGr
     overlay.setColor(Color(0, 0, 0, 80));
 
     minimapTexture->draw(background);
-    drawableGrid->render(minimapTexture, MapMode::MINIMAP, 0, MAP_WIDTH);
+    drawableGrid->renderTexture(minimapTexture, MapMode::MINIMAP, 0, MAP_WIDTH);
     minimapTexture->draw(overlay);
     minimapTexture->display();
 

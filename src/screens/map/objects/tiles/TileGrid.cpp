@@ -18,7 +18,7 @@ Tile *TileGrid::getNeighbour(int direction, Tile *tile) {
     return getNeighbour(direction, tile->getX(), tile->getY());
 }
 
-Tile *TileGrid::getNeighbour(int direction, int x, int y) {
+Tile *TileGrid::getNeighbour(int direction, unsigned short x, unsigned short y) {
     if (y % 2 == 0) {
         switch (direction) {
             case 0:

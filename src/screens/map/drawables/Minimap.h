@@ -17,7 +17,7 @@ class Minimap : public UIDrawable {
 
     bool isClickable() override { return false; };
 
-    bool checkClicked(float _x, float _y) override { return false; };
+    bool checkClicked(Vector2i coords) override { return false; };
 
   private:
     RenderTexture *minimapTexture;

@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-Tile::Tile(int x, int y) : x(x), y(y) {
+Tile::Tile(unsigned short x, unsigned short y) : x(x), y(y) {
     setType("GenWater");
     tileY = TILE_HEIGHT * ((float) y - (float) (y / 2) / 2 - (y % 2 == 1 ? 0.25f : 0));
     shape = VertexArray(TriangleFan, 8);
@@ -37,6 +37,9 @@ void Tile::render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ,
         case MOISTURE:
             color = Color((1 - moisture) * 255, (1 - moisture) * 255, 255, 255);
             break;
+        case SELECTED:
+            color = Color(0, 0, 0, 150);
+            break;
     }
     // координаты для отрисовки
     tileX = TILE_WIDTH * ((float) _x + (_y % 2 == 1 ? 0.5f : 0));
@@ -71,11 +74,11 @@ float Tile::getLongitude() {
     return longitude;
 }
 
-int Tile::getX() {
+unsigned short Tile::getX() {
     return x;
 }
 
-int Tile::getY() {
+unsigned short Tile::getY() {
     return y;
 }
 
@@ -113,4 +116,12 @@ float Tile::getMoisture() {
 
 void Tile::setMoisture(float _moisture) {
     moisture = _moisture;
+}
+
+float Tile::getTileX() {
+    return tileX;
+}
+
+float Tile::getTileY() {
+    return tileY;
 }

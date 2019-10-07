@@ -7,8 +7,8 @@ void MapScreen::prepare() {
     // создание сетки для отрисовки
     drawableGrid = new DrawableGrid();
     // начальные размеры экрана
-    initialHeight = windowHeight / 2.f;
-    initialWidth = windowWidth / 2.f;
+    initialHeight = windowHeight / 2;
+    initialWidth = windowWidth / 2;
     // установка камеры
     mapView.setSize(initialWidth, initialHeight);
     float camX = TILE_WIDTH * (0.5f + MAP_WIDTH) / 2;
@@ -55,31 +55,32 @@ int MapScreen::doAction() {
 void MapScreen::handleInput() {
     Event event{};
     while (window->pollEvent(event)) {
-        switch (event.type) {
-            case Event::MouseWheelScrolled:
-                if (event.mouseWheelScroll.delta < 0) zoom += 0.4f;
-                else zoom -= 0.4f;
-                zoomAtPoint({event.mouseWheelScroll.x, event.mouseWheelScroll.y});
-                break;
+        if (event.type == Event::MouseWheelScrolled) {
+            if (event.mouseWheelScroll.delta < 0) zoom += 0.4f;
+            else zoom -= 0.4f;
+            zoomAtPoint({event.mouseWheelScroll.x, event.mouseWheelScroll.y});
         }
-    }
-    if (Mouse::isButtonPressed(Mouse::Left)) {
-        gui->checkClicked(Mouse::getPosition().x, Mouse::getPosition().y);
-    }
-    // смена режимов карты
-    if (Keyboard::isKeyPressed(Keyboard::Q)) {
-        mapMode = MapMode::NORMAL;
-        ((RadioButtons *) (gui->get("map_mode")))->setClicked("default");
-    } else if (Keyboard::isKeyPressed(Keyboard::T)) {
-        mapMode = MapMode::TEMPERATURE;
-        ((RadioButtons *) (gui->get("map_mode")))->setClicked("temperature");
-    } else if (Keyboard::isKeyPressed(Keyboard::H)) {
-        mapMode = MapMode::HEIGHT;
-    } else if (Keyboard::isKeyPressed(Keyboard::B)) {
-        mapMode = MapMode::BIOMES;
-        ((RadioButtons *) (gui->get("map_mode")))->setClicked("biomes");
-    } else if (Keyboard::isKeyPressed(Keyboard::M)) {
-        mapMode = MapMode::MOISTURE;
+        if (event.type == Event::MouseButtonPressed) {
+            if (Mouse::isButtonPressed(Mouse::Left)) {
+                if (gui->checkClicked(Mouse::getPosition()));
+                else drawableGrid->updateSelection(window->mapPixelToCoords(Mouse::getPosition(), mapView));
+            }
+        }
+        // смена режимов карты
+        if (Keyboard::isKeyPressed(Keyboard::Q)) {
+            mapMode = MapMode::NORMAL;
+            ((RadioButtons *) (gui->get("map_mode")))->setClicked("default");
+        } else if (Keyboard::isKeyPressed(Keyboard::T)) {
+            mapMode = MapMode::TEMPERATURE;
+            ((RadioButtons *) (gui->get("map_mode")))->setClicked("temperature");
+        } else if (Keyboard::isKeyPressed(Keyboard::H)) {
+            mapMode = MapMode::HEIGHT;
+        } else if (Keyboard::isKeyPressed(Keyboard::B)) {
+            mapMode = MapMode::BIOMES;
+            ((RadioButtons *) (gui->get("map_mode")))->setClicked("biomes");
+        } else if (Keyboard::isKeyPressed(Keyboard::M)) {
+            mapMode = MapMode::MOISTURE;
+        }
     }
     // отдаление
     if (Keyboard::isKeyPressed(Keyboard::Subtract)) zoom += 0.06f;
@@ -117,15 +118,16 @@ void MapScreen::handleInput() {
 void MapScreen::draw() {
     // отрисовка карты
     window->setView(mapView);
-    Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(0, 0)));
-    Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(
-            window->mapPixelToCoords(Vector2i(windowWidth, windowHeight)));
+    Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({0, 0}));
+    Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({windowWidth, windowHeight}));
+    // чтоб отрисовывать тайлы, чьи центры не попали в область отрисовки, но края все равно видны
+    lowerLeftTile -= {1, 1};
+    upperRightTile += {2, 2};
     // при приближении отрисовываются векторные тайлы, при отдалении - одна текстура карты
     if (zoom < 5) {
-        drawableGrid->render(window, mapMode,
-                             lowerLeftTile.x - 1, lowerLeftTile.y - 1, upperRightTile.x + 2, upperRightTile.y + 2);
+        drawableGrid->renderVector(window, mapMode, lowerLeftTile, upperRightTile);
     } else {
-        drawableGrid->render(window, mapMode, lowerLeftTile.x - 1, upperRightTile.x + 2);
+        drawableGrid->renderTexture(window, mapMode, lowerLeftTile.x, upperRightTile.x);
     }
     // отрисовка интерфейса
     window->setView(uiView);

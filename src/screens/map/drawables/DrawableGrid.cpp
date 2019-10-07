@@ -33,9 +33,14 @@ DrawableGrid::DrawableGrid() {
     sLeft.setTexture(center->getTexture());
     sLeft.scale(width / sLeft.getTexture()->getSize().x, height / sLeft.getTexture()->getSize().y);
     sLeft.setPosition(-width + TILE_WIDTH, 0);
+
+    selectedTile.setTexture(*AssetLoader::get().getTexture("selected_tile"));
+    selectedTile.scale(TILE_WIDTH / selectedTile.getTexture()->getSize().x,
+                       TILE_HEIGHT / selectedTile.getTexture()->getSize().y);
+    selectedTile.setPosition(-100, -100);
 }
 
-void DrawableGrid::render(RenderTarget *_target, MapMode mode, int x0, int x1) {
+void DrawableGrid::renderTexture(RenderTarget *_target, MapMode mode, int x0, int x1) {
     if (prev != mode) {
         updateTexture(mode);
         prev = mode;
@@ -43,31 +48,35 @@ void DrawableGrid::render(RenderTarget *_target, MapMode mode, int x0, int x1) {
     _target->draw(sCenter);
     if (x1 > MAP_WIDTH) _target->draw(sRight);
     if (x0 < 0) _target->draw(sLeft);
+
+    renderSelectedTile(_target);
 }
 
-void DrawableGrid::render(RenderTarget *_target, MapMode mode, int x0, int y0, int x1, int y1) {
-    if (y0 < 0) y0 = 0;
-    if (y1 > MAP_HEIGHT) y1 = MAP_HEIGHT;
-    if (x0 < 0) {
-        for (int i = y0; i < y1; i++) {
-            for (int j = 0; j < x1; j++)
+void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2i lowerLeft, Vector2i upperRight) {
+    if (lowerLeft.y < 0) lowerLeft.y = 0;
+    if (upperRight.y > MAP_HEIGHT) upperRight.y = MAP_HEIGHT;
+    if (lowerLeft.x < 0) {
+        for (int i = lowerLeft.y; i < upperRight.y; i++) {
+            for (int j = 0; j < upperRight.x; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
-            for (int j = MAP_WIDTH + x0; j < MAP_WIDTH; j++)
+            for (int j = MAP_WIDTH + lowerLeft.x; j < MAP_WIDTH; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j - MAP_WIDTH, i, maxZ, minZ);
         }
-    } else if (x1 > MAP_WIDTH) {
-        x1 = x1 % MAP_WIDTH;
-        for (int i = y0; i < y1; i++) {
-            for (int j = 0; j < x1; j++)
+    } else if (upperRight.x > MAP_WIDTH) {
+        upperRight.x = upperRight.x % MAP_WIDTH;
+        for (int i = lowerLeft.y; i < upperRight.y; i++) {
+            for (int j = 0; j < upperRight.x; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j + MAP_WIDTH, i, maxZ, minZ);
-            for (int j = x0; j < MAP_WIDTH; j++)
+            for (int j = lowerLeft.x; j < MAP_WIDTH; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
         }
     } else {
-        for (int i = y0; i < y1; i++)
-            for (int j = x0; j < x1; j++)
+        for (int i = lowerLeft.y; i < upperRight.y; i++)
+            for (int j = lowerLeft.x; j < upperRight.x; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
     }
+
+    renderSelectedTile(_target);
 }
 
 void DrawableGrid::updateTexture(MapMode mode) {
@@ -77,6 +86,22 @@ void DrawableGrid::updateTexture(MapMode mode) {
             tileGrid->getTile(i, j)->render(center, mode, i, j, maxZ, minZ);
     }
     center->display();
+}
+
+void DrawableGrid::renderSelectedTile(RenderTarget *_target) {
+    if (selected.x >= 0 && selected.y >= 0) {
+        selectedTile.setPosition(tileGrid->getTile(selected.x, selected.y)->getTileX(),
+                                 tileGrid->getTile(selected.x, selected.y)->getTileY());
+        _target->draw(selectedTile);
+    }
+}
+
+void DrawableGrid::updateSelection(Vector2f position) {
+    Vector2i tile = getTileByCoordinates(position);
+    tile.x = tile.x > MAP_WIDTH - 1 ? tile.x - MAP_WIDTH : (tile.x < 0 ? MAP_WIDTH + tile.x : tile.x);
+    if (tile.y >= 0 && tile.y < MAP_HEIGHT) {
+        selected = tile;
+    }
 }
 
 Vector2i DrawableGrid::getTileByCoordinates(Vector2f coords) {

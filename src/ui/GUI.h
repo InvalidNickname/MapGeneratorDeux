@@ -5,18 +5,18 @@
 
 class GUI {
   public:
-    GUI(float windowWidth, float windowHeight);
+    GUI(unsigned short windowWidth, unsigned short windowHeight);
 
     void render(RenderWindow *window);
 
-    bool checkClicked(float _x, float _y);
+    bool checkClicked(Vector2i coords);
 
     void addObject(const string &name, UIDrawable *drawable);
 
     UIDrawable *get(const string &name);
 
   private:
-    float windowWidth, windowHeight;
+    unsigned short windowWidth, windowHeight;
     map<string, UIDrawable *> drawables;
 
 };

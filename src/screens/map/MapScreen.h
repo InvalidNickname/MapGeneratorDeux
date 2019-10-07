@@ -15,11 +15,11 @@ class MapScreen : public Screen {
     float minZoom;
 
   private:
-    float windowHeight, windowWidth;
+    unsigned short windowHeight, windowWidth;
     View mapView, uiView;
     MapMode mapMode{MapMode::NORMAL};
     float zoom;
-    float initialWidth, initialHeight;
+    unsigned short initialWidth, initialHeight;
     DrawableGrid *drawableGrid;
     GUI *gui;
 

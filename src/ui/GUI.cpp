@@ -1,6 +1,7 @@
 #include "GUI.h"
 
-GUI::GUI(float windowWidth, float windowHeight) : windowHeight(windowHeight), windowWidth(windowWidth) {}
+GUI::GUI(unsigned short windowWidth, unsigned short windowHeight) :
+        windowHeight(windowHeight), windowWidth(windowWidth) {}
 
 void GUI::render(RenderWindow *window) {
     for (auto &i : drawables) {
@@ -8,9 +9,9 @@ void GUI::render(RenderWindow *window) {
     }
 }
 
-bool GUI::checkClicked(float _x, float _y) {
+bool GUI::checkClicked(Vector2i coords) {
     for (auto &i : drawables) {
-        if (i.second->checkClicked(_x, _y)) {
+        if (i.second->checkClicked(coords)) {
             return true;
         }
     }

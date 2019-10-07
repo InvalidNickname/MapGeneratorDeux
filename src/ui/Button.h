@@ -10,12 +10,12 @@
 class Button : public UIDrawable {
 
   public:
-    Button(float x, float y, float width, float height, Texture *normal, Texture *clicked,
-           const std::function<void()> &onClick);
+    Button(unsigned short x, unsigned short y, unsigned short width, unsigned short height,
+           Texture *normal, Texture *clicked, std::function<void()> onClick);
 
     void render(RenderWindow *window) override;
 
-    bool checkClicked(float _x, float _y) override;
+    bool checkClicked(Vector2i coords) override;
 
     void setClicked(bool _clicked);
 
@@ -23,8 +23,8 @@ class Button : public UIDrawable {
 
   private:
     Sprite sprite;
-    float x, y, width, height;
+    unsigned short x, y, width, height;
     Texture *normal, *clicked;
-    std::function<void()> onClick;
+    const std::function<void()> onClick;
 
 };

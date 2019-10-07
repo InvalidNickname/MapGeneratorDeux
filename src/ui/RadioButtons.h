@@ -12,7 +12,7 @@ class RadioButtons : public UIDrawable {
 
     void render(RenderWindow *window) override;
 
-    bool checkClicked(float _x, float _y) override;
+    bool checkClicked(Vector2i coords) override;
 
     bool isClickable() override { return true; }
 
@@ -20,4 +20,6 @@ class RadioButtons : public UIDrawable {
 
   private:
     map<string, Button *> *buttons;
+
+    string clicked;
 };

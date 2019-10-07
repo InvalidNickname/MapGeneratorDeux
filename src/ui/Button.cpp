@@ -1,8 +1,8 @@
 #include "Button.h"
 
-Button::Button(float x, float y, float width, float height, Texture *normal, Texture *clicked,
-               const std::function<void()> &onClick)
-        : x(x), y(y), width(width), height(height), normal(normal), clicked(clicked), onClick(std::move(onClick)) {
+Button::Button(unsigned short x, unsigned short y, unsigned short width, unsigned short height,
+               Texture *normal, Texture *clicked, std::function<void()> onClick)
+        : x(x), y(y), width(width), height(height), normal(normal), clicked(clicked), onClick(onClick) {
     sprite.setTexture(*normal);
     auto size = sprite.getTexture()->getSize();
     sprite.setScale(width / size.x, height / size.y);
@@ -13,13 +13,12 @@ void Button::render(RenderWindow *window) {
     window->draw(sprite);
 }
 
-bool Button::checkClicked(float _x, float _y) {
-    if (_x >= x && _x <= x + width && _y >= y && _y < y + height) {
-        sprite.setTexture(*clicked);
-        onClick();
+bool Button::checkClicked(Vector2i coords) {
+    if (sprite.getGlobalBounds().contains(coords.x, coords.y)) {
+        setClicked(true);
         return true;
     } else {
-        sprite.setTexture(*normal);
+        setClicked(false);
         return false;
     }
 }
@@ -27,6 +26,7 @@ bool Button::checkClicked(float _x, float _y) {
 void Button::setClicked(bool _clicked) {
     if (_clicked) {
         sprite.setTexture(*clicked);
+        onClick();
     } else {
         sprite.setTexture(*normal);
     }

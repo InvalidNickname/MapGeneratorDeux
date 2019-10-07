@@ -14,7 +14,7 @@ using namespace sf;
 
 class Tile {
   public:
-    Tile(int x, int y);
+    Tile(unsigned short x, unsigned short y);
 
     void render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ, int minZ);
 
@@ -22,9 +22,9 @@ class Tile {
 
     float getLongitude();
 
-    int getX();
+    unsigned short getX();
 
-    int getY();
+    unsigned short getY();
 
     int getZ();
 
@@ -44,8 +44,13 @@ class Tile {
 
     void setMoisture(float _moisture);
 
+    float getTileX();
+
+    float getTileY();
+
   private:
-    int x, y, z{0};
+    unsigned short x, y;
+    int z{0};
     float latitude, longitude;
     float tileX{0}, tileY{0};
     float temperature{0}, moisture{0};
