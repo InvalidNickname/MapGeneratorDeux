@@ -14,7 +14,7 @@ class Generator {
 
   private:
     TileGrid *grid{nullptr};
-    int oceanLevel{0};
+    uint32_t oceanLevel{0};
 
     void raiseTerrain();
 
@@ -36,7 +36,7 @@ class Generator {
     void setTerrainFromTileset();
 
     // рекурсивное удаление гексов, имеющих только 2 соседей того же типа
-    void deleteTilePaths(const String &type, const String &changeTo, Tile *tile);
+    void deleteTilePaths(const string &type, const string &changeTo, Tile *tile);
 
-    int countNeighboursWithType(const String &type, Tile *tile);
+    uint8_t countNeighboursWithType(const string &type, Tile *tile);
 };

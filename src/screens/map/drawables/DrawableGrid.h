@@ -22,11 +22,12 @@ class DrawableGrid {
     Vector2i selected{-1, -1};
     int maxZ, minZ;
     RenderTexture *center;
-    Sprite sLeft, sCenter, sRight, selectedTile;
+    Sprite sLeft, sCenter, sRight;
+    Sprite selectedTile;
     MapMode prev{};
 
     void updateTexture(MapMode mode);
 
-    void renderSelectedTile(RenderTarget *_target);
+    void renderSelectedTile(RenderTarget *_target, int x0, int x1);
 
 };

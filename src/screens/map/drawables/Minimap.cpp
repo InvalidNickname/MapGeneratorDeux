@@ -1,10 +1,6 @@
 #include "Minimap.h"
 
-void Minimap::render(RenderWindow *window) {
-    window->draw(minimap);
-}
-
-Minimap::Minimap(float windowWidth, float windowHeight, DrawableGrid *drawableGrid) {
+Minimap::Minimap(uint16_t windowWidth, uint16_t windowHeight, DrawableGrid *drawableGrid) {
     float height = 0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT);
     float width = TILE_WIDTH * (0.5f + MAP_WIDTH);
     float camX = width / 2;
@@ -15,7 +11,7 @@ Minimap::Minimap(float windowWidth, float windowHeight, DrawableGrid *drawableGr
     view.setSize(width, height);
 
     minimapTexture = new RenderTexture();
-    minimapTexture->create((unsigned) windowWidth, (unsigned) windowHeight);
+    minimapTexture->create(windowWidth, windowHeight);
     minimapTexture->setView(view);
 
     Sprite background;
@@ -36,4 +32,8 @@ Minimap::Minimap(float windowWidth, float windowHeight, DrawableGrid *drawableGr
     minimap.setScale(300.f / minimapTexture->getTexture().getSize().x,
                      190.f / minimapTexture->getTexture().getSize().y);
     minimap.setPosition(windowWidth - 300, windowHeight - 190);
+}
+
+void Minimap::render(RenderWindow *window) {
+    window->draw(minimap);
 }

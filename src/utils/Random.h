@@ -13,7 +13,7 @@ class Random {
 
     Random &operator=(Random const &) = delete;
 
-    void setSeed(long unsigned int _seed) {
+    void setSeed(uint32_t _seed) {
         seed = _seed;
         engine = std::default_random_engine{seed};
     }
@@ -28,7 +28,7 @@ class Random {
     }
 
   private:
-    long unsigned int seed{0};
+    uint32_t seed{0};
 
     Random() = default;
 

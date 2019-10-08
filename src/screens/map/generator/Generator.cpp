@@ -23,19 +23,19 @@ void Generator::raiseTerrain() {
     int continentSize = landBudget / size;
     for (int i = 0; i < size; i++) {
         // определение центрального гекса континента
-        int prevY = Random::get().getInt(LAND_BORDER, MAP_HEIGHT - LAND_BORDER - 1);
+        uint16_t prevY = Random::get().getInt(LAND_BORDER, MAP_HEIGHT - LAND_BORDER - 1);
         // чтобы в каждой части карты было по центральной точке - убирает огромные океаны и континенты, дробит карту
-        int prevX = Random::get().getInt(0, MAP_WIDTH - 1);
+        uint16_t prevX = Random::get().getInt(0, MAP_WIDTH - 1);
         // построение континента вокруг центрального гекса
         for (int j = 0; j < continentSize; j++) {
             Tile *neighbour = grid->getNeighbour(Random::get().getInt(0, 6), prevX, prevY);
             if (neighbour != nullptr) {
-                double factor = 1;
+                float factor = 1;
                 // если выбранный сосед за границей суши, уменьшается вероятность поднятия суши там
                 if (neighbour->getY() < LAND_BORDER)
-                    factor = min(factor, (double) neighbour->getY() / LAND_BORDER);
+                    factor = min(factor, (float) neighbour->getY() / LAND_BORDER);
                 if (neighbour->getY() > MAP_HEIGHT - LAND_BORDER - 1)
-                    factor = min(factor, (double) (MAP_HEIGHT - 1 - neighbour->getY()) / LAND_BORDER);
+                    factor = min(factor, (float) (MAP_HEIGHT - 1 - neighbour->getY()) / LAND_BORDER);
                 if ((float) Random::get().getInt(10, 100) / 100.f < factor) {
                     neighbour->increaseZ(1);
                     if (neighbour->getZ() > 0) {
@@ -53,10 +53,10 @@ void Generator::raiseTerrain() {
 
 // сглаживание суши, эрозия
 void Generator::flattenTerrain() {
-    for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+    for (uint16_t i = 0; i < MAP_WIDTH; i++)
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
-            for (int k = 0; k < 6; k++) {
+            for (uint8_t k = 0; k < 6; k++) {
                 Tile *neighbour = grid->getNeighbour(k, i, j);
                 if (neighbour != nullptr)
                     if (tile->getZ() - neighbour->getZ() > 3) {
@@ -70,8 +70,8 @@ void Generator::flattenTerrain() {
 void Generator::findZLimits() {
     // общая высота всех тайлов
     int terrainMass = 0;
-    for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+    for (uint16_t i = 0; i < MAP_WIDTH; i++)
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
             if (tile->getZ() > grid->getMaxZ()) {
                 grid->setMaxZ(tile->getZ());
@@ -87,22 +87,22 @@ void Generator::findZLimits() {
 
 void Generator::setTemperature() {
     PerlinNoise perlinNoise = PerlinNoise(Random::get().getSeed() * 2);
-    float maxTemperature = 0;
-    for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+    int16_t maxTemperature = 0;
+    for (uint16_t i = 0; i < MAP_WIDTH; i++)
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
             float temperature = (1 - tile->getLatitude() / 90.f) * 20.f;
             temperature = temperature * perlinNoise.noise(0.015f * (float) i, 0.015f * (float) j, 0.5f);
             temperature *= 1 - pow(abs(
                     (float) oceanLevel - (float) tile->getZ()) / (float) (grid->getMaxZ() - oceanLevel), 2);
             temperature = TEMPERATURE_MIN + temperature * (TEMPERATURE_MAX - TEMPERATURE_MIN);
-            tile->setTemperature((int) temperature);
+            tile->setTemperature(temperature);
             if (temperature > maxTemperature) maxTemperature = temperature;
         }
     // т.к. температура зависит от положения тайла и уменьшается к экватору, максимальная температура будет меньше 50
     // поэтому надо распределить получившуюся температуру от -10 до 50
-    for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+    for (uint16_t i = 0; i < MAP_WIDTH; i++)
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
             if (tile->getTemperature() > 0)
                 tile->setTemperature(TEMPERATURE_MAX * tile->getTemperature() / maxTemperature);
@@ -111,8 +111,8 @@ void Generator::setTemperature() {
 
 // установка суши по уровню океана
 void Generator::setLand() {
-    for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+    for (uint16_t i = 0; i < MAP_WIDTH; i++)
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
             if (tile->getZ() > oceanLevel) {
                 tile->setType("GenLand");
@@ -122,9 +122,9 @@ void Generator::setLand() {
 
 // сглаживание границ континентов, удаление полосок тайлов
 void Generator::flattenContinentBorders() {
-    for (int z = 0; z < 4; z++) {
-        for (int i = 0; i < MAP_WIDTH; i++)
-            for (int j = 0; j < MAP_HEIGHT; j++) {
+    for (uint8_t z = 0; z < 4; z++) {
+        for (uint16_t i = 0; i < MAP_WIDTH; i++)
+            for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
                 Tile *tile = grid->getTile(i, j);
                 if (tile->getType()->getTypeName() == "GenWater" && countNeighboursWithType("GenWater", tile) <= 2) {
                     deleteTilePaths("GenWater", "GenLand", tile);
@@ -137,14 +137,14 @@ void Generator::flattenContinentBorders() {
 }
 
 void Generator::setTerrainLevel() {
-    for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+    for (uint16_t i = 0; i < MAP_WIDTH; i++)
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
-            double relativeElevation;
+            float relativeElevation;
             if (tile->getType()->isAboveSeaLevel()) {
-                relativeElevation = (double) (tile->getZ() - oceanLevel) / (grid->getMaxZ() - oceanLevel);
+                relativeElevation = (float) (tile->getZ() - oceanLevel) / (float) (grid->getMaxZ() - oceanLevel);
             } else {
-                relativeElevation = (double) (oceanLevel - tile->getZ()) / (oceanLevel - grid->getMinZ());
+                relativeElevation = (float) (oceanLevel - tile->getZ()) / (float) (oceanLevel - grid->getMinZ());
             }
             if (relativeElevation > 0.35) {
                 tile->setLevel(Level::HIGH);
@@ -161,8 +161,8 @@ void Generator::setTerrainLevel() {
 void Generator::setMoisture() {
     PerlinNoise perlinNoise = PerlinNoise(Random::get().getSeed());
     float maxMoisture = 0;
-    for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+    for (uint16_t i = 0; i < MAP_WIDTH; i++)
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
             float moisture = 1 - tile->getLatitude() / 90.f;
             moisture = moisture * perlinNoise.noise(0.015f * (float) i, 0.015f * (float) j, 0.4f);
@@ -171,37 +171,37 @@ void Generator::setMoisture() {
         }
     // т.к. влажность зависит от положения тайла и уменьшается к экватору, максимальная влажность будет меньше 1
     // поэтому надо распределить получившуюся влажность от 0 до 1
-    for (int i = 0; i < MAP_WIDTH; i++)
-        for (int j = 0; j < MAP_HEIGHT; j++) {
+    for (uint16_t i = 0; i < MAP_WIDTH; i++)
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
             tile->setMoisture(tile->getMoisture() / maxMoisture);
         }
 }
 
 void Generator::setTerrainFromTileset() {
-    for (int i = 0; i < Tileset::get().getSize(); i++) {
+    for (uint16_t i = 0; i < Tileset::get().getSize(); i++) {
         Type *type = Tileset::get().getType(i);
-        for (int j = 0; j < MAP_WIDTH; j++)
-            for (int k = 0; k < MAP_HEIGHT; k++) {
+        for (uint16_t j = 0; j < MAP_WIDTH; j++)
+            for (uint16_t k = 0; k < MAP_HEIGHT; k++) {
                 Tile *tile = grid->getTile(j, k);
                 if (tile->getZ() > oceanLevel == type->isAboveSeaLevel() &&
                     tile->getTemperature() >= type->getTemperatureRange()->first &&
                     tile->getTemperature() <= type->getTemperatureRange()->second &&
                     tile->getMoisture() >= type->getMoistureRange()->first &&
                     tile->getMoisture() <= type->getMoistureRange()->second &&
-                    ((type->getNeighbour() == "nullptr") || (countNeighboursWithType(type->getNeighbour(), tile)))) {
+                    ((type->getNeighbour().empty()) || (countNeighboursWithType(type->getNeighbour(), tile)))) {
                     tile->setType(type->getTypeName());
                 }
             }
     }
 }
 
-void Generator::deleteTilePaths(const String &type, const String &changeTo, Tile *tile) {
+void Generator::deleteTilePaths(const string &type, const string &changeTo, Tile *tile) {
     tile->setType(changeTo);
     if (Tileset::get().getType(changeTo)->isAboveSeaLevel()) tile->increaseZ(oceanLevel + 1 - tile->getZ());
     else tile->increaseZ(oceanLevel - 1 - tile->getZ());
     if (countNeighboursWithType(type, tile) <= 2)
-        for (int i = 0; i < 6; i++) {
+        for (uint8_t i = 0; i < 6; i++) {
             Tile *neighbour = grid->getNeighbour(i, tile);
             if (neighbour != nullptr)
                 if (neighbour->getType()->getTypeName() == type)
@@ -209,9 +209,9 @@ void Generator::deleteTilePaths(const String &type, const String &changeTo, Tile
         }
 }
 
-int Generator::countNeighboursWithType(const String &type, Tile *tile) {
-    int count = 0;
-    for (int i = 0; i < 6; i++)
+uint8_t Generator::countNeighboursWithType(const string &type, Tile *tile) {
+    uint8_t count = 0;
+    for (uint8_t i = 0; i < 6; i++)
         if (grid->getNeighbour(i, tile) != nullptr)
             if (grid->getNeighbour(i, tile)->getType()->getTypeName() == type)
                 count++;

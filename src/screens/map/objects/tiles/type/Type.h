@@ -15,7 +15,7 @@ using namespace sf;
 class Type {
   public:
     Type(string type, string archtype, vector<string> name, Color biomeColor, vector<Color> baseColor,
-         bool aboveSeaLevel, int priority, pair<int, int> *temperatureRange, pair<float, float> *moistureRange,
+         bool aboveSeaLevel, int priority, pair<int16_t, int16_t> *temperatureRange, pair<float, float> *moistureRange,
          string neighbour);
 
     string getName(Level level);
@@ -32,7 +32,7 @@ class Type {
 
     int getPriority();
 
-    const pair<int, int> *getTemperatureRange();
+    const pair<int16_t, int16_t> *getTemperatureRange();
 
     const pair<float, float> *getMoistureRange();
 
@@ -46,7 +46,7 @@ class Type {
     // информация для генерации
     const bool aboveSeaLevel;
     const int priority;
-    const pair<int, int> *temperatureRange;
+    const pair<int16_t, int16_t> *temperatureRange;
     const pair<float, float> *moistureRange;
     const string neighbour;
 

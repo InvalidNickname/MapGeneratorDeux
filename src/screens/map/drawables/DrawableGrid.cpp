@@ -18,7 +18,6 @@ DrawableGrid::DrawableGrid() {
     center = new RenderTexture();
     center->create(Texture::getMaximumSize() / 2, (Texture::getMaximumSize() / 2) / 300 * 190);
     center->setView(view);
-    center->setSmooth(true);
 
     updateTexture(MapMode::NORMAL);
 
@@ -28,16 +27,15 @@ DrawableGrid::DrawableGrid() {
 
     sRight.setTexture(center->getTexture());
     sRight.scale(width / sRight.getTexture()->getSize().x, height / sRight.getTexture()->getSize().y);
-    sRight.setPosition(width - TILE_WIDTH, 0);
+    sRight.setPosition(width - 0.5f * TILE_WIDTH, 0);
 
     sLeft.setTexture(center->getTexture());
     sLeft.scale(width / sLeft.getTexture()->getSize().x, height / sLeft.getTexture()->getSize().y);
-    sLeft.setPosition(-width + TILE_WIDTH, 0);
+    sLeft.setPosition(-width + 0.5f * TILE_WIDTH, 0);
 
     selectedTile.setTexture(*AssetLoader::get().getTexture("selected_tile"));
     selectedTile.scale(TILE_WIDTH / selectedTile.getTexture()->getSize().x,
                        TILE_HEIGHT / selectedTile.getTexture()->getSize().y);
-    selectedTile.setPosition(-100, -100);
 }
 
 void DrawableGrid::renderTexture(RenderTarget *_target, MapMode mode, int x0, int x1) {
@@ -49,7 +47,7 @@ void DrawableGrid::renderTexture(RenderTarget *_target, MapMode mode, int x0, in
     if (x1 > MAP_WIDTH) _target->draw(sRight);
     if (x0 < 0) _target->draw(sLeft);
 
-    renderSelectedTile(_target);
+    renderSelectedTile(_target, x0, x1);
 }
 
 void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2i lowerLeft, Vector2i upperRight) {
@@ -59,14 +57,14 @@ void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2i lo
         for (int i = lowerLeft.y; i < upperRight.y; i++) {
             for (int j = 0; j < upperRight.x; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
-            for (int j = MAP_WIDTH + lowerLeft.x; j < MAP_WIDTH; j++)
-                tileGrid->getTile(j, i)->render(_target, mode, j - MAP_WIDTH, i, maxZ, minZ);
+            for (int j = lowerLeft.x; j < 0; j++)
+                tileGrid->getTile(j + MAP_WIDTH, i)->render(_target, mode, j, i, maxZ, minZ);
         }
     } else if (upperRight.x > MAP_WIDTH) {
         upperRight.x = upperRight.x % MAP_WIDTH;
         for (int i = lowerLeft.y; i < upperRight.y; i++) {
-            for (int j = 0; j < upperRight.x; j++)
-                tileGrid->getTile(j, i)->render(_target, mode, j + MAP_WIDTH, i, maxZ, minZ);
+            for (int j = MAP_WIDTH; j < upperRight.x + MAP_WIDTH; j++)
+                tileGrid->getTile(j - MAP_WIDTH, i)->render(_target, mode, j, i, maxZ, minZ);
             for (int j = lowerLeft.x; j < MAP_WIDTH; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
         }
@@ -76,32 +74,41 @@ void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2i lo
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
     }
 
-    renderSelectedTile(_target);
+    renderSelectedTile(_target, lowerLeft.x, upperRight.x);
 }
 
 void DrawableGrid::updateTexture(MapMode mode) {
     center->clear(Color::Transparent);
-    for (int i = 0; i < MAP_WIDTH; i++) {
-        for (int j = 0; j < MAP_HEIGHT; j++)
+    for (uint16_t i = 0; i < MAP_WIDTH; i++) {
+        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             tileGrid->getTile(i, j)->render(center, mode, i, j, maxZ, minZ);
+        }
     }
     center->display();
 }
 
-void DrawableGrid::renderSelectedTile(RenderTarget *_target) {
+#include <iostream>
+
+void DrawableGrid::renderSelectedTile(RenderTarget *_target, int x0, int x1) {
     if (selected.x >= 0 && selected.y >= 0) {
-        selectedTile.setPosition(tileGrid->getTile(selected.x, selected.y)->getTileX(),
-                                 tileGrid->getTile(selected.x, selected.y)->getTileY());
+        float tileY = TILE_HEIGHT * (selected.y - (float) (selected.y / 2) / 2 - (selected.y % 2 == 1 ? 0.25f : 0));
+        float tileX = TILE_WIDTH * (selected.x + (selected.y % 2 == 1 ? 0.5f : 0));
+        if (x0 < 0 && (selected.x < 0 || selected.x >= x1)) {
+            selectedTile.setPosition(tileX - TILE_WIDTH * MAP_WIDTH, tileY);
+        } else if (x1 > MAP_WIDTH && selected.x < x1 % MAP_WIDTH) {
+            selectedTile.setPosition(tileX + TILE_WIDTH * MAP_WIDTH, tileY);
+        } else {
+            selectedTile.setPosition(tileX, tileY);
+        }
         _target->draw(selectedTile);
     }
 }
 
 void DrawableGrid::updateSelection(Vector2f position) {
-    Vector2i tile = getTileByCoordinates(position);
-    tile.x = tile.x > MAP_WIDTH - 1 ? tile.x - MAP_WIDTH : (tile.x < 0 ? MAP_WIDTH + tile.x : tile.x);
-    if (tile.y >= 0 && tile.y < MAP_HEIGHT) {
-        selected = tile;
-    }
+    selected = getTileByCoordinates(position);
+    // если клик на тайл на боковой карте - перенести его координаты на основную
+    if (selected.x > MAP_WIDTH - 1) selected.x = selected.x - MAP_WIDTH;
+    if (selected.x < 0) selected.x = MAP_WIDTH + selected.x;
 }
 
 Vector2i DrawableGrid::getTileByCoordinates(Vector2f coords) {

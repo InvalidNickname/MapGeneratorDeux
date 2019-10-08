@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-Tile::Tile(unsigned short x, unsigned short y) : x(x), y(y) {
+Tile::Tile(uint16_t x, uint16_t y) : x(x), y(y) {
     setType("GenWater");
     tileY = TILE_HEIGHT * ((float) y - (float) (y / 2) / 2 - (y % 2 == 1 ? 0.25f : 0));
     shape = VertexArray(TriangleFan, 8);
@@ -8,20 +8,20 @@ Tile::Tile(unsigned short x, unsigned short y) : x(x), y(y) {
     longitude = 180 * (1 - (2.f * x / MAP_WIDTH > 1 ? 2 - 2.f * x / MAP_WIDTH : 2.f * x / MAP_WIDTH));
 }
 
-void Tile::render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ, int minZ) {
-    double temp;
+void Tile::render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int maxZ, int minZ) {
+    float temp;
     Color color;
     switch (mode) {
         case NORMAL:
             color = type->getBaseColor(level);
             break;
         case TEMPERATURE:
-            temp = (temperature + (float) abs(TEMPERATURE_MIN) + 1) /
-                   ((float) abs(TEMPERATURE_MIN) + (float) abs(TEMPERATURE_MAX) + 2.f);
+            temp = (float) (temperature + abs(TEMPERATURE_MIN) + 1) /
+                   (float) (abs(TEMPERATURE_MIN) + abs(TEMPERATURE_MAX) + 2);
             color = Color(255, (1 - temp) * 255, (1 - temp) * 255, 255);
             break;
         case HEIGHT:
-            temp = (z - minZ) / (maxZ - minZ + 1.);
+            temp = (float) (z - minZ) / (float) (maxZ - minZ + 1);
             color = Color((1 - temp) * 255, (1 - temp) * 255, 255);
             break;
         case BIOMES:
@@ -74,11 +74,11 @@ float Tile::getLongitude() {
     return longitude;
 }
 
-unsigned short Tile::getX() {
+uint16_t Tile::getX() {
     return x;
 }
 
-unsigned short Tile::getY() {
+uint16_t Tile::getY() {
     return y;
 }
 
@@ -102,11 +102,11 @@ void Tile::increaseZ(int _z) {
     z += _z;
 }
 
-float Tile::getTemperature() {
+int16_t Tile::getTemperature() {
     return temperature;
 }
 
-void Tile::setTemperature(int _temperature) {
+void Tile::setTemperature(int16_t _temperature) {
     temperature = _temperature;
 }
 
@@ -116,12 +116,4 @@ float Tile::getMoisture() {
 
 void Tile::setMoisture(float _moisture) {
     moisture = _moisture;
-}
-
-float Tile::getTileX() {
-    return tileX;
-}
-
-float Tile::getTileY() {
-    return tileY;
 }

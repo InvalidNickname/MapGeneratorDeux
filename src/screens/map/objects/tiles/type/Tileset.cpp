@@ -43,7 +43,7 @@ Tileset::Tileset() {
         auto *moistureRange = new pair{0.f, 1.f};
         if (genInfo.contains("moisture_min")) moistureRange->first = genInfo.at("moisture_min");
         if (genInfo.contains("moisture_max")) moistureRange->second = genInfo.at("moisture_max");
-        string neighbour = "nullptr";
+        string neighbour = string();
         if (genInfo.contains("neighbour")) neighbour = genInfo.at("neighbour");
         tileset.push_back(
                 new Type(type, archtype, name, biomeColor, baseColor, aboveSeaLevel, priority, temperatureRange,
@@ -69,10 +69,10 @@ Type *Tileset::getType(const string &type) {
     return nullptr;
 }
 
-int Tileset::getSize() {
+uint16_t Tileset::getSize() {
     return tileset.size();
 }
 
-Type *Tileset::getType(const int &index) {
+Type *Tileset::getType(const uint16_t &index) {
     return tileset.at(index);
 }

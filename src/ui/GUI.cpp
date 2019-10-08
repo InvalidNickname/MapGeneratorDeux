@@ -1,6 +1,6 @@
 #include "GUI.h"
 
-GUI::GUI(unsigned short windowWidth, unsigned short windowHeight) :
+GUI::GUI(uint16_t windowWidth, uint16_t windowHeight) :
         windowHeight(windowHeight), windowWidth(windowWidth) {}
 
 void GUI::render(RenderWindow *window) {

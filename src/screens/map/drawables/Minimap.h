@@ -11,7 +11,7 @@ using namespace sf;
 
 class Minimap : public UIDrawable {
   public:
-    Minimap(float windowWidth, float windowHeight, DrawableGrid *drawableGrid);
+    Minimap(uint16_t windowWidth, uint16_t windowHeight, DrawableGrid *drawableGrid);
 
     void render(RenderWindow *window) override;
 

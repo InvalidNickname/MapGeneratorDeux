@@ -14,17 +14,17 @@ using namespace sf;
 
 class Tile {
   public:
-    Tile(unsigned short x, unsigned short y);
+    Tile(uint16_t x, uint16_t y);
 
-    void render(RenderTarget *_target, MapMode mode, int _x, int _y, int maxZ, int minZ);
+    void render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int maxZ, int minZ);
 
     float getLatitude();
 
     float getLongitude();
 
-    unsigned short getX();
+    uint16_t getX();
 
-    unsigned short getY();
+    uint16_t getY();
 
     int getZ();
 
@@ -36,24 +36,21 @@ class Tile {
 
     void increaseZ(int z);
 
-    float getTemperature();
+    int16_t getTemperature();
 
-    void setTemperature(int temperature);
+    void setTemperature(int16_t temperature);
 
     float getMoisture();
 
     void setMoisture(float _moisture);
 
-    float getTileX();
-
-    float getTileY();
-
   private:
-    unsigned short x, y;
+    uint16_t x, y;
     int z{0};
     float latitude, longitude;
     float tileX{0}, tileY{0};
-    float temperature{0}, moisture{0};
+    float moisture{0};
+    int16_t temperature{0};
     Type *type{nullptr};
     Level level{Level::NO};
     VertexArray shape;

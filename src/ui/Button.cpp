@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(unsigned short x, unsigned short y, unsigned short width, unsigned short height,
+Button::Button(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
                Texture *normal, Texture *clicked, std::function<void()> onClick)
         : x(x), y(y), width(width), height(height), normal(normal), clicked(clicked), onClick(onClick) {
     sprite.setTexture(*normal);

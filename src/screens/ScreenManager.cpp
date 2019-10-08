@@ -1,6 +1,6 @@
 #include "ScreenManager.h"
 
-ScreenManager::ScreenManager(int initialKey, unsigned length) : key(initialKey) {
+ScreenManager::ScreenManager(int initialKey, uint32_t length) : key(initialKey) {
     screens.reserve(length);
 }
 

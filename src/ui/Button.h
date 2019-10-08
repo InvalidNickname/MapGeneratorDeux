@@ -10,7 +10,7 @@
 class Button : public UIDrawable {
 
   public:
-    Button(unsigned short x, unsigned short y, unsigned short width, unsigned short height,
+    Button(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
            Texture *normal, Texture *clicked, std::function<void()> onClick);
 
     void render(RenderWindow *window) override;
@@ -23,7 +23,7 @@ class Button : public UIDrawable {
 
   private:
     Sprite sprite;
-    unsigned short x, y, width, height;
+    uint16_t x, y, width, height;
     Texture *normal, *clicked;
     const std::function<void()> onClick;
 
