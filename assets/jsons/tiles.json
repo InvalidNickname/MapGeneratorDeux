@@ -67,7 +67,7 @@
       "generator_info": {
         "priority": 3,
         "above_sea_level": true,
-        "temp_min": 30,
+        "temp_min": 303,
         "moisture_min": 0.6
       }
     },
@@ -92,7 +92,7 @@
       "generator_info": {
         "priority": 4,
         "above_sea_level": true,
-        "temp_max": 20
+        "temp_max": 293
       }
     },
     {
@@ -116,7 +116,7 @@
       "generator_info": {
         "priority": 5,
         "above_sea_level": true,
-        "temp_max": 0
+        "temp_max": 273
       }
     },
     {
@@ -140,8 +140,8 @@
       "generator_info": {
         "priority": 6,
         "above_sea_level": true,
-        "temp_min": 40,
-        "moisture_max": 0.1
+        "temp_min": 313,
+        "moisture_max": 0.3
       }
     },
     {
@@ -165,9 +165,9 @@
       "generator_info": {
         "priority": 7,
         "above_sea_level": true,
-        "temp_min": 30,
+        "temp_min": 303,
         "neighbour": "Desert",
-        "moisture_max": 0.2
+        "moisture_max": 0.4
       }
     }
   ]

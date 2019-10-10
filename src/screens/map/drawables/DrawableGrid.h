@@ -5,21 +5,23 @@
 #include <utils/AssetLoader.h>
 #include <screens/map/generator/Generator.h>
 
+using Vector2s = Vector2<int16_t>;
+
 class DrawableGrid {
   public:
     DrawableGrid();
 
     void renderTexture(RenderTarget *_target, MapMode mode, int x0, int x1);
 
-    void renderVector(RenderTarget *_target, MapMode mode, Vector2i lowerLeft, Vector2i upperRight);
+    void renderVector(RenderTarget *_target, MapMode mode, Vector2s lowerLeft, Vector2s upperRight);
 
     void updateSelection(Vector2f position);
 
-    Vector2i static getTileByCoordinates(Vector2f coords);
+    Vector2s static getTileByCoordinates(Vector2f coords);
 
   private:
     TileGrid *tileGrid;
-    Vector2i selected{-1, -1};
+    Vector2s selected{-1, -1};
     int maxZ, minZ;
     RenderTexture *center;
     Sprite sLeft, sCenter, sRight;

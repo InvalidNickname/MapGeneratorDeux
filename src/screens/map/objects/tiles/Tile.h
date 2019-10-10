@@ -26,7 +26,7 @@ class Tile {
 
     uint16_t getY();
 
-    int getZ();
+    uint16_t getZ();
 
     Type *getType();
 
@@ -36,21 +36,22 @@ class Tile {
 
     void increaseZ(int z);
 
-    int16_t getTemperature();
+    void setZ(uint16_t _z);
 
-    void setTemperature(int16_t temperature);
+    uint16_t getTemperature();
+
+    void setTemperature(uint16_t temperature);
 
     float getMoisture();
 
     void setMoisture(float _moisture);
 
   private:
-    uint16_t x, y;
-    int z{0};
+    uint16_t x, y, z{0};
     float latitude, longitude;
     float tileX{0}, tileY{0};
     float moisture{0};
-    int16_t temperature{0};
+    uint16_t temperature{0};
     Type *type{nullptr};
     Level level{Level::NO};
     VertexArray shape;

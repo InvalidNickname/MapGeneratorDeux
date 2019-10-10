@@ -50,27 +50,27 @@ void DrawableGrid::renderTexture(RenderTarget *_target, MapMode mode, int x0, in
     renderSelectedTile(_target, x0, x1);
 }
 
-void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2i lowerLeft, Vector2i upperRight) {
+void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2s lowerLeft, Vector2s upperRight) {
     if (lowerLeft.y < 0) lowerLeft.y = 0;
     if (upperRight.y > MAP_HEIGHT) upperRight.y = MAP_HEIGHT;
     if (lowerLeft.x < 0) {
-        for (int i = lowerLeft.y; i < upperRight.y; i++) {
-            for (int j = 0; j < upperRight.x; j++)
+        for (uint16_t i = lowerLeft.y; i < upperRight.y; i++) {
+            for (uint16_t j = 0; j < upperRight.x; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
-            for (int j = lowerLeft.x; j < 0; j++)
-                tileGrid->getTile(j + MAP_WIDTH, i)->render(_target, mode, j, i, maxZ, minZ);
+            for (uint16_t j = lowerLeft.x + MAP_WIDTH; j < MAP_WIDTH; j++)
+                tileGrid->getTile(j, i)->render(_target, mode, j - MAP_WIDTH, i, maxZ, minZ);
         }
     } else if (upperRight.x > MAP_WIDTH) {
         upperRight.x = upperRight.x % MAP_WIDTH;
-        for (int i = lowerLeft.y; i < upperRight.y; i++) {
-            for (int j = MAP_WIDTH; j < upperRight.x + MAP_WIDTH; j++)
+        for (uint16_t i = lowerLeft.y; i < upperRight.y; i++) {
+            for (uint16_t j = MAP_WIDTH; j < upperRight.x + MAP_WIDTH; j++)
                 tileGrid->getTile(j - MAP_WIDTH, i)->render(_target, mode, j, i, maxZ, minZ);
-            for (int j = lowerLeft.x; j < MAP_WIDTH; j++)
+            for (uint16_t j = lowerLeft.x; j < MAP_WIDTH; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
         }
     } else {
-        for (int i = lowerLeft.y; i < upperRight.y; i++)
-            for (int j = lowerLeft.x; j < upperRight.x; j++)
+        for (uint16_t i = lowerLeft.y; i < upperRight.y; i++)
+            for (uint16_t j = lowerLeft.x; j < upperRight.x; j++)
                 tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
     }
 
@@ -86,8 +86,6 @@ void DrawableGrid::updateTexture(MapMode mode) {
     }
     center->display();
 }
-
-#include <iostream>
 
 void DrawableGrid::renderSelectedTile(RenderTarget *_target, int x0, int x1) {
     if (selected.x >= 0 && selected.y >= 0) {
@@ -111,49 +109,49 @@ void DrawableGrid::updateSelection(Vector2f position) {
     if (selected.x < 0) selected.x = MAP_WIDTH + selected.x;
 }
 
-Vector2i DrawableGrid::getTileByCoordinates(Vector2f coords) {
+Vector2s DrawableGrid::getTileByCoordinates(Vector2f coords) {
     // relative - положение точки внутри тайла, единица длины - сторона тайла
 
     float tempY = coords.y / (TILE_HEIGHT / 2.f);
     float relativeY = fmod(tempY, 1.5f);
-    int tileY;
+    int16_t tileY;
 
     float tempX = coords.x / (TILE_WIDTH);
     if (tempX < 0.5) tempX -= 1;
     float relativeX = fmod(tempX, 1.f);
     if (relativeX < 0) relativeX++;
-    int tileX;
+    int16_t tileX;
 
     if (relativeY >= 0.5 && relativeY < 1.5)
         // точка нахожится в центральной части гекса
-        tileY = (int) (tempY / 1.5);
+        tileY = (int16_t) (tempY / 1.5);
     else {
         // в верхней или нижней части гекса
         // четный ряд
         if (fmod(tempY, 1) > 0.5 && fmod(tempY, 1) < 1) {
             if (relativeX < 0.5) {
                 if (relativeY / relativeX < 1)
-                    tileY = (int) (tempY / 1.5) - 1;
-                else tileY = (int) (tempY / 1.5);
+                    tileY = (int16_t) (tempY / 1.5) - 1;
+                else tileY = (int16_t) (tempY / 1.5);
             } else {
                 if (relativeY < 1 - relativeX)
-                    tileY = (int) (tempY / 1.5) - 1;
-                else tileY = (int) (tempY / 1.5);
+                    tileY = (int16_t) (tempY / 1.5) - 1;
+                else tileY = (int16_t) (tempY / 1.5);
             }
         } else { // нечетный ряд, есть смещение гексов
             if (relativeX < 0.5) {
                 if (relativeY < 0.5 - relativeX)
-                    tileY = (int) (tempY / 1.5) - 1;
-                else tileY = (int) (tempY / 1.5);
+                    tileY = (int16_t) (tempY / 1.5) - 1;
+                else tileY = (int16_t) (tempY / 1.5);
             } else {
                 if (relativeY / (relativeX - 0.5) < 1)
-                    tileY = (int) (tempY / 1.5) - 1;
-                else tileY = (int) (tempY / 1.5);
+                    tileY = (int16_t) (tempY / 1.5) - 1;
+                else tileY = (int16_t) (tempY / 1.5);
             }
         }
     }
 
-    tileX = (int) (tempX - (tileY % 2 == 0 ? 0 : 0.5));
+    tileX = (int16_t) (tempX - (tileY % 2 == 0 ? 0 : 0.5));
 
     return {tileX, tileY};
 }

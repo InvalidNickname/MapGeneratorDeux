@@ -14,7 +14,7 @@ class Generator {
 
   private:
     TileGrid *grid{nullptr};
-    uint32_t oceanLevel{0};
+    uint16_t oceanLevel{0};
 
     void raiseTerrain();
 

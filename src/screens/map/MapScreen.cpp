@@ -118,9 +118,9 @@ void MapScreen::handleInput() {
 void MapScreen::draw() {
     // отрисовка карты
     window->setView(mapView);
-    Vector2i lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({0, 0}));
-    Vector2i upperRightTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({windowWidth, windowHeight}));
-    // чтоб отрисовывать тайлы, чьи центры не попали в область отрисовки, но края все равно видны
+    Vector2s lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({0, 0}));
+    Vector2s upperRightTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({windowWidth, windowHeight}));
+    // чтобы отрисовывать тайлы, чьи центры не попали в область отрисовки, но края все равно видны
     lowerLeftTile -= {1, 1};
     upperRightTile += {2, 2};
     // при приближении отрисовываются векторные тайлы, при отдалении - одна текстура карты

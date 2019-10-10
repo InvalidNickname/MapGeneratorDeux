@@ -16,8 +16,7 @@ void Tile::render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, i
             color = type->getBaseColor(level);
             break;
         case TEMPERATURE:
-            temp = (float) (temperature + abs(TEMPERATURE_MIN) + 1) /
-                   (float) (abs(TEMPERATURE_MIN) + abs(TEMPERATURE_MAX) + 2);
+            temp = (float) (temperature - TEMPERATURE_MIN) / (float) (TEMPERATURE_MAX - TEMPERATURE_MIN);
             color = Color(255, (1 - temp) * 255, (1 - temp) * 255, 255);
             break;
         case HEIGHT:
@@ -82,7 +81,7 @@ uint16_t Tile::getY() {
     return y;
 }
 
-int Tile::getZ() {
+uint16_t Tile::getZ() {
     return z;
 }
 
@@ -102,11 +101,11 @@ void Tile::increaseZ(int _z) {
     z += _z;
 }
 
-int16_t Tile::getTemperature() {
+uint16_t Tile::getTemperature() {
     return temperature;
 }
 
-void Tile::setTemperature(int16_t _temperature) {
+void Tile::setTemperature(uint16_t _temperature) {
     temperature = _temperature;
 }
 
@@ -116,4 +115,8 @@ float Tile::getMoisture() {
 
 void Tile::setMoisture(float _moisture) {
     moisture = _moisture;
+}
+
+void Tile::setZ(uint16_t _z) {
+    z = _z;
 }

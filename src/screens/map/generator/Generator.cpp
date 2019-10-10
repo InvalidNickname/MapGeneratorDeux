@@ -82,30 +82,23 @@ void Generator::findZLimits() {
             terrainMass += tile->getZ();
         }
     terrainMass /= (MAP_HEIGHT * MAP_WIDTH);
-    oceanLevel = (int) ((float) terrainMass * OCEAN_LEVEL);
+    oceanLevel = (uint16_t) ((float) terrainMass * OCEAN_LEVEL);
 }
 
 void Generator::setTemperature() {
     PerlinNoise perlinNoise = PerlinNoise(Random::get().getSeed() * 2);
-    int16_t maxTemperature = 0;
     for (uint16_t i = 0; i < MAP_WIDTH; i++)
         for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
-            float temperature = (1 - tile->getLatitude() / 90.f) * 20.f;
-            temperature = temperature * perlinNoise.noise(0.015f * (float) i, 0.015f * (float) j, 0.5f);
-            temperature *= 1 - pow(abs(
-                    (float) oceanLevel - (float) tile->getZ()) / (float) (grid->getMaxZ() - oceanLevel), 2);
-            temperature = TEMPERATURE_MIN + temperature * (TEMPERATURE_MAX - TEMPERATURE_MIN);
-            tile->setTemperature(temperature);
-            if (temperature > maxTemperature) maxTemperature = temperature;
-        }
-    // т.к. температура зависит от положения тайла и уменьшается к экватору, максимальная температура будет меньше 50
-    // поэтому надо распределить получившуюся температуру от -10 до 50
-    for (uint16_t i = 0; i < MAP_WIDTH; i++)
-        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
-            Tile *tile = grid->getTile(i, j);
-            if (tile->getTemperature() > 0)
-                tile->setTemperature(TEMPERATURE_MAX * tile->getTemperature() / maxTemperature);
+            float temperature = 1 - tile->getLatitude() / 90.f;
+            temperature *= (perlinNoise.noise(
+                    0.01f * (float) i,
+                    0.01f * (float) j,
+                    MAP_WIDTH * 0.01f,
+                    MAP_HEIGHT * 0.01f, 4) + 1) / 2.f;
+            temperature *= 1 - abs(oceanLevel - (float) tile->getZ()) / (float) (grid->getMaxZ() - oceanLevel);
+            temperature = pow(temperature, 1.f / 3);
+            tile->setTemperature(TEMPERATURE_MIN + temperature * (TEMPERATURE_MAX - TEMPERATURE_MIN));
         }
 }
 
@@ -165,16 +158,13 @@ void Generator::setMoisture() {
         for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
             Tile *tile = grid->getTile(i, j);
             float moisture = 1 - tile->getLatitude() / 90.f;
-            moisture = moisture * perlinNoise.noise(0.015f * (float) i, 0.015f * (float) j, 0.4f);
+            moisture *= (perlinNoise.noise(
+                    0.01f * (float) i,
+                    0.01f * (float) j,
+                    MAP_WIDTH * 0.01f,
+                    MAP_HEIGHT * 0.01f, 4) + 1) / 2.f;
             tile->setMoisture(moisture);
             if (moisture > maxMoisture) maxMoisture = moisture;
-        }
-    // т.к. влажность зависит от положения тайла и уменьшается к экватору, максимальная влажность будет меньше 1
-    // поэтому надо распределить получившуюся влажность от 0 до 1
-    for (uint16_t i = 0; i < MAP_WIDTH; i++)
-        for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
-            Tile *tile = grid->getTile(i, j);
-            tile->setMoisture(tile->getMoisture() / maxMoisture);
         }
 }
 
@@ -189,7 +179,7 @@ void Generator::setTerrainFromTileset() {
                     tile->getTemperature() <= type->getTemperatureRange()->second &&
                     tile->getMoisture() >= type->getMoistureRange()->first &&
                     tile->getMoisture() <= type->getMoistureRange()->second &&
-                    ((type->getNeighbour().empty()) || (countNeighboursWithType(type->getNeighbour(), tile)))) {
+                    ((type->getNeighbour().empty()) || (countNeighboursWithType(type->getNeighbour(), tile) > 0))) {
                     tile->setType(type->getTypeName());
                 }
             }
@@ -198,8 +188,8 @@ void Generator::setTerrainFromTileset() {
 
 void Generator::deleteTilePaths(const string &type, const string &changeTo, Tile *tile) {
     tile->setType(changeTo);
-    if (Tileset::get().getType(changeTo)->isAboveSeaLevel()) tile->increaseZ(oceanLevel + 1 - tile->getZ());
-    else tile->increaseZ(oceanLevel - 1 - tile->getZ());
+    if (Tileset::get().getType(changeTo)->isAboveSeaLevel()) tile->setZ(oceanLevel + 1);
+    else tile->setZ(oceanLevel - 1);
     if (countNeighboursWithType(type, tile) <= 2)
         for (uint8_t i = 0; i < 6; i++) {
             Tile *neighbour = grid->getNeighbour(i, tile);

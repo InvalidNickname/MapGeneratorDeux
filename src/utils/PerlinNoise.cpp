@@ -1,6 +1,6 @@
 #include "PerlinNoise.h"
 
-PerlinNoise::PerlinNoise(long unsigned int seed) {
+PerlinNoise::PerlinNoise(uint32_t seed) {
     p.resize(256);
     std::iota(p.begin(), p.end(), 0);
     std::default_random_engine engine(seed);
@@ -8,25 +8,40 @@ PerlinNoise::PerlinNoise(long unsigned int seed) {
     p.insert(p.end(), p.begin(), p.end());
 }
 
-float PerlinNoise::noise(float x, float y, float z) {
-    int _x = (int) floor(x) % 255;
-    int _y = (int) floor(y) % 255;
-    int _z = (int) floor(z) % 255;
-    x -= floor(x);
-    y -= floor(y);
-    z -= floor(z);
-    float u = fade(x);
-    float v = fade(y);
-    float w = fade(z);
-    int A = p[_x] + _y;
-    int AA = p[A] + _z;
-    int AB = p[A + 1] + _z;
-    int B = p[_x + 1] + _y;
-    int BA = p[B] + _z;
-    int BB = p[B + 1] + _z;
-    float res = lerp(w, lerp(v, lerp(u, grad(p[AA], x, y, z), grad(p[BA], x - 1, y, z)),
-                             lerp(u, grad(p[AB], x, y - 1, z), grad(p[BB], x - 1, y - 1, z))),
-                     lerp(v, lerp(u, grad(p[AA + 1], x, y, z - 1), grad(p[BA + 1], x - 1, y, z - 1)),
-                          lerp(u, grad(p[AB + 1], x, y - 1, z - 1), grad(p[BB + 1], x - 1, y - 1, z - 1))));
-    return (res + 1.f) / 2.f;
+float PerlinNoise::octNoise(float x, float y, float px, float py) {
+    uint32_t ix0, iy0, ix1, iy1;
+    float fx0, fy0, fx1, fy1;
+    float s, t, nx0, nx1, n0, n1;
+
+    ix0 = floor(x);
+    iy0 = floor(y);
+    fx0 = fmod(x, 1.f);
+    fy0 = fmod(y, 1.f);
+    fx1 = fx0 - 1.0f;
+    fy1 = fy0 - 1.0f;
+    ix1 = fmod(fmod(ix0 + 1.f, px), 255);
+    iy1 = fmod(fmod(iy0 + 1.f, py), 255);
+    ix0 = fmod(fmod(ix0, px), 255);
+    iy0 = fmod(fmod(iy0, py), 255);
+
+    t = fade(fy0);
+    s = fade(fx0);
+
+    nx0 = grad(p[ix0 + p[iy0]], fx0, fy0);
+    nx1 = grad(p[ix0 + p[iy1]], fx0, fy1);
+    n0 = lerp(t, nx0, nx1);
+
+    nx0 = grad(p[ix1 + p[iy0]], fx1, fy0);
+    nx1 = grad(p[ix1 + p[iy1]], fx1, fy1);
+    n1 = lerp(t, nx0, nx1);
+
+    return 0.507f * (lerp(s, n0, n1));
+}
+
+float PerlinNoise::noise(float x, float y, float px, float py, uint16_t oct) {
+    float val = 0;
+    for (int i = 0; i < oct; ++i) {
+        val += pow(0.5f, i) * octNoise(x * pow(2.f, i), y * pow(2.f, i), px * pow(2.f, i), py * pow(2.f, i));
+    }
+    return val;
 }

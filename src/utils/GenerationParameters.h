@@ -13,8 +13,8 @@ const uint16_t LAND_BORDER = 0.07f * MAP_HEIGHT;
 // уровень моря, 0 - нет моря, 1 - море по средней высоте мира
 const float OCEAN_LEVEL = 1.08f;
 
-const int16_t TEMPERATURE_MIN = -10;
-const int16_t TEMPERATURE_MAX = 50;
+const uint16_t TEMPERATURE_MIN = 263;
+const uint16_t TEMPERATURE_MAX = 323;
 
 enum MapMode {
     NORMAL, TEMPERATURE, HEIGHT, BIOMES, MINIMAP, MOISTURE, SELECTED

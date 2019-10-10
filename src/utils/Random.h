@@ -23,7 +23,7 @@ class Random {
         return distribution(engine);
     }
 
-    long unsigned int getSeed() {
+    uint32_t getSeed() {
         return seed;
     }
 

@@ -1,7 +1,7 @@
 #include "Type.h"
 
 Type::Type(string t, string at, vector<string> n, Color bic, vector<Color> bac, bool asl, int priority,
-           pair<int16_t, int16_t> *tr, pair<float, float> *mr, string neighbour)
+           pair<uint16_t, uint16_t> *tr, pair<float, float> *mr, string neighbour)
         : type(std::move(t)), archtype(std::move(at)), name(std::move(n)), biomeColor(bic), baseColor(std::move(bac)),
           aboveSeaLevel(asl), priority(priority), temperatureRange(tr), moistureRange(mr),
           neighbour(std::move(neighbour)) {}
@@ -52,7 +52,7 @@ int Type::getPriority() {
     return priority;
 }
 
-const pair<int16_t, int16_t> *Type::getTemperatureRange() {
+const pair<uint16_t, uint16_t> *Type::getTemperatureRange() {
     return temperatureRange;
 }
 
