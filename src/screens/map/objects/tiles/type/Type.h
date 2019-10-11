@@ -13,42 +13,42 @@ using namespace std;
 using namespace sf;
 
 class Type {
-  public:
-    Type(string type, string archtype, vector<string> name, Color biomeColor, vector<Color> baseColor,
-         bool aboveSeaLevel, int priority, pair<uint16_t, uint16_t> *temperatureRange,
-         pair<float, float> *moistureRange,
-         string neighbour);
+ public:
+  Type(string type, string archtype, vector<string> name, Color biomeColor, vector<Color> baseColor,
+       bool aboveSeaLevel, int priority, pair<uint16_t, uint16_t> *temperatureRange,
+       pair<float, float> *moistureRange,
+       string neighbour);
 
-    string getName(Level level);
+  string getName(Level level);
 
-    Color getBiomeColor();
+  Color getBiomeColor();
 
-    Color getBaseColor(Level level);
+  Color getBaseColor(Level level);
 
-    string getArchtype();
+  string getArchtype();
 
-    string getTypeName();
+  string getTypeName();
 
-    bool isAboveSeaLevel();
+  bool isAboveSeaLevel();
 
-    int getPriority();
+  int getPriority();
 
-    const pair<uint16_t, uint16_t> *getTemperatureRange();
+  const pair<uint16_t, uint16_t> *getTemperatureRange();
 
-    const pair<float, float> *getMoistureRange();
+  const pair<float, float> *getMoistureRange();
 
-    string getNeighbour();
+  string getNeighbour();
 
-  private:
-    const string type, archtype;
-    const vector<string> name;
-    const Color biomeColor;
-    const vector<Color> baseColor;
-    // информация для генерации
-    const bool aboveSeaLevel;
-    const int priority;
-    const pair<uint16_t, uint16_t> *temperatureRange;
-    const pair<float, float> *moistureRange;
-    const string neighbour;
+ private:
+  const string type, archtype;
+  const vector<string> name;
+  const Color biomeColor;
+  const vector<Color> baseColor;
+  // информация для генерации
+  const bool aboveSeaLevel;
+  const int priority;
+  const pair<uint16_t, uint16_t> *temperatureRange;
+  const pair<float, float> *moistureRange;
+  const string neighbour;
 
 };

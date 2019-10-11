@@ -9,22 +9,22 @@ using namespace std;
 using namespace sf;
 
 class AssetLoader {
-  public:
-    static AssetLoader &get();
+ public:
+  static AssetLoader &get();
 
-    AssetLoader(AssetLoader const &) = delete;
+  AssetLoader(AssetLoader const &) = delete;
 
-    AssetLoader &operator=(AssetLoader const &) = delete;
+  AssetLoader &operator=(AssetLoader const &) = delete;
 
-    Texture *getTexture(const string &name);
+  Texture *getTexture(const string &name);
 
-  private:
-    map<string, Texture *> textureMap;
+ private:
+  map<string, Texture *> textureMap;
 
-    AssetLoader();
+  AssetLoader();
 
-    ~AssetLoader() = default;
+  ~AssetLoader() = default;
 
-    void loadTexture(const string &pathname, const string &name, IntRect position = IntRect());
+  void loadTexture(const string &pathname, const string &name, IntRect position = IntRect());
 
 };

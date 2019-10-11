@@ -1,5 +1,5 @@
 #pragma once
 
 enum Level {
-    NO, SMALL, MEDIUM, HIGH
+  NO, SMALL, MEDIUM, HIGH
 };

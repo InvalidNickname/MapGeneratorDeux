@@ -13,48 +13,48 @@
 using namespace sf;
 
 class Tile {
-  public:
-    Tile(uint16_t x, uint16_t y);
+ public:
+  Tile(uint16_t x, uint16_t y);
 
-    void render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int maxZ, int minZ);
+  void render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int maxZ, int minZ);
 
-    float getLatitude();
+  float getLatitude();
 
-    float getLongitude();
+  float getLongitude();
 
-    uint16_t getX();
+  uint16_t getX();
 
-    uint16_t getY();
+  uint16_t getY();
 
-    uint16_t getZ();
+  uint16_t getZ();
 
-    Type *getType();
+  Type *getType();
 
-    void setLevel(Level _level);
+  void setLevel(Level _level);
 
-    void setType(const string &type);
+  void setType(const string &type);
 
-    void increaseZ(int z);
+  void increaseZ(int z);
 
-    void setZ(uint16_t _z);
+  void setZ(uint16_t _z);
 
-    uint16_t getTemperature();
+  uint16_t getTemperature();
 
-    void setTemperature(uint16_t temperature);
+  void setTemperature(uint16_t temperature);
 
-    float getMoisture();
+  float getMoisture();
 
-    void setMoisture(float _moisture);
+  void setMoisture(float _moisture);
 
-  private:
-    uint16_t x, y, z{0};
-    float latitude, longitude;
-    float tileX{0}, tileY{0};
-    float moisture{0};
-    uint16_t temperature{0};
-    Type *type{nullptr};
-    Level level{Level::NO};
-    VertexArray shape;
+ private:
+  uint16_t x, y, z{0};
+  float latitude, longitude;
+  float tileX{0}, tileY{0};
+  float moisture{0};
+  uint16_t temperature{0};
+  Type *type{nullptr};
+  Level level{Level::NO};
+  VertexArray shape;
 
-    void drawTile(RenderTarget *_target, Color color);
+  void drawTile(RenderTarget *_target, Color color);
 };

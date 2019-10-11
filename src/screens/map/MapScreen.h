@@ -9,29 +9,29 @@
 
 class MapScreen : public Screen {
 
-    using Screen::Screen;
+  using Screen::Screen;
 
-  public:
-    float minZoom;
+ public:
+  float minZoom;
 
-  private:
-    uint16_t windowHeight, windowWidth;
-    View mapView, uiView;
-    MapMode mapMode{MapMode::NORMAL};
-    float zoom;
-    uint16_t initialWidth, initialHeight;
-    DrawableGrid *drawableGrid;
-    GUI *gui;
+ private:
+  uint16_t windowHeight, windowWidth;
+  View mapView, uiView;
+  MapMode mapMode{MapMode::NORMAL};
+  float zoom;
+  uint16_t initialWidth, initialHeight;
+  DrawableGrid *drawableGrid;
+  GUI *gui;
 
-    void draw() override;
+  void draw() override;
 
-    int doAction() override;
+  int doAction() override;
 
-    void prepare() override;
+  void prepare() override;
 
-    void setGUI();
+  void setGUI();
 
-    void handleInput();
+  void handleInput();
 
-    void zoomAtPoint(Vector2i point);
+  void zoomAtPoint(Vector2i point);
 };

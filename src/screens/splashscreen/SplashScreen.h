@@ -14,16 +14,16 @@ using namespace sf;
 
 class SplashScreen : public Screen {
 
-    using Screen::Screen;
+  using Screen::Screen;
 
-  private:
-    std::future<void> loadingThread;
+ private:
+  std::future<void> loadingThread;
 
-    void prepare() override;
+  void prepare() override;
 
-    void load();
+  void load();
 
-    int doAction() override;
+  int doAction() override;
 
-    void draw() override;
+  void draw() override;
 };

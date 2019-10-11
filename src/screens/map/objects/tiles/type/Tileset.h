@@ -9,23 +9,23 @@
 using Json = nlohmann::json;
 
 class Tileset {
-  public:
-    static Tileset &get();
+ public:
+  static Tileset &get();
 
-    Type *getType(const string &type);
+  Type *getType(const string &type);
 
-    Type *getType(const uint16_t &index);
+  Type *getType(const uint16_t &index);
 
-    uint16_t getSize();
+  uint16_t getSize();
 
-    Tileset(Tileset const &) = delete;
+  Tileset(Tileset const &) = delete;
 
-    Tileset &operator=(Tileset const &) = delete;
+  Tileset &operator=(Tileset const &) = delete;
 
-  private:
-    std::vector<Type *> tileset;
+ private:
+  std::vector<Type *> tileset;
 
-    Tileset();
+  Tileset();
 
-    ~Tileset() = default;
+  ~Tileset() = default;
 };

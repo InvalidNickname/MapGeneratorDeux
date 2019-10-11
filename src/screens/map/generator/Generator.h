@@ -9,34 +9,34 @@
 #include <utils/PerlinNoise.h>
 
 class Generator {
-  public:
-    TileGrid *generate();
+ public:
+  TileGrid *generate();
 
-  private:
-    TileGrid *grid{nullptr};
-    uint16_t oceanLevel{0};
+ private:
+  TileGrid *grid{nullptr};
+  uint16_t oceanLevel{0};
 
-    void raiseTerrain();
+  void raiseTerrain();
 
-    void flattenTerrain();
+  void flattenTerrain();
 
-    // определение максимальной, минимальной высоты и уровня моря
-    void findZLimits();
+  // определение максимальной, минимальной высоты и уровня моря
+  void findZLimits();
 
-    void setTemperature();
+  void setTemperature();
 
-    void setLand();
+  void setLand();
 
-    void flattenContinentBorders();
+  void flattenContinentBorders();
 
-    void setTerrainLevel();
+  void setTerrainLevel();
 
-    void setMoisture();
+  void setMoisture();
 
-    void setTerrainFromTileset();
+  void setTerrainFromTileset();
 
-    // рекурсивное удаление гексов, имеющих только 2 соседей того же типа
-    void deleteTilePaths(const string &type, const string &changeTo, Tile *tile);
+  // рекурсивное удаление гексов, имеющих только 2 соседей того же типа
+  void deleteTilePaths(const string &type, const string &changeTo, Tile *tile);
 
-    uint8_t countNeighboursWithType(const string &type, Tile *tile);
+  uint8_t countNeighboursWithType(const string &type, Tile *tile);
 };

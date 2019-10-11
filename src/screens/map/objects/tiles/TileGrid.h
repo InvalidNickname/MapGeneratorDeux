@@ -3,25 +3,25 @@
 #include "Tile.h"
 
 class TileGrid {
-  public:
-    explicit TileGrid();
+ public:
+  explicit TileGrid();
 
-    Tile *getTile(uint16_t x, uint16_t y);
+  Tile *getTile(uint16_t x, uint16_t y);
 
-    Tile *getNeighbour(int direction, uint16_t x, uint16_t y);
+  Tile *getNeighbour(int direction, uint16_t x, uint16_t y);
 
-    Tile *getNeighbour(int direction, Tile *tile);
+  Tile *getNeighbour(int direction, Tile *tile);
 
-    int getMaxZ();
+  int getMaxZ();
 
-    void setMaxZ(int maxZ);
+  void setMaxZ(int maxZ);
 
-    int getMinZ();
+  int getMinZ();
 
-    void setMinZ(int minZ);
+  void setMinZ(int minZ);
 
-  private:
-    std::vector<std::vector<Tile *> *> *grid;
-    int maxZ{0}, minZ{2147483647};
+ private:
+  std::vector<std::vector<Tile *> *> *grid;
+  int maxZ{0}, minZ{2147483647};
 
 };
