@@ -155,16 +155,16 @@ void MapScreen::handleInput() {
   if (zoom < 0.5) zoom = 0.5;
   if (zoom > min_zoom) zoom = min_zoom;
   // запрет на прокрутку за пределы карты по вертикали
-  if (map_view.getCenter().y < 0.25 * TILE_HEIGHT + window_height * zoom / 4)
-    map_view.setCenter(map_view.getCenter().x, 0.25f * TILE_HEIGHT + window_height * zoom / 4);
+  if (map_view.getCenter().y < 0.25 * TILE_HEIGHT + (float) window_height * zoom / 4)
+    map_view.setCenter(map_view.getCenter().x, 0.25f * TILE_HEIGHT + (float) window_height * zoom / 4);
   if (map_view.getCenter().y > 0.25 * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - window_height / 4. * zoom)
     map_view.setCenter(map_view.getCenter().x,
-                       0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - window_height / 4.f * zoom);
+                       0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - (float) window_height / 4.f * zoom);
   // бесконечная прокрутка по горизонтали
-  if (map_view.getCenter().x <= -window_width * zoom / 4)
-    map_view.setCenter((TILE_WIDTH * (MAP_WIDTH)) - window_width / 4.f * zoom, map_view.getCenter().y);
-  if (map_view.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + window_width * zoom / 4.f)
-    map_view.setCenter(window_width * zoom / 4.f + TILE_WIDTH * 0.5f, map_view.getCenter().y);
+  if (map_view.getCenter().x <= -(float) window_width * zoom / 4)
+    map_view.setCenter((TILE_WIDTH * (MAP_WIDTH)) - (float) window_width / 4.f * zoom, map_view.getCenter().y);
+  if (map_view.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + (float) window_width * zoom / 4.f)
+    map_view.setCenter((float) window_width * zoom / 4.f + TILE_WIDTH * 0.5f, map_view.getCenter().y);
 }
 
 void MapScreen::draw() {
@@ -193,7 +193,7 @@ void MapScreen::zoomAtPoint(Vector2i point) {
   // установка map_view, чтобы убедиться что расчеты не будут проведены для другого view
   window->setView(map_view);
   Vector2f worldCoordinatesBeforeZoom = window->mapPixelToCoords(point);
-  map_view.setSize(initial_width * zoom, initial_height * zoom);
+  map_view.setSize((float) initial_width * zoom, (float) initial_height * zoom);
   // зум
   window->setView(map_view);
   Vector2f worldCoordinatesAfterZoom = window->mapPixelToCoords(point);

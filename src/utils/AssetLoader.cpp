@@ -28,9 +28,10 @@ Texture *AssetLoader::getTexture(const string &name) const {
 
 void AssetLoader::loadTexture(const string &pathname, const string &name, IntRect position) {
   auto texture = new Texture();
-  texture->loadFromFile(pathname, position);
-  texture->setSmooth(true);
-  texture_map.insert(pair(name, texture));
+  if (texture->loadFromFile(pathname, position)) {
+    texture->setSmooth(true);
+    texture_map.insert(pair(name, texture));
+  }
 }
 
 Font *AssetLoader::getFont(const string &name) const {
@@ -39,6 +40,7 @@ Font *AssetLoader::getFont(const string &name) const {
 
 void AssetLoader::loadFont(const string &pathname, const string &name) {
   auto font = new Font();
-  font->loadFromFile(pathname);
-  font_map.insert(pair(name, font));
+  if (font->loadFromFile(pathname)) {
+    font_map.insert(pair(name, font));
+  }
 }

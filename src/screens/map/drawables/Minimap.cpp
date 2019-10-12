@@ -47,7 +47,7 @@ void Minimap::updateViewRegion(Vector2s lowerLeft, Vector2s upperRight) {
          (float) R::get().getUint("minimap_height") * (float) (upperRight.y - lowerLeft.y) / MAP_HEIGHT}
     );
     left.setPosition(
-        {(float) pos_x,
+        {(float) pos_x + 2,
          (float) pos_y + (float) R::get().getUint("minimap_height") * (float) lowerLeft.y / MAP_HEIGHT}
     );
   }
