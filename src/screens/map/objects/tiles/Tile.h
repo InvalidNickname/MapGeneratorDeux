@@ -16,7 +16,7 @@ class Tile {
  public:
   Tile(uint16_t x, uint16_t y);
 
-  void render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int maxZ, int minZ);
+  void render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int max_z, int min_z);
 
   float getLatitude();
 
@@ -49,7 +49,7 @@ class Tile {
  private:
   uint16_t x, y, z{0};
   float latitude, longitude;
-  float tileX{0}, tileY{0};
+  float tile_x{0}, tile_y{0};
   float moisture{0};
   uint16_t temperature{0};
   Type *type{nullptr};

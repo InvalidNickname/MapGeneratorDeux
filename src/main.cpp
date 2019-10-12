@@ -16,17 +16,17 @@ int main() {
   window.setFramerateLimit(60);
 
   // запуск splashscreen
-  ScreenManager screenManager(SPLASHSCREEN, 2);
-  screenManager.addScreen(SPLASHSCREEN, new SplashScreen(&window));
-  screenManager.addScreen(MAP_SCREEN, new MapScreen(&window));
+  ScreenManager screen_manager(SPLASHSCREEN, 2);
+  screen_manager.addScreen(SPLASHSCREEN, new SplashScreen(&window));
+  screen_manager.addScreen(MAP_SCREEN, new MapScreen(&window));
 
   Random::get().setSeed(3);
 
   // отрисовка и прочие вещи
   while (window.isOpen()) {
-    screenManager.doActiveScreenActions();
+    screen_manager.doActiveScreenActions();
     window.clear(Color::Black);
-    screenManager.drawActiveScreen();
+    screen_manager.drawActiveScreen();
     window.display();
   }
   return 0;

@@ -17,7 +17,7 @@ class SplashScreen : public Screen {
   using Screen::Screen;
 
  private:
-  std::future<void> loadingThread;
+  std::future<void> loading_thread;
 
   void prepare() override;
 

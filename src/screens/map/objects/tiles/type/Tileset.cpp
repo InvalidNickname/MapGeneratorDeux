@@ -1,11 +1,10 @@
 #include "Tileset.h"
 
-#include <iostream>
-
 Tileset::Tileset() {
   std::ifstream input("jsons/tiles.json");
-  Json baseFile = Json::parse(input);
-  baseFile = baseFile.at("data");
+  Json base_file = Json::parse(input);
+  input.close();
+  base_file = base_file.at("data");
   // тип суши для генератора
   tileset.push_back(
       new Type("GenLand", "GenLand", vector<string>(), Color::Green, vector<Color>(4, Color::Green), true, 0,
@@ -14,40 +13,40 @@ Tileset::Tileset() {
   tileset.push_back(
       new Type("GenWater", "GenWater", vector<string>(), Color::Blue, vector<Color>(4, Color::Blue), false, 0,
                new pair{TEMPERATURE_MIN, TEMPERATURE_MAX}, new pair{0.f, 1.f}, "nullptr"));
-  for (Json temp : baseFile) {
-    Json colorValue = temp.at("color");
-    Json nameValue = temp.at("name");
-    Json genInfo = temp.at("generator_info");
+  for (Json temp : base_file) {
+    Json color_value = temp.at("color");
+    Json name_value = temp.at("name");
+    Json gen_info = temp.at("generator_info");
     string type = temp.at("type");
     string archtype = temp.at("archtype");
     vector<string> name;
-    for (auto &i : nameValue) {
+    for (auto &i : name_value) {
       name.push_back(i);
     }
-    string biomeColorSt = colorValue.at("biome");
-    Color biomeColor = Color(stoi(biomeColorSt.substr(2, 2), nullptr, 16),
-                             stoi(biomeColorSt.substr(4, 2), nullptr, 16),
-                             stoi(biomeColorSt.substr(6, 2), nullptr, 16));
-    vector<Color> baseColor;
-    for (auto &i : colorValue.at("base")) {
+    string s_biome_color = color_value.at("biome");
+    Color biome_color = Color(stoi(s_biome_color.substr(2, 2), nullptr, 16),
+                              stoi(s_biome_color.substr(4, 2), nullptr, 16),
+                              stoi(s_biome_color.substr(6, 2), nullptr, 16));
+    vector<Color> base_color;
+    for (auto &i : color_value.at("base")) {
       string color = i;
-      baseColor.emplace_back(stoi(color.substr(2, 2), nullptr, 16),
-                             stoi(color.substr(4, 2), nullptr, 16),
-                             stoi(color.substr(6, 2), nullptr, 16));
+      base_color.emplace_back(stoi(color.substr(2, 2), nullptr, 16),
+                              stoi(color.substr(4, 2), nullptr, 16),
+                              stoi(color.substr(6, 2), nullptr, 16));
     }
-    bool aboveSeaLevel = genInfo.at("above_sea_level");
-    int priority = genInfo.at("priority");
-    auto *temperatureRange = new pair{TEMPERATURE_MIN, TEMPERATURE_MAX};
-    if (genInfo.contains("temp_min")) temperatureRange->first = genInfo.at("temp_min");
-    if (genInfo.contains("temp_max")) temperatureRange->second = genInfo.at("temp_max");
-    auto *moistureRange = new pair{0.f, 1.f};
-    if (genInfo.contains("moisture_min")) moistureRange->first = genInfo.at("moisture_min");
-    if (genInfo.contains("moisture_max")) moistureRange->second = genInfo.at("moisture_max");
+    bool above_sea_level = gen_info.at("above_sea_level");
+    int priority = gen_info.at("priority");
+    auto *temperature_range = new pair{TEMPERATURE_MIN, TEMPERATURE_MAX};
+    if (gen_info.contains("temp_min")) temperature_range->first = gen_info.at("temp_min");
+    if (gen_info.contains("temp_max")) temperature_range->second = gen_info.at("temp_max");
+    auto *moisture_range = new pair{0.f, 1.f};
+    if (gen_info.contains("moisture_min")) moisture_range->first = gen_info.at("moisture_min");
+    if (gen_info.contains("moisture_max")) moisture_range->second = gen_info.at("moisture_max");
     string neighbour = string();
-    if (genInfo.contains("neighbour")) neighbour = genInfo.at("neighbour");
+    if (gen_info.contains("neighbour")) neighbour = gen_info.at("neighbour");
     tileset.push_back(
-        new Type(type, archtype, name, biomeColor, baseColor, aboveSeaLevel, priority, temperatureRange,
-                 moistureRange, neighbour));
+        new Type(type, archtype, name, biome_color, base_color, above_sea_level, priority, temperature_range,
+                 moisture_range, neighbour));
   }
   // сортировка тайлсета по приоритету генерации
   sort(tileset.begin(), tileset.end(), [](Type *type1, Type *type2) -> bool {

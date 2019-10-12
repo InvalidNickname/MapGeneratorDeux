@@ -1,12 +1,11 @@
 #include "Button.h"
 
-Button::Button(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
-               Texture *normal, Texture *clicked, std::function<void()> onClick)
-    : x(x), y(y), width(width), height(height), normal(normal), clicked(clicked), onClick(onClick) {
+Button::Button(Vector2s position, Vector2s size, Texture *normal, Texture *clicked, std::function<void()> onClick)
+    : normal(normal), clicked(clicked), onClick(std::move(onClick)) {
   sprite.setTexture(*normal);
-  auto size = sprite.getTexture()->getSize();
-  sprite.setScale(width / size.x, height / size.y);
-  sprite.setPosition(x, y);
+  auto texture_size = sprite.getTexture()->getSize();
+  sprite.setScale((float) size.x / texture_size.x, (float) size.y / texture_size.y);
+  sprite.setPosition(position.x, position.y);
 }
 
 void Button::render(RenderWindow *window) {

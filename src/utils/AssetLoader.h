@@ -19,7 +19,7 @@ class AssetLoader {
   Texture *getTexture(const string &name);
 
  private:
-  map<string, Texture *> textureMap;
+  map<string, Texture *> texture_map;
 
   AssetLoader();
 

@@ -1,18 +1,16 @@
 #include "DrawableGrid.h"
 
 DrawableGrid::DrawableGrid() {
-  tileGrid = Generator().generate();
+  tile_grid = Generator().generate();
 
-  maxZ = tileGrid->getMaxZ();
-  minZ = tileGrid->getMinZ();
+  max_z = tile_grid->getMaxZ();
+  min_z = tile_grid->getMinZ();
 
   float height = 0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT);
   float width = TILE_WIDTH * (0.5f + MAP_WIDTH);
-  float camX = width / 2;
-  float camY = height / 2;
 
   View view;
-  view.setCenter(camX, camY);
+  view.setCenter(width / 2, height / 2);
   view.setSize(width, height);
 
   center = new RenderTexture();
@@ -21,67 +19,67 @@ DrawableGrid::DrawableGrid() {
 
   updateTexture(MapMode::NORMAL);
 
-  sCenter.setTexture(center->getTexture());
-  sCenter.scale(width / sCenter.getTexture()->getSize().x, height / sCenter.getTexture()->getSize().y);
-  sCenter.setPosition(0, 0);
+  s_center.setTexture(center->getTexture());
+  s_center.scale(width / s_center.getTexture()->getSize().x, height / s_center.getTexture()->getSize().y);
+  s_center.setPosition(0, 0);
 
-  sRight.setTexture(center->getTexture());
-  sRight.scale(width / sRight.getTexture()->getSize().x, height / sRight.getTexture()->getSize().y);
-  sRight.setPosition(width - 0.5f * TILE_WIDTH, 0);
+  s_right.setTexture(center->getTexture());
+  s_right.scale(width / s_right.getTexture()->getSize().x, height / s_right.getTexture()->getSize().y);
+  s_right.setPosition(width - 0.5f * TILE_WIDTH, 0);
 
-  sLeft.setTexture(center->getTexture());
-  sLeft.scale(width / sLeft.getTexture()->getSize().x, height / sLeft.getTexture()->getSize().y);
-  sLeft.setPosition(-width + 0.5f * TILE_WIDTH, 0);
+  s_left.setTexture(center->getTexture());
+  s_left.scale(width / s_left.getTexture()->getSize().x, height / s_left.getTexture()->getSize().y);
+  s_left.setPosition(-width + 0.5f * TILE_WIDTH, 0);
 
-  selectedTile.setTexture(*AssetLoader::get().getTexture("selected_tile"));
-  selectedTile.scale(TILE_WIDTH / selectedTile.getTexture()->getSize().x,
-                     TILE_HEIGHT / selectedTile.getTexture()->getSize().y);
+  selected_tile.setTexture(*AssetLoader::get().getTexture("selected_tile"));
+  selected_tile.scale(TILE_WIDTH / selected_tile.getTexture()->getSize().x,
+                      TILE_HEIGHT / selected_tile.getTexture()->getSize().y);
 }
 
 void DrawableGrid::renderTexture(RenderTarget *_target, MapMode mode, int x0, int x1) {
-  if (prev != mode) {
+  if (prev_mode != mode) {
     updateTexture(mode);
-    prev = mode;
+    prev_mode = mode;
   }
-  _target->draw(sCenter);
-  if (x1 > MAP_WIDTH) _target->draw(sRight);
-  if (x0 < 0) _target->draw(sLeft);
+  _target->draw(s_center);
+  if (x1 > MAP_WIDTH) _target->draw(s_right);
+  if (x0 < 0) _target->draw(s_left);
 
   renderSelectedTile(_target, x0, x1);
 }
 
-void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2s lowerLeft, Vector2s upperRight) {
-  if (lowerLeft.y < 0) lowerLeft.y = 0;
-  if (upperRight.y > MAP_HEIGHT) upperRight.y = MAP_HEIGHT;
-  if (lowerLeft.x < 0) {
-    for (uint16_t i = lowerLeft.y; i < upperRight.y; i++) {
-      for (uint16_t j = 0; j < upperRight.x; j++)
-        tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
-      for (uint16_t j = lowerLeft.x + MAP_WIDTH; j < MAP_WIDTH; j++)
-        tileGrid->getTile(j, i)->render(_target, mode, j - MAP_WIDTH, i, maxZ, minZ);
+void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2s lower_left, Vector2s upper_right) {
+  if (lower_left.y < 0) lower_left.y = 0;
+  if (upper_right.y > MAP_HEIGHT) upper_right.y = MAP_HEIGHT;
+  if (lower_left.x < 0) {
+    for (uint16_t i = lower_left.y; i < upper_right.y; i++) {
+      for (uint16_t j = 0; j < upper_right.x; j++)
+        tile_grid->getTile(j, i)->render(_target, mode, j, i, max_z, min_z);
+      for (uint16_t j = lower_left.x + MAP_WIDTH; j < MAP_WIDTH; j++)
+        tile_grid->getTile(j, i)->render(_target, mode, j - MAP_WIDTH, i, max_z, min_z);
     }
-  } else if (upperRight.x > MAP_WIDTH) {
-    upperRight.x = upperRight.x % MAP_WIDTH;
-    for (uint16_t i = lowerLeft.y; i < upperRight.y; i++) {
-      for (uint16_t j = MAP_WIDTH; j < upperRight.x + MAP_WIDTH; j++)
-        tileGrid->getTile(j - MAP_WIDTH, i)->render(_target, mode, j, i, maxZ, minZ);
-      for (uint16_t j = lowerLeft.x; j < MAP_WIDTH; j++)
-        tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
+  } else if (upper_right.x > MAP_WIDTH) {
+    upper_right.x = upper_right.x % MAP_WIDTH;
+    for (uint16_t i = lower_left.y; i < upper_right.y; i++) {
+      for (uint16_t j = MAP_WIDTH; j < upper_right.x + MAP_WIDTH; j++)
+        tile_grid->getTile(j - MAP_WIDTH, i)->render(_target, mode, j, i, max_z, min_z);
+      for (uint16_t j = lower_left.x; j < MAP_WIDTH; j++)
+        tile_grid->getTile(j, i)->render(_target, mode, j, i, max_z, min_z);
     }
   } else {
-    for (uint16_t i = lowerLeft.y; i < upperRight.y; i++)
-      for (uint16_t j = lowerLeft.x; j < upperRight.x; j++)
-        tileGrid->getTile(j, i)->render(_target, mode, j, i, maxZ, minZ);
+    for (uint16_t i = lower_left.y; i < upper_right.y; i++)
+      for (uint16_t j = lower_left.x; j < upper_right.x; j++)
+        tile_grid->getTile(j, i)->render(_target, mode, j, i, max_z, min_z);
   }
 
-  renderSelectedTile(_target, lowerLeft.x, upperRight.x);
+  renderSelectedTile(_target, lower_left.x, upper_right.x);
 }
 
 void DrawableGrid::updateTexture(MapMode mode) {
   center->clear(Color::Transparent);
   for (uint16_t i = 0; i < MAP_WIDTH; i++) {
     for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
-      tileGrid->getTile(i, j)->render(center, mode, i, j, maxZ, minZ);
+      tile_grid->getTile(i, j)->render(center, mode, i, j, max_z, min_z);
     }
   }
   center->display();
@@ -89,16 +87,16 @@ void DrawableGrid::updateTexture(MapMode mode) {
 
 void DrawableGrid::renderSelectedTile(RenderTarget *_target, int x0, int x1) {
   if (selected.x >= 0 && selected.y >= 0) {
-    float tileY = TILE_HEIGHT * (selected.y - (float) (selected.y / 2) / 2 - (selected.y % 2 == 1 ? 0.25f : 0));
-    float tileX = TILE_WIDTH * (selected.x + (selected.y % 2 == 1 ? 0.5f : 0));
+    float tile_y = TILE_HEIGHT * (selected.y - (selected.y / 2) / 2.f - (selected.y % 2 == 1 ? 0.25f : 0));
+    float tile_x = TILE_WIDTH * (selected.x + (selected.y % 2 == 1 ? 0.5f : 0));
     if (x0 < 0 && (selected.x < 0 || selected.x >= x1)) {
-      selectedTile.setPosition(tileX - TILE_WIDTH * MAP_WIDTH, tileY);
+      selected_tile.setPosition(tile_x - TILE_WIDTH * MAP_WIDTH, tile_y);
     } else if (x1 > MAP_WIDTH && selected.x < x1 % MAP_WIDTH) {
-      selectedTile.setPosition(tileX + TILE_WIDTH * MAP_WIDTH, tileY);
+      selected_tile.setPosition(tile_x + TILE_WIDTH * MAP_WIDTH, tile_y);
     } else {
-      selectedTile.setPosition(tileX, tileY);
+      selected_tile.setPosition(tile_x, tile_y);
     }
-    _target->draw(selectedTile);
+    _target->draw(selected_tile);
   }
 }
 
@@ -112,46 +110,46 @@ void DrawableGrid::updateSelection(Vector2f position) {
 Vector2s DrawableGrid::getTileByCoordinates(Vector2f coords) {
   // relative - положение точки внутри тайла, единица длины - сторона тайла
 
-  float tempY = coords.y / (TILE_HEIGHT / 2.f);
-  float relativeY = fmod(tempY, 1.5f);
-  int16_t tileY;
+  float temp_y = coords.y / (TILE_HEIGHT / 2.f);
+  float relative_y = fmod(temp_y, 1.5f);
+  int16_t tile_y;
 
-  float tempX = coords.x / (TILE_WIDTH);
-  if (tempX < 0.5) tempX -= 1;
-  float relativeX = fmod(tempX, 1.f);
-  if (relativeX < 0) relativeX++;
-  int16_t tileX;
+  float temp_x = coords.x / (TILE_WIDTH);
+  if (temp_x < 0.5) temp_x -= 1;
+  float relative_x = fmod(temp_x, 1.f);
+  if (relative_x < 0) relative_x++;
+  int16_t tile_x;
 
-  if (relativeY >= 0.5 && relativeY < 1.5)
+  if (relative_y >= 0.5 && relative_y < 1.5)
     // точка нахожится в центральной части гекса
-    tileY = (int16_t) (tempY / 1.5);
+    tile_y = (int16_t) (temp_y / 1.5);
   else {
     // в верхней или нижней части гекса
     // четный ряд
-    if (fmod(tempY, 1) > 0.5 && fmod(tempY, 1) < 1) {
-      if (relativeX < 0.5) {
-        if (relativeY / relativeX < 1)
-          tileY = (int16_t) (tempY / 1.5) - 1;
-        else tileY = (int16_t) (tempY / 1.5);
+    if (fmod(temp_y, 1) > 0.5 && fmod(temp_y, 1) < 1) {
+      if (relative_x < 0.5) {
+        if (relative_y / relative_x < 1)
+          tile_y = (int16_t) (temp_y / 1.5) - 1;
+        else tile_y = (int16_t) (temp_y / 1.5);
       } else {
-        if (relativeY < 1 - relativeX)
-          tileY = (int16_t) (tempY / 1.5) - 1;
-        else tileY = (int16_t) (tempY / 1.5);
+        if (relative_y < 1 - relative_x)
+          tile_y = (int16_t) (temp_y / 1.5) - 1;
+        else tile_y = (int16_t) (temp_y / 1.5);
       }
     } else { // нечетный ряд, есть смещение гексов
-      if (relativeX < 0.5) {
-        if (relativeY < 0.5 - relativeX)
-          tileY = (int16_t) (tempY / 1.5) - 1;
-        else tileY = (int16_t) (tempY / 1.5);
+      if (relative_x < 0.5) {
+        if (relative_y < 0.5 - relative_x)
+          tile_y = (int16_t) (temp_y / 1.5) - 1;
+        else tile_y = (int16_t) (temp_y / 1.5);
       } else {
-        if (relativeY / (relativeX - 0.5) < 1)
-          tileY = (int16_t) (tempY / 1.5) - 1;
-        else tileY = (int16_t) (tempY / 1.5);
+        if (relative_y / (relative_x - 0.5) < 1)
+          tile_y = (int16_t) (temp_y / 1.5) - 1;
+        else tile_y = (int16_t) (temp_y / 1.5);
       }
     }
   }
 
-  tileX = (int16_t) (tempX - (tileY % 2 == 0 ? 0 : 0.5));
+  tile_x = (int16_t) (temp_x - (tile_y % 2 == 0 ? 0 : 0.5));
 
-  return {tileX, tileY};
+  return {tile_x, tile_y};
 }

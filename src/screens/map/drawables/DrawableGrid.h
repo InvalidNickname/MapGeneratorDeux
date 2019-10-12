@@ -13,20 +13,20 @@ class DrawableGrid {
 
   void renderTexture(RenderTarget *_target, MapMode mode, int x0, int x1);
 
-  void renderVector(RenderTarget *_target, MapMode mode, Vector2s lowerLeft, Vector2s upperRight);
+  void renderVector(RenderTarget *_target, MapMode mode, Vector2s lower_left, Vector2s upper_right);
 
   void updateSelection(Vector2f position);
 
   Vector2s static getTileByCoordinates(Vector2f coords);
 
  private:
-  TileGrid *tileGrid;
+  TileGrid *tile_grid;
   Vector2s selected{-1, -1};
-  int maxZ, minZ;
+  int max_z, min_z;
   RenderTexture *center;
-  Sprite sLeft, sCenter, sRight;
-  Sprite selectedTile;
-  MapMode prev{};
+  Sprite s_left, s_center, s_right;
+  Sprite selected_tile;
+  MapMode prev_mode{};
 
   void updateTexture(MapMode mode);
 

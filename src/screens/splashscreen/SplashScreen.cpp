@@ -1,7 +1,7 @@
 #include "SplashScreen.h"
 
 void SplashScreen::prepare() {
-  loadingThread = std::async(std::launch::async, [this] {
+  loading_thread = std::async(std::launch::async, [this] {
     load();
   });
 }
@@ -11,6 +11,8 @@ void SplashScreen::load() {
   Tileset::get();
   // первоначальная загрузка ассетов
   AssetLoader::get();
+  // первоначальная загрузка ресурсов
+  R::get();
 }
 
 int SplashScreen::doAction() {
@@ -20,9 +22,9 @@ int SplashScreen::doAction() {
       window->close();
     }
   }
-  auto status = loadingThread.wait_for(0ms);
+  auto status = loading_thread.wait_for(0ms);
   if (status == std::future_status::ready) {
-    loadingThread.get();
+    loading_thread.get();
     // переключение на экран карты
     return MAP_SCREEN;
   }

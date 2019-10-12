@@ -4,6 +4,8 @@
 
 using namespace sf;
 
+using Vector2s = Vector2<int16_t>;
+
 class UIDrawable {
  public:
   virtual void render(RenderWindow *window) = 0;

@@ -1,6 +1,6 @@
 #include "ScreenManager.h"
 
-ScreenManager::ScreenManager(int initialKey, uint32_t length) : key(initialKey) {
+ScreenManager::ScreenManager(int initial_key, uint32_t length) : key(initial_key) {
   screens.reserve(length);
 }
 
@@ -11,20 +11,20 @@ void ScreenManager::addScreen(int _key, Screen *screen) {
 void ScreenManager::doActiveScreenActions() {
   if (key >= 0) {
     // если это новый экран - подготовить
-    if (key != prevKey) {
+    if (key != prev_key) {
       screens[key]->prepare();
-      prevKey = key;
+      prev_key = key;
     }
-    tempKey = screens[key]->doAction();
-    if (tempKey != THIS_STATE) {
-      key = tempKey;
+    temp_key = screens[key]->doAction();
+    if (temp_key != THIS_STATE) {
+      key = temp_key;
     }
   }
 }
 
 void ScreenManager::drawActiveScreen() {
   // если этот экран подоготовлен - отрисовка
-  if (key >= 0 && key == prevKey) {
+  if (key >= 0 && key == prev_key) {
     screens[key]->draw();
   }
 }

@@ -9,7 +9,7 @@ using namespace sf;
 class ScreenManager {
 
  public:
-  explicit ScreenManager(int initialKey, uint32_t length);
+  explicit ScreenManager(int initial_key, uint32_t length);
 
   void addScreen(int _key, Screen *screen);
 
@@ -18,7 +18,7 @@ class ScreenManager {
   void drawActiveScreen();
 
  private:
-  int key, tempKey{0}, prevKey{-1};
+  int key, temp_key{0}, prev_key{-1};
   std::vector<Screen *> screens;
 
 };

@@ -1,7 +1,6 @@
 #include "GUI.h"
 
-GUI::GUI(uint16_t windowWidth, uint16_t windowHeight) :
-    windowHeight(windowHeight), windowWidth(windowWidth) {}
+GUI::GUI(uint16_t window_width, uint16_t window_height) : window_height(window_height), window_width(window_width) {}
 
 void GUI::render(RenderWindow *window) {
   for (auto &i : drawables) {

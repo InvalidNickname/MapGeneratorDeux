@@ -5,7 +5,7 @@
 
 class GUI {
  public:
-  GUI(uint16_t windowWidth, uint16_t windowHeight);
+  GUI(uint16_t window_width, uint16_t window_height);
 
   void render(RenderWindow *window);
 
@@ -16,7 +16,7 @@ class GUI {
   UIDrawable *get(const string &name);
 
  private:
-  uint16_t windowWidth, windowHeight;
+  uint16_t window_width, window_height;
   map<string, UIDrawable *> drawables;
 
 };

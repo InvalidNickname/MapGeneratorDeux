@@ -14,14 +14,14 @@ class TileGrid {
 
   int getMaxZ();
 
-  void setMaxZ(int maxZ);
+  void setMaxZ(int _max_z);
 
   int getMinZ();
 
-  void setMinZ(int minZ);
+  void setMinZ(int _min_z);
 
  private:
   std::vector<std::vector<Tile *> *> *grid;
-  int maxZ{0}, minZ{2147483647};
+  int max_z{INT32_MIN}, min_z{INT32_MAX};
 
 };

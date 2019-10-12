@@ -83,17 +83,17 @@ Tile *TileGrid::getNeighbour(int direction, uint16_t x, uint16_t y) {
 }
 
 int TileGrid::getMaxZ() {
-  return maxZ;
+  return max_z;
 }
 
-void TileGrid::setMaxZ(int _maxZ) {
-  maxZ = _maxZ;
+void TileGrid::setMaxZ(int _max_z) {
+  max_z = _max_z;
 }
 
 int TileGrid::getMinZ() {
-  return minZ;
+  return min_z;
 }
 
-void TileGrid::setMinZ(int _minZ) {
-  minZ = _minZ;
+void TileGrid::setMinZ(int _min_z) {
+  min_z = _min_z;
 }

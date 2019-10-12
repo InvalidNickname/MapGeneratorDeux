@@ -5,6 +5,8 @@
 #include <utils/AssetLoader.h>
 #include <utils/GenerationParameters.h>
 
+#include <utils/R.h>
+
 #include "DrawableGrid.h"
 
 using namespace sf;
@@ -22,13 +24,11 @@ class Minimap : public UIDrawable {
   void updateViewRegion(Vector2s lower_left, Vector2s upper_right);
 
  private:
-  RenderTexture *minimap_texture = nullptr;
-  Sprite minimap;
-  RectangleShape left, right, center;
+  Sprite minimap, overlay;
+  RectangleShape left, right;
   uint16_t window_width, window_height;
 
-  float MINIMAP_X, MINIMAP_Y;
-  const float MINIMAP_W{300}, MINIMAP_H{190};
+  uint16_t pos_x, pos_y;
 
   void createMinimapImage(DrawableGrid *drawable_grid);
 

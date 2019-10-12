@@ -16,18 +16,17 @@ AssetLoader::AssetLoader() {
   loadTexture("graphics/interface/map_mode_height.png", "map_mode_height_1", IntRect(41, 0, 41, 31));
   loadTexture("graphics/interface/map_mode_moisture.png", "map_mode_moisture_0", IntRect(0, 0, 41, 31));
   loadTexture("graphics/interface/map_mode_moisture.png", "map_mode_moisture_1", IntRect(41, 0, 41, 31));
-  loadTexture("graphics/interface/minimap_background.png", "minimap_background");
   loadTexture("graphics/interface/minimap_overlay.png", "minimap_overlay");
   loadTexture("graphics/tiles/selected_tile.png", "selected_tile");
 }
 
 Texture *AssetLoader::getTexture(const string &name) {
-  return textureMap.at(name);
+  return texture_map.at(name);
 }
 
 void AssetLoader::loadTexture(const string &pathname, const string &name, IntRect position) {
   auto texture = new Texture();
   texture->loadFromFile(pathname, position);
   texture->setSmooth(true);
-  textureMap.insert(pair(name, texture));
+  texture_map.insert(pair(name, texture));
 }

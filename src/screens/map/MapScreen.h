@@ -12,15 +12,15 @@ class MapScreen : public Screen {
   using Screen::Screen;
 
  public:
-  float minZoom;
+  float min_zoom;
 
  private:
-  uint16_t windowHeight, windowWidth;
-  View mapView, uiView;
-  MapMode mapMode{MapMode::NORMAL};
+  uint16_t window_height, window_width;
+  View map_view, ui_view;
+  MapMode map_mode{MapMode::NORMAL};
   float zoom;
-  uint16_t initialWidth, initialHeight;
-  DrawableGrid *drawableGrid;
+  uint16_t initial_width, initial_height;
+  DrawableGrid *drawable_grid;
   GUI *gui;
 
   void draw() override;
