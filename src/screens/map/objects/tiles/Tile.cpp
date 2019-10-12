@@ -114,3 +114,7 @@ void Tile::setMoisture(float _moisture) {
 void Tile::setZ(uint16_t _z) {
   z = _z;
 }
+
+Level Tile::GetLevel() const {
+  return level;
+}

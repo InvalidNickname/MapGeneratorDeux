@@ -6,6 +6,7 @@
 #include <ui/GUI.h>
 #include <screens/map/drawables/Minimap.h>
 #include <ui/RadioButtons.h>
+#include <screens/map/drawables/TileInfoList.h>
 
 class MapScreen : public Screen {
 

@@ -8,7 +8,7 @@ using namespace std;
 
 class RadioButtons : public UIDrawable {
  public:
-  RadioButtons(map<string, Button *> *buttons, const string &name);
+  RadioButtons(map<string, Button *> *buttons, const string &default_clicked);
 
   void render(RenderWindow *window) override;
 

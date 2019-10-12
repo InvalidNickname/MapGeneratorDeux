@@ -15,7 +15,7 @@ void MapScreen::prepare() {
   float camY = 0.125f * TILE_HEIGHT * (3 * MAP_HEIGHT - 2);
   map_view.setCenter(camX, camY);
   // минимальный зум - сетка полностью помещается на экран по высоте
-  min_zoom = camY * 2 / initial_height;
+  min_zoom = camY * 2 / (float) initial_height;
   map_view.zoom(min_zoom);
   zoom = min_zoom;
   // создание GUI
@@ -90,6 +90,7 @@ void MapScreen::setGUI() {
           [this]() { map_mode = MapMode::MOISTURE; }))
   }, "default"));
   gui->addObject("minimap", new Minimap(window_width, window_height, drawable_grid));
+  gui->addObject("tile_info_list", new TileInfoList(window_width, window_height));
 }
 
 int MapScreen::doAction() {
@@ -101,14 +102,18 @@ void MapScreen::handleInput() {
   Event event{};
   while (window->pollEvent(event)) {
     if (event.type == Event::MouseWheelScrolled) {
-      if (event.mouseWheelScroll.delta < 0) zoom += 0.4f;
-      else zoom -= 0.4f;
+      if (event.mouseWheelScroll.delta < 0) zoom += 0.4f; else zoom -= 0.4f;
       zoomAtPoint({event.mouseWheelScroll.x, event.mouseWheelScroll.y});
     }
     if (event.type == Event::MouseButtonPressed) {
       if (Mouse::isButtonPressed(Mouse::Left)) {
         if (gui->checkClicked(Mouse::getPosition()));
-        else drawable_grid->updateSelection(window->mapPixelToCoords(Mouse::getPosition(), map_view));
+        else {
+          ((TileInfoList *) (gui->get("tile_info_list")))->setTile(
+              drawable_grid->getTile(
+                  drawable_grid->updateSelection(
+                      window->mapPixelToCoords(Mouse::getPosition(), map_view))));
+        }
       }
     }
     // смена режимов карты

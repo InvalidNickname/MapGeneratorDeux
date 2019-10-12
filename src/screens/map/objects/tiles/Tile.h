@@ -46,14 +46,18 @@ class Tile {
 
   void setMoisture(float _moisture);
 
+  [[nodiscard]] Level GetLevel() const;
+
  private:
   uint16_t x, y, z{0};
-  float latitude, longitude;
+  float latitude{}, longitude{};
   float tile_x{0}, tile_y{0};
   float moisture{0};
   uint16_t temperature{0};
   Type *type{nullptr};
   Level level{Level::NO};
+
+ private:
   VertexArray shape;
 
   void drawTile(RenderTarget *_target, Color color);

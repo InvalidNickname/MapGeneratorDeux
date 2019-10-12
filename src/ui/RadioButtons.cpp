@@ -1,7 +1,7 @@
 #include "RadioButtons.h"
 
-RadioButtons::RadioButtons(map<string, Button *> *buttons, const string &name) : buttons(buttons) {
-  setClicked(name);
+RadioButtons::RadioButtons(map<string, Button *> *buttons, const string &default_clicked) : buttons(buttons) {
+  setClicked(default_clicked);
 }
 
 void RadioButtons::render(RenderWindow *window) {

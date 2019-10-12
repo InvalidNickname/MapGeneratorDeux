@@ -16,15 +16,20 @@ class AssetLoader {
 
   AssetLoader &operator=(AssetLoader const &) = delete;
 
-  Texture *getTexture(const string &name);
+  [[nodiscard]] Texture *getTexture(const string &name) const;
+
+  [[nodiscard]] Font *getFont(const string &name) const;
 
  private:
   map<string, Texture *> texture_map;
+  map<string, Font *> font_map;
 
   AssetLoader();
 
   ~AssetLoader() = default;
 
   void loadTexture(const string &pathname, const string &name, IntRect position = IntRect());
+
+  void loadFont(const string &pathname, const string &name);
 
 };

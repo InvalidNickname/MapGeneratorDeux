@@ -100,11 +100,12 @@ void DrawableGrid::renderSelectedTile(RenderTarget *_target, int x0, int x1) {
   }
 }
 
-void DrawableGrid::updateSelection(Vector2f position) {
+Vector2s DrawableGrid::updateSelection(Vector2f position) {
   selected = getTileByCoordinates(position);
   // если клик на тайл на боковой карте - перенести его координаты на основную
   if (selected.x > MAP_WIDTH - 1) selected.x = selected.x - MAP_WIDTH;
   if (selected.x < 0) selected.x = MAP_WIDTH + selected.x;
+  return selected;
 }
 
 Vector2s DrawableGrid::getTileByCoordinates(Vector2f coords) {
@@ -152,4 +153,8 @@ Vector2s DrawableGrid::getTileByCoordinates(Vector2f coords) {
   tile_x = (int16_t) (temp_x - (tile_y % 2 == 0 ? 0 : 0.5));
 
   return {tile_x, tile_y};
+}
+
+Tile *DrawableGrid::getTile(Vector2s coords) {
+  return tile_grid->getTile(coords.x, coords.y);
 }
