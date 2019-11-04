@@ -59,27 +59,27 @@ void Tile::drawTile(RenderTarget *_target, Color color) {
   _target->draw(shape);
 }
 
-float Tile::getLatitude() {
+float Tile::getLatitude() const {
   return latitude;
 }
 
-float Tile::getLongitude() {
+float Tile::getLongitude() const {
   return longitude;
 }
 
-uint16_t Tile::getX() {
+uint16_t Tile::getX() const {
   return x;
 }
 
-uint16_t Tile::getY() {
+uint16_t Tile::getY() const {
   return y;
 }
 
-uint16_t Tile::getZ() {
+uint16_t Tile::getZ() const {
   return z;
 }
 
-Type *Tile::getType() {
+Type *Tile::getType() const {
   return type;
 }
 
@@ -95,7 +95,7 @@ void Tile::increaseZ(int _z) {
   z += _z;
 }
 
-uint16_t Tile::getTemperature() {
+uint16_t Tile::getTemperature() const {
   return temperature;
 }
 
@@ -103,7 +103,7 @@ void Tile::setTemperature(uint16_t _temperature) {
   temperature = _temperature;
 }
 
-float Tile::getMoisture() {
+float Tile::getMoisture() const {
   return moisture;
 }
 

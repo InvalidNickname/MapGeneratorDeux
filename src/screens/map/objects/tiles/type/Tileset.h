@@ -4,6 +4,7 @@
 
 #include <json.hpp>
 
+#include "utils/GenerationParameters.h"
 #include "Type.h"
 
 using Json = nlohmann::json;
@@ -12,11 +13,11 @@ class Tileset {
  public:
   static Tileset &get();
 
-  Type *getType(const string &type);
+  [[nodiscard]] Type *getType(const string &type) const;
 
-  Type *getType(const uint16_t &index);
+  [[nodiscard]] Type *getType(const uint16_t &index) const;
 
-  uint16_t getSize();
+  [[nodiscard]] uint16_t getSize() const;
 
   Tileset(Tileset const &) = delete;
 

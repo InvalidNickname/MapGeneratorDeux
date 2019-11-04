@@ -1,12 +1,8 @@
 #pragma once
 
-#include <ui/UIDrawable.h>
-
-#include <utils/AssetLoader.h>
-#include <utils/GenerationParameters.h>
-
-#include <utils/R.h>
-
+#include "ui/UIDrawable.h"
+#include "utils/GenerationParameters.h"
+#include "utils/R.h"
 #include "DrawableGrid.h"
 
 using namespace sf;

@@ -1,8 +1,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-#include <screens/ScreenManager.h>
-#include <screens/splashscreen/SplashScreen.h>
+#include "screens/ScreenManager.h"
+#include "screens/splashscreen/SplashScreen.h"
+#include "screens/map/MapScreen.h"
 
 using namespace sf;
 

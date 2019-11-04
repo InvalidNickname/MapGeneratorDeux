@@ -1,10 +1,10 @@
 #include "ScreenManager.h"
 
-ScreenManager::ScreenManager(int initial_key, uint32_t length) : key(initial_key) {
-  screens.reserve(length);
+ScreenManager::ScreenManager(GameState initial_key, uint32_t length) : key(initial_key) {
+  screens = std::vector<Screen *>(length);
 }
 
-void ScreenManager::addScreen(int _key, Screen *screen) {
+void ScreenManager::addScreen(GameState _key, Screen *screen) {
   screens[_key] = screen;
 }
 

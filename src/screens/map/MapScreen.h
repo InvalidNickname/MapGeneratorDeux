@@ -1,12 +1,11 @@
 #pragma once
 
-#include <screens/Screen.h>
-#include <screens/map/drawables/DrawableGrid.h>
-#include <utils/GenerationParameters.h>
-#include <ui/GUI.h>
-#include <screens/map/drawables/Minimap.h>
-#include <ui/RadioButtons.h>
-#include <screens/map/drawables/TileInfoList.h>
+#include "screens/Screen.h"
+#include "screens/map/drawables/DrawableGrid.h"
+#include "ui/GUI.h"
+#include "screens/map/drawables/Minimap.h"
+#include "ui/RadioButtons.h"
+#include "screens/map/drawables/TileInfoList.h"
 
 class MapScreen : public Screen {
 
@@ -18,7 +17,7 @@ class MapScreen : public Screen {
  private:
   uint16_t window_height, window_width;
   View map_view, ui_view;
-  MapMode map_mode{MapMode::NORMAL};
+  MapMode map_mode{NORMAL};
   float zoom;
   uint16_t initial_width, initial_height;
   DrawableGrid *drawable_grid;
@@ -26,7 +25,7 @@ class MapScreen : public Screen {
 
   void draw() override;
 
-  int doAction() override;
+  GameState doAction() override;
 
   void prepare() override;
 

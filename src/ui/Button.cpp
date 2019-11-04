@@ -1,9 +1,9 @@
 #include "Button.h"
 
-Button::Button(Vector2s position, Vector2s size, Texture *normal, Texture *clicked, std::function<void()> onClick)
-    : normal(normal), clicked(clicked), onClick(std::move(onClick)) {
+Button::Button(Vector2s position, Vector2s size, Texture *normal, Texture *clicked, function<void()> onClick)
+    : normal(normal), clicked(clicked), onClick(move(onClick)) {
   sprite.setTexture(*normal);
-  auto texture_size = sprite.getTexture()->getSize();
+  auto texture_size = normal->getSize();
   sprite.setScale((float) size.x / texture_size.x, (float) size.y / texture_size.y);
   sprite.setPosition(position.x, position.y);
 }

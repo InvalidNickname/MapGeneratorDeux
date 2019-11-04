@@ -1,8 +1,10 @@
 #pragma once
 
-const int EXIT = -1;
-const int MAIN_SCREEN = 3;
-const int SETTINGS = 2;
-const int SPLASHSCREEN = 0;
-const int MAP_SCREEN = 1;
-const int THIS_STATE = -2;
+enum GameState {
+  EXIT = -1,
+  MAIN_SCREEN = 3,
+  SETTINGS = 2,
+  SPLASHSCREEN = 0,
+  MAP_SCREEN = 1,
+  THIS_STATE = -2
+};

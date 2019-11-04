@@ -1,16 +1,10 @@
 #pragma once
 
-#include <cmath>
-
 #include <SFML/Graphics.hpp>
 
-#include <utils/GenerationParameters.h>
-#include <utils/Random.h>
-
+#include "utils/GenerationParameters.h"
 #include "type/Type.h"
 #include "type/Tileset.h"
-
-using namespace sf;
 
 class Tile {
  public:
@@ -18,17 +12,17 @@ class Tile {
 
   void render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int max_z, int min_z);
 
-  float getLatitude();
+  [[nodiscard]] float getLatitude() const;
 
-  float getLongitude();
+  [[nodiscard]] float getLongitude() const;
 
-  uint16_t getX();
+  [[nodiscard]] uint16_t getX() const;
 
-  uint16_t getY();
+  [[nodiscard]] uint16_t getY() const;
 
-  uint16_t getZ();
+  [[nodiscard]] uint16_t getZ() const;
 
-  Type *getType();
+  [[nodiscard]] Type *getType() const;
 
   void setLevel(Level _level);
 
@@ -38,18 +32,19 @@ class Tile {
 
   void setZ(uint16_t _z);
 
-  uint16_t getTemperature();
+  [[nodiscard]] uint16_t getTemperature() const;
 
   void setTemperature(uint16_t temperature);
 
-  float getMoisture();
+  [[nodiscard]] float getMoisture() const;
 
   void setMoisture(float _moisture);
 
   [[nodiscard]] Level GetLevel() const;
 
  private:
-  uint16_t x, y, z{0};
+  const uint16_t x, y;
+  uint16_t z{0};
   float latitude{}, longitude{};
   float tile_x{0}, tile_y{0};
   float moisture{0};

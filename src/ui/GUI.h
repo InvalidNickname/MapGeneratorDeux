@@ -1,22 +1,22 @@
 #include <map>
 
-#include <utils/AssetLoader.h>
+#include <string>
+
 #include "UIDrawable.h"
+
+using namespace std;
 
 class GUI {
  public:
-  GUI(uint16_t window_width, uint16_t window_height);
-
   void render(RenderWindow *window);
 
   bool checkClicked(Vector2i coords);
 
   void addObject(const string &name, UIDrawable *drawable);
 
-  UIDrawable *get(const string &name);
+  [[nodiscard]] UIDrawable *get(const string &name) const;
 
  private:
-  uint16_t window_width, window_height;
   map<string, UIDrawable *> drawables;
 
 };

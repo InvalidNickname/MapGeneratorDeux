@@ -5,8 +5,6 @@
 #include <utility>
 #include <SFML/Graphics/Color.hpp>
 
-#include <utils/GenerationParameters.h>
-
 #include "Level.h"
 
 using namespace std;
@@ -19,25 +17,25 @@ class Type {
        pair<float, float> *moisture_range,
        string neighbour);
 
-  string getName(Level level);
+  [[nodiscard]] string getName(Level level) const;
 
-  Color getBiomeColor();
+  [[nodiscard]] Color getBiomeColor() const;
 
-  Color getBaseColor(Level level);
+  [[nodiscard]] Color getBaseColor(Level level) const;
 
-  string getArchtype();
+  [[nodiscard]] string getArchtype() const;
 
-  string getTypeName();
+  [[nodiscard]] string getTypeName() const;
 
-  bool isAboveSeaLevel();
+  [[nodiscard]] bool isAboveSeaLevel() const;
 
-  int getPriority();
+  [[nodiscard]] int getPriority() const;
 
-  const pair<uint16_t, uint16_t> *getTemperatureRange();
+  [[nodiscard]] const pair<uint16_t, uint16_t> *getTemperatureRange() const;
 
-  const pair<float, float> *getMoistureRange();
+  [[nodiscard]] const pair<float, float> *getMoistureRange() const;
 
-  string getNeighbour();
+  [[nodiscard]] string getNeighbour() const;
 
  private:
   const string type, archtype;

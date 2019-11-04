@@ -2,11 +2,11 @@
 
 Type::Type(string t, string at, vector<string> n, Color bic, vector<Color> bac, bool asl, int priority,
            pair<uint16_t, uint16_t> *tr, pair<float, float> *mr, string neighbour)
-    : type(std::move(t)), archtype(std::move(at)), name(std::move(n)), biome_color(bic), base_color(std::move(bac)),
+    : type(move(t)), archtype(move(at)), name(move(n)), biome_color(bic), base_color(move(bac)),
       above_sea_level(asl), priority(priority), temperature_range(tr), moisture_range(mr),
       neighbour(std::move(neighbour)) {}
 
-string Type::getName(Level level) {
+string Type::getName(Level level) const {
   switch (level) {
     case NO:return name.at(3);
     case SMALL:return name.at(2);
@@ -15,11 +15,11 @@ string Type::getName(Level level) {
   }
 }
 
-Color Type::getBiomeColor() {
+Color Type::getBiomeColor() const {
   return biome_color;
 }
 
-Color Type::getBaseColor(Level level) {
+Color Type::getBaseColor(Level level) const {
   switch (level) {
     case NO:return base_color.at(3);
     case SMALL:return base_color.at(2);
@@ -28,30 +28,30 @@ Color Type::getBaseColor(Level level) {
   }
 }
 
-string Type::getArchtype() {
+string Type::getArchtype() const {
   return archtype;
 }
 
-string Type::getTypeName() {
+string Type::getTypeName() const {
   return type;
 }
 
-bool Type::isAboveSeaLevel() {
+bool Type::isAboveSeaLevel() const {
   return above_sea_level;
 }
 
-int Type::getPriority() {
+int Type::getPriority() const {
   return priority;
 }
 
-const pair<uint16_t, uint16_t> *Type::getTemperatureRange() {
+const pair<uint16_t, uint16_t> *Type::getTemperatureRange() const {
   return temperature_range;
 }
 
-const pair<float, float> *Type::getMoistureRange() {
+const pair<float, float> *Type::getMoistureRange() const {
   return moisture_range;
 }
 
-string Type::getNeighbour() {
+string Type::getNeighbour() const {
   return neighbour;
 }

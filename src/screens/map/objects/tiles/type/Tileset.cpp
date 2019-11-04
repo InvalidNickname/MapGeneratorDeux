@@ -59,7 +59,7 @@ Tileset &Tileset::get() {
   return s;
 }
 
-Type *Tileset::getType(const string &type) {
+Type *Tileset::getType(const string &type) const {
   for (Type *value : tileset) {
     if (value->getTypeName() == type) {
       return value;
@@ -68,10 +68,10 @@ Type *Tileset::getType(const string &type) {
   return nullptr;
 }
 
-uint16_t Tileset::getSize() {
+uint16_t Tileset::getSize() const {
   return tileset.size();
 }
 
-Type *Tileset::getType(const uint16_t &index) {
+Type *Tileset::getType(const uint16_t &index) const {
   return tileset.at(index);
 }

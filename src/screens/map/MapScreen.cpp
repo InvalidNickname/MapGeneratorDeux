@@ -26,7 +26,7 @@ void MapScreen::prepare() {
 }
 
 void MapScreen::setGUI() {
-  gui = new GUI(window_width, window_height);
+  gui = new GUI();
   gui->addObject("map_mode", new RadioButtons(new map<string, Button *>{
       pair("default", new Button(
           Vector2s(
@@ -93,7 +93,7 @@ void MapScreen::setGUI() {
   gui->addObject("tile_info_list", new TileInfoList(window_width, window_height));
 }
 
-int MapScreen::doAction() {
+GameState MapScreen::doAction() {
   handleInput();
   return THIS_STATE;
 }
@@ -162,7 +162,7 @@ void MapScreen::handleInput() {
                        0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - (float) window_height / 4.f * zoom);
   // бесконечная прокрутка по горизонтали
   if (map_view.getCenter().x <= -(float) window_width * zoom / 4)
-    map_view.setCenter((TILE_WIDTH * (MAP_WIDTH)) - (float) window_width / 4.f * zoom, map_view.getCenter().y);
+    map_view.setCenter((TILE_WIDTH * MAP_WIDTH) - (float) window_width / 4.f * zoom, map_view.getCenter().y);
   if (map_view.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + (float) window_width * zoom / 4.f)
     map_view.setCenter((float) window_width * zoom / 4.f + TILE_WIDTH * 0.5f, map_view.getCenter().y);
 }

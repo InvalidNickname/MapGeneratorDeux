@@ -155,6 +155,6 @@ Vector2s DrawableGrid::getTileByCoordinates(Vector2f coords) {
   return {tile_x, tile_y};
 }
 
-Tile *DrawableGrid::getTile(Vector2s coords) {
+Tile *DrawableGrid::getTile(Vector2s coords) const {
   return tile_grid->getTile(coords.x, coords.y);
 }

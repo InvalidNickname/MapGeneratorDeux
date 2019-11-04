@@ -12,9 +12,9 @@ class RadioButtons : public UIDrawable {
 
   void render(RenderWindow *window) override;
 
-  bool checkClicked(Vector2i coords) override;
+  [[nodiscard]] bool checkClicked(Vector2i coords) override;
 
-  bool isClickable() override { return true; }
+  [[nodiscard]] bool isClickable() override { return true; }
 
   void setClicked(const string &name);
 

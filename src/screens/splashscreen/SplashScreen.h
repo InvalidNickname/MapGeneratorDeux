@@ -1,16 +1,12 @@
 #pragma once
 
-#include <thread>
 #include <future>
 #include <chrono>
 
-#include <screens/Screen.h>
-#include <screens/map/objects/tiles/type/Tileset.h>
-#include <screens/map/MapScreen.h>
-
+#include "screens/Screen.h"
+#include "screens/map/objects/tiles/type/Tileset.h"
 #include "utils/AssetLoader.h"
-
-using namespace sf;
+#include "utils/R.h"
 
 class SplashScreen : public Screen {
 
@@ -23,7 +19,7 @@ class SplashScreen : public Screen {
 
   void load();
 
-  int doAction() override;
+  GameState doAction() override;
 
   void draw() override;
 };

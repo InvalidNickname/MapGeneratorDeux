@@ -7,10 +7,12 @@
 
 #include "UIDrawable.h"
 
+using namespace std;
+
 class Button : public UIDrawable {
 
  public:
-  Button(Vector2s position, Vector2s size, Texture *normal, Texture *clicked, std::function<void()> onClick);
+  Button(Vector2s position, Vector2s size, Texture *normal, Texture *clicked, function<void()> onClick);
 
   void render(RenderWindow *window) override;
 
@@ -23,6 +25,6 @@ class Button : public UIDrawable {
  private:
   Sprite sprite;
   Texture *normal, *clicked;
-  const std::function<void()> onClick;
+  const function<void()> onClick;
 
 };
