@@ -4,6 +4,7 @@
 #include "screens/ScreenManager.h"
 #include "screens/splashscreen/SplashScreen.h"
 #include "screens/map/MapScreen.h"
+#include "screens/settings/SettingsScreen.h"
 
 using namespace sf;
 
@@ -17,7 +18,8 @@ int main() {
   window.setFramerateLimit(60);
 
   // запуск splashscreen
-  ScreenManager screen_manager(SPLASHSCREEN, 2);
+  ScreenManager screen_manager(SPLASHSCREEN, 3);
+  screen_manager.addScreen(SETTINGS, new SettingsScreen(&window));
   screen_manager.addScreen(SPLASHSCREEN, new SplashScreen(&window));
   screen_manager.addScreen(MAP_SCREEN, new MapScreen(&window));
 

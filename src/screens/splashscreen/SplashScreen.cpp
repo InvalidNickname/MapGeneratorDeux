@@ -26,7 +26,7 @@ GameState SplashScreen::doAction() {
   if (status == std::future_status::ready) {
     loading_thread.get();
     // переключение на экран карты
-    return MAP_SCREEN;
+    return SETTINGS;
   }
   return THIS_STATE;
 }
