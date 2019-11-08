@@ -18,12 +18,12 @@ class Random {
     engine = std::default_random_engine{seed};
   }
 
-  int getInt(int x, int y) {
+  [[nodiscard]] int getInt(int x, int y) {
     std::uniform_int_distribution<int> distribution(x, y);
     return distribution(engine);
   }
 
-  uint32_t getSeed() {
+  [[nodiscard]] uint32_t getSeed() const {
     return seed;
   }
 

@@ -1,6 +1,6 @@
 #include "DrawableImage.h"
 
-DrawableImage::DrawableImage(Vector2s position, Vector2s size, Texture *texture) : texture_(texture) {
+DrawableImage::DrawableImage(Vector2s position, Vector2s size, Texture *texture) {
   sprite_.setTexture(*texture);
   auto texture_size = texture->getSize();
   sprite_.setScale((float) size.x / texture_size.x, (float) size.y / texture_size.y);

@@ -14,5 +14,4 @@ class DrawableImage : public UIDrawable {
 
  private:
   Sprite sprite_;
-  Texture *texture_;
 };

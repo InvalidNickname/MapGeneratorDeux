@@ -9,7 +9,7 @@ using namespace sf;
 
 class Minimap : public UIDrawable {
  public:
-  Minimap(uint16_t window_width, uint16_t window_height, DrawableGrid *drawable_grid);
+  Minimap(Vector2u window_size, DrawableGrid *drawable_grid);
 
   void render(RenderWindow *window) override;
 
@@ -22,9 +22,9 @@ class Minimap : public UIDrawable {
  private:
   Sprite minimap, overlay;
   RectangleShape left, right;
-  uint16_t window_width, window_height;
+  Vector2u window_size;
 
-  uint16_t pos_x, pos_y;
+  Vector2u pos;
 
   void createMinimapImage(DrawableGrid *drawable_grid);
 

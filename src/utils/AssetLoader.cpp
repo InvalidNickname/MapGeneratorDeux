@@ -19,16 +19,16 @@ AssetLoader::AssetLoader() {
   loadTexture("interface/minimap_overlay.png", "minimap_overlay");
   loadTexture("tiles/selected_tile.png", "selected_tile");
 
-  loadTexture("interface/settings_height_0.png", "settings_height_m2_0", IntRect(0, 0, 140, 150));
-  loadTexture("interface/settings_height_0.png", "settings_height_m1_0", IntRect(140, 0, 140, 150));
-  loadTexture("interface/settings_height_0.png", "settings_height_0_0", IntRect(280, 0, 140, 150));
-  loadTexture("interface/settings_height_0.png", "settings_height_1_0", IntRect(420, 0, 140, 150));
-  loadTexture("interface/settings_height_0.png", "settings_height_2_0", IntRect(560, 0, 140, 150));
-  loadTexture("interface/settings_height_1.png", "settings_height_m2_1", IntRect(0, 0, 140, 150));
-  loadTexture("interface/settings_height_1.png", "settings_height_m1_1", IntRect(140, 0, 140, 150));
-  loadTexture("interface/settings_height_1.png", "settings_height_0_1", IntRect(280, 0, 140, 150));
-  loadTexture("interface/settings_height_1.png", "settings_height_1_1", IntRect(420, 0, 140, 150));
-  loadTexture("interface/settings_height_1.png", "settings_height_2_1", IntRect(560, 0, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_m2_0", IntRect(0, 150, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_m1_0", IntRect(140, 150, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_0_0", IntRect(280, 150, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_1_0", IntRect(420, 150, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_2_0", IntRect(560, 150, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_m2_1", IntRect(0, 0, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_m1_1", IntRect(140, 0, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_0_1", IntRect(280, 0, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_1_1", IntRect(420, 0, 140, 150));
+  loadTexture("interface/settings_height.png", "settings_height_2_1", IntRect(560, 0, 140, 150));
   loadTexture("background/settings_background.png", "settings_background");
 
   loadFont("abel.ttf", "default");

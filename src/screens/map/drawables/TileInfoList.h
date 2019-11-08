@@ -6,7 +6,7 @@
 
 class TileInfoList : public UIDrawable {
  public:
-  TileInfoList(uint16_t window_width, uint16_t window_height);
+  explicit TileInfoList(Vector2u window_size);
 
   void setTile(Tile *tile);
 

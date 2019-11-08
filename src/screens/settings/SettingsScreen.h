@@ -12,9 +12,10 @@ class SettingsScreen : public Screen {
   using Screen::Screen;
 
  private:
-  uint16_t window_width, window_height;
+  Vector2u window_size;
   GUI *gui;
   View ui_view;
+  GameState temp_key{THIS_STATE};
 
   void prepare() override;
 

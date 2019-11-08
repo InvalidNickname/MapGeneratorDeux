@@ -2,27 +2,25 @@
 
 void MapScreen::prepare() {
   // размеры экрана
-  window_height = window->getSize().y;
-  window_width = window->getSize().x;
+  window_size = window->getSize();
   // создание сетки для отрисовки
   drawable_grid = new DrawableGrid();
   // начальные размеры экрана
-  initial_height = window_height / 2;
-  initial_width = window_width / 2;
+  initial_size = {window_size.x / 2, window_size.y / 2};
   // установка камеры
-  map_view.setSize(initial_width, initial_height);
+  map_view.setSize(initial_size.x, initial_size.y);
   float camX = TILE_WIDTH * (0.5f + MAP_WIDTH) / 2;
   float camY = 0.125f * TILE_HEIGHT * (3 * MAP_HEIGHT - 2);
   map_view.setCenter(camX, camY);
   // минимальный зум - сетка полностью помещается на экран по высоте
-  min_zoom = camY * 2 / (float) initial_height;
+  min_zoom = camY * 2 / (float) initial_size.y;
   map_view.zoom(min_zoom);
   zoom = min_zoom;
   // создание GUI
   setGUI();
   // установка view для интерфейса
-  ui_view.setSize(window_width, window_height);
-  ui_view.setCenter(initial_width, initial_height);
+  ui_view.setSize(window_size.x, window_size.y);
+  ui_view.setCenter(initial_size.x, initial_size.y);
 }
 
 void MapScreen::setGUI() {
@@ -30,8 +28,8 @@ void MapScreen::setGUI() {
   gui->addObject("map_mode", new RadioButtons(new map<string, Button *>{
       pair("default", new Button(
           Vector2s(
-              window_width - 5 * R::get().getUint("map_mode_button_width"),
-              window_height - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - 5 * R::get().getUint("map_mode_button_width"),
+              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
           ),
           Vector2s(
               R::get().getUint("map_mode_button_width"),
@@ -42,8 +40,8 @@ void MapScreen::setGUI() {
           [this]() { map_mode = MapMode::NORMAL; })),
       pair("biomes", new Button(
           Vector2s(
-              window_width - 4 * R::get().getUint("map_mode_button_width"),
-              window_height - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - 4 * R::get().getUint("map_mode_button_width"),
+              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
           ),
           Vector2s(
               R::get().getUint("map_mode_button_width"),
@@ -54,8 +52,8 @@ void MapScreen::setGUI() {
           [this]() { map_mode = MapMode::BIOMES; })),
       pair("temperature", new Button(
           Vector2s(
-              window_width - 3 * R::get().getUint("map_mode_button_width"),
-              window_height - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - 3 * R::get().getUint("map_mode_button_width"),
+              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
           ),
           Vector2s(
               R::get().getUint("map_mode_button_width"),
@@ -66,8 +64,8 @@ void MapScreen::setGUI() {
           [this]() { map_mode = MapMode::TEMPERATURE; })),
       pair("height", new Button(
           Vector2s(
-              window_width - 2 * R::get().getUint("map_mode_button_width"),
-              window_height - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - 2 * R::get().getUint("map_mode_button_width"),
+              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
           ),
           Vector2s(
               R::get().getUint("map_mode_button_width"),
@@ -78,8 +76,8 @@ void MapScreen::setGUI() {
           [this]() { map_mode = MapMode::HEIGHT; })),
       pair("moisture", new Button(
           Vector2s(
-              window_width - R::get().getUint("map_mode_button_width"),
-              window_height - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - R::get().getUint("map_mode_button_width"),
+              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
           ),
           Vector2s(
               R::get().getUint("map_mode_button_width"),
@@ -89,8 +87,8 @@ void MapScreen::setGUI() {
           AssetLoader::get().getTexture("map_mode_moisture_1"),
           [this]() { map_mode = MapMode::MOISTURE; }))
   }, "default"));
-  gui->addObject("minimap", new Minimap(window_width, window_height, drawable_grid));
-  gui->addObject("tile_info_list", new TileInfoList(window_width, window_height));
+  gui->addObject("minimap", new Minimap(window_size, drawable_grid));
+  gui->addObject("tile_info_list", new TileInfoList(window_size));
 }
 
 GameState MapScreen::doAction() {
@@ -155,23 +153,24 @@ void MapScreen::handleInput() {
   if (zoom < 0.5) zoom = 0.5;
   if (zoom > min_zoom) zoom = min_zoom;
   // запрет на прокрутку за пределы карты по вертикали
-  if (map_view.getCenter().y < 0.25 * TILE_HEIGHT + (float) window_height * zoom / 4)
-    map_view.setCenter(map_view.getCenter().x, 0.25f * TILE_HEIGHT + (float) window_height * zoom / 4);
-  if (map_view.getCenter().y > 0.25 * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - window_height / 4. * zoom)
+  if (map_view.getCenter().y < 0.25 * TILE_HEIGHT + (float) window_size.y * zoom / 4)
+    map_view.setCenter(map_view.getCenter().x, 0.25f * TILE_HEIGHT + (float) window_size.y * zoom / 4);
+  if (map_view.getCenter().y > 0.25 * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - window_size.y / 4. * zoom)
     map_view.setCenter(map_view.getCenter().x,
-                       0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - (float) window_height / 4.f * zoom);
+                       0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - (float) window_size.y / 4.f * zoom);
   // бесконечная прокрутка по горизонтали
-  if (map_view.getCenter().x <= -(float) window_width * zoom / 4)
-    map_view.setCenter((TILE_WIDTH * MAP_WIDTH) - (float) window_width / 4.f * zoom, map_view.getCenter().y);
-  if (map_view.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + (float) window_width * zoom / 4.f)
-    map_view.setCenter((float) window_width * zoom / 4.f + TILE_WIDTH * 0.5f, map_view.getCenter().y);
+  if (map_view.getCenter().x <= -(float) window_size.x * zoom / 4)
+    map_view.setCenter((TILE_WIDTH * MAP_WIDTH) - (float) window_size.x / 4.f * zoom, map_view.getCenter().y);
+  if (map_view.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + (float) window_size.x * zoom / 4.f)
+    map_view.setCenter((float) window_size.x * zoom / 4.f + TILE_WIDTH * 0.5f, map_view.getCenter().y);
 }
 
 void MapScreen::draw() {
   // отрисовка карты
   window->setView(map_view);
   Vector2s lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({0, 0}));
-  Vector2s upperRightTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({window_width, window_height}));
+  Vector2s upperRightTile =
+      DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(window_size.x, window_size.y)));
   ((Minimap *) gui->get("minimap"))->updateViewRegion(lowerLeftTile, upperRightTile);
   // чтобы отрисовывать тайлы, чьи центры не попали в область отрисовки, но края все равно видны
   lowerLeftTile -= {1, 1};
@@ -193,7 +192,7 @@ void MapScreen::zoomAtPoint(Vector2i point) {
   // установка map_view, чтобы убедиться что расчеты не будут проведены для другого view
   window->setView(map_view);
   Vector2f worldCoordinatesBeforeZoom = window->mapPixelToCoords(point);
-  map_view.setSize((float) initial_width * zoom, (float) initial_height * zoom);
+  map_view.setSize((float) initial_size.x * zoom, (float) initial_size.y * zoom);
   // зум
   window->setView(map_view);
   Vector2f worldCoordinatesAfterZoom = window->mapPixelToCoords(point);

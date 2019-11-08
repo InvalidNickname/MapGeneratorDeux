@@ -14,8 +14,7 @@ class Type {
  public:
   Type(string type, string archtype, vector<string> name, Color biome_color, vector<Color> base_color,
        bool above_sea_level, int priority, pair<uint16_t, uint16_t> *temperature_range,
-       pair<float, float> *moisture_range,
-       string neighbour);
+       pair<float, float> *moisture_range, const string &neighbour);
 
   [[nodiscard]] string getName(Level level) const;
 

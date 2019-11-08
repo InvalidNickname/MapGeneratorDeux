@@ -1,10 +1,10 @@
 #include "Type.h"
 
 Type::Type(string t, string at, vector<string> n, Color bic, vector<Color> bac, bool asl, int priority,
-           pair<uint16_t, uint16_t> *tr, pair<float, float> *mr, string neighbour)
+           pair<uint16_t, uint16_t> *tr, pair<float, float> *mr, const string &neighbour)
     : type(move(t)), archtype(move(at)), name(move(n)), biome_color(bic), base_color(move(bac)),
       above_sea_level(asl), priority(priority), temperature_range(tr), moisture_range(mr),
-      neighbour(std::move(neighbour)) {}
+      neighbour(neighbour) {}
 
 string Type::getName(Level level) const {
   switch (level) {
