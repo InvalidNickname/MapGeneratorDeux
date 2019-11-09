@@ -8,17 +8,15 @@
 
 class Tile {
  public:
-  Tile(uint16_t x, uint16_t y);
+  const Vector2u pos;
 
-  void render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int max_z, int min_z);
+  explicit Tile(Vector2u pos);
+
+  void render(RenderTarget *_target, MapMode mode, Vector2i pos, int max_z, int min_z);
 
   [[nodiscard]] float getLatitude() const;
 
   [[nodiscard]] float getLongitude() const;
-
-  [[nodiscard]] uint16_t getX() const;
-
-  [[nodiscard]] uint16_t getY() const;
 
   [[nodiscard]] uint16_t getZ() const;
 
@@ -43,10 +41,9 @@ class Tile {
   [[nodiscard]] Level GetLevel() const;
 
  private:
-  const uint16_t x, y;
   uint16_t z{0};
   float latitude{}, longitude{};
-  float tile_x{0}, tile_y{0};
+  Vector2f render_pos{0.f, 0.f};
   float moisture{0};
   uint16_t temperature{0};
   Type *type{nullptr};

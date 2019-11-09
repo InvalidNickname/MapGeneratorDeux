@@ -11,9 +11,9 @@ TileInfoList::TileInfoList(Vector2u window_size) {
 
 void TileInfoList::setTile(Tile *tile) {
   String latitudeText
-      (to_string((int) tile->getLatitude()) + (tile->getY() < MAP_HEIGHT / 2 ? " \u00B0N" : " \u00B0S")); // °N, °S
+      (to_string((int) tile->getLatitude()) + (tile->pos.y < MAP_HEIGHT / 2 ? " \u00B0N" : " \u00B0S")); // °N, °S
   String longitudeText
-      (to_string((int) tile->getLongitude()) + (tile->getX() > MAP_WIDTH / 2 ? " \u00B0E" : " \u00B0W")); // °E, °W
+      (to_string((int) tile->getLongitude()) + (tile->pos.x > MAP_WIDTH / 2 ? " \u00B0E" : " \u00B0W")); // °E, °W
   coordinates.setString(latitudeText + " " + longitudeText);
   type.setString(tile->getType()->getName(tile->GetLevel()));
   temperature.setString(String(to_string(tile->getTemperature() - 273) + " \u00B0C")); // °C

@@ -1,14 +1,14 @@
 #include "Tile.h"
 
-Tile::Tile(uint16_t x, uint16_t y) : x(x), y(y) {
+Tile::Tile(Vector2u pos) : pos(pos) {
   setType("GenWater");
-  tile_y = TILE_HEIGHT * ((float) y - (float) (y / 2) / 2 - (y % 2 == 1 ? 0.25f : 0));
+  render_pos.y = TILE_HEIGHT * ((float) pos.y - (float) (pos.y / 2) / 2 - (pos.y % 2 == 1 ? 0.25f : 0));
   shape = VertexArray(TriangleFan, 8);
-  latitude = 90 * (1 - (2.f * y / MAP_HEIGHT > 1 ? 2 - 2.f * y / MAP_HEIGHT : 2.f * y / MAP_HEIGHT));
-  longitude = 180 * (1 - (2.f * x / MAP_WIDTH > 1 ? 2 - 2.f * x / MAP_WIDTH : 2.f * x / MAP_WIDTH));
+  latitude = 90 * (1 - (2.f * pos.y / MAP_HEIGHT > 1 ? 2 - 2.f * pos.y / MAP_HEIGHT : 2.f * pos.y / MAP_HEIGHT));
+  longitude = 180 * (1 - (2.f * pos.x / MAP_WIDTH > 1 ? 2 - 2.f * pos.x / MAP_WIDTH : 2.f * pos.x / MAP_WIDTH));
 }
 
-void Tile::render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, int max_z, int min_z) {
+void Tile::render(RenderTarget *_target, MapMode mode, Vector2i pos, int max_z, int min_z) {
   float temp;
   Color color;
   switch (mode) {
@@ -20,10 +20,10 @@ void Tile::render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, i
     case HEIGHT:temp = (float) (z - min_z) / (float) (max_z - min_z + 1);
       color = Color((1 - temp) * 255, (1 - temp) * 255, 255);
       break;
-    case BIOMES:color = type->getBiomeColor();
+    case BIOMES:color = type->biome_color;
       break;
     case MINIMAP:
-      if (type->getArchtype() == "Water") {
+      if (type->archtype == "Water") {
         color = Color(179, 171, 128);
       } else {
         color = Color(108, 106, 68);
@@ -35,26 +35,26 @@ void Tile::render(RenderTarget *_target, MapMode mode, int16_t _x, int16_t _y, i
       break;
   }
   // координаты для отрисовки
-  tile_x = TILE_WIDTH * ((float) _x + (_y % 2 == 1 ? 0.5f : 0));
+  render_pos.x = TILE_WIDTH * ((float) pos.x + (pos.y % 2 == 1 ? 0.5f : 0));
   drawTile(_target, color);
 }
 
 void Tile::drawTile(RenderTarget *_target, Color color) {
-  shape[0].position = Vector2f(tile_x + TILE_WIDTH / 2, tile_y + TILE_HEIGHT / 2);
+  shape[0].position = Vector2f(render_pos.x + TILE_WIDTH / 2, render_pos.y + TILE_HEIGHT / 2);
   shape[0].color = color;
-  shape[1].position = Vector2f(tile_x + TILE_WIDTH / 2, tile_y + TILE_HEIGHT);
+  shape[1].position = Vector2f(render_pos.x + TILE_WIDTH / 2, render_pos.y + TILE_HEIGHT);
   shape[1].color = color;
-  shape[2].position = Vector2f(tile_x + TILE_WIDTH, tile_y + TILE_HEIGHT * 3 / 4.f);
+  shape[2].position = Vector2f(render_pos.x + TILE_WIDTH, render_pos.y + TILE_HEIGHT * 3 / 4.f);
   shape[2].color = color;
-  shape[3].position = Vector2f(tile_x + TILE_WIDTH, tile_y + TILE_HEIGHT / 4.f);
+  shape[3].position = Vector2f(render_pos.x + TILE_WIDTH, render_pos.y + TILE_HEIGHT / 4.f);
   shape[3].color = color;
-  shape[4].position = Vector2f(tile_x + TILE_WIDTH / 2, tile_y);
+  shape[4].position = Vector2f(render_pos.x + TILE_WIDTH / 2, render_pos.y);
   shape[4].color = color;
-  shape[5].position = Vector2f(tile_x, tile_y + TILE_HEIGHT / 4.f);
+  shape[5].position = Vector2f(render_pos.x, render_pos.y + TILE_HEIGHT / 4.f);
   shape[5].color = color;
-  shape[6].position = Vector2f(tile_x, tile_y + TILE_HEIGHT * 3 / 4.f);
+  shape[6].position = Vector2f(render_pos.x, render_pos.y + TILE_HEIGHT * 3 / 4.f);
   shape[6].color = color;
-  shape[7].position = Vector2f(tile_x + TILE_WIDTH / 2, tile_y + TILE_HEIGHT);
+  shape[7].position = Vector2f(render_pos.x + TILE_WIDTH / 2, render_pos.y + TILE_HEIGHT);
   shape[7].color = color;
   _target->draw(shape);
 }
@@ -65,14 +65,6 @@ float Tile::getLatitude() const {
 
 float Tile::getLongitude() const {
   return longitude;
-}
-
-uint16_t Tile::getX() const {
-  return x;
-}
-
-uint16_t Tile::getY() const {
-  return y;
 }
 
 uint16_t Tile::getZ() const {

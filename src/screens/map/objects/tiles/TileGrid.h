@@ -6,9 +6,9 @@ class TileGrid {
  public:
   explicit TileGrid();
 
-  Tile *getTile(uint16_t x, uint16_t y);
+  Tile *getTile(Vector2u pos);
 
-  Tile *getNeighbour(int direction, uint16_t x, uint16_t y);
+  Tile *getNeighbour(int direction, Vector2u pos);
 
   Tile *getNeighbour(int direction, Tile *tile);
 

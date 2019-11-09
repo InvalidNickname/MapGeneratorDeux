@@ -15,11 +15,10 @@ class MapScreen : public Screen {
   float min_zoom;
 
  private:
-  Vector2u window_size;
+  Vector2u window_size, initial_size;
   View map_view, ui_view;
   MapMode map_mode{NORMAL};
   float zoom;
-  Vector2u initial_size;
   DrawableGrid *drawable_grid;
   GUI *gui;
 

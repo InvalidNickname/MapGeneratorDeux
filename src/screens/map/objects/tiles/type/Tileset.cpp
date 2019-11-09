@@ -50,7 +50,7 @@ Tileset::Tileset() {
   }
   // сортировка тайлсета по приоритету генерации
   sort(tileset.begin(), tileset.end(), [](Type *type1, Type *type2) -> bool {
-    return type1->getPriority() < type2->getPriority();
+    return type1->priority < type2->priority;
   });
 }
 
@@ -61,7 +61,7 @@ Tileset &Tileset::get() {
 
 Type *Tileset::getType(const string &type) const {
   for (Type *value : tileset) {
-    if (value->getTypeName() == type) {
+    if (value->type_name == type) {
       return value;
     }
   }

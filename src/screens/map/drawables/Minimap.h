@@ -23,8 +23,7 @@ class Minimap : public UIDrawable {
   Sprite minimap, overlay;
   RectangleShape left, right;
   Vector2u window_size;
-
-  Vector2u pos;
+  Vector2f pos;
 
   void createMinimapImage(DrawableGrid *drawable_grid);
 

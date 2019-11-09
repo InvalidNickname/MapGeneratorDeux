@@ -15,11 +15,11 @@ class DrawableGrid {
 
   void renderVector(RenderTarget *_target, MapMode mode, Vector2s lower_left, Vector2s upper_right);
 
-  Vector2s updateSelection(Vector2f position);
+  Vector2u updateSelection(Vector2f position);
 
   [[nodiscard]] Vector2s static getTileByCoordinates(Vector2f coords);
 
-  [[nodiscard]] Tile *getTile(Vector2s coords) const;
+  [[nodiscard]] Tile *getTile(Vector2u coords) const;
 
  private:
   TileGrid *tile_grid;
