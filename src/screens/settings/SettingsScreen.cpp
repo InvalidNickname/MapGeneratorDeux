@@ -87,8 +87,8 @@ void SettingsScreen::setGUI() {
               R::get().getUint("settings_radio_width") / 5,
               R::get().getUint("settings_radio_height")
           ),
-          AssetLoader::get().getTexture("settings_height_m2_0"),
-          AssetLoader::get().getTexture("settings_height_m2_1"),
+          AssetLoader::get().getTexture("settings_temperature_m2_0"),
+          AssetLoader::get().getTexture("settings_temperature_m2_1"),
           []() {})),
       pair("-1", new Button(
           Vector2s(
@@ -99,8 +99,8 @@ void SettingsScreen::setGUI() {
               R::get().getUint("settings_radio_width") / 5,
               R::get().getUint("settings_radio_height")
           ),
-          AssetLoader::get().getTexture("settings_height_m1_0"),
-          AssetLoader::get().getTexture("settings_height_m1_1"),
+          AssetLoader::get().getTexture("settings_temperature_m1_0"),
+          AssetLoader::get().getTexture("settings_temperature_m1_1"),
           []() {})),
       pair("0", new Button(
           Vector2s(
@@ -111,8 +111,8 @@ void SettingsScreen::setGUI() {
               R::get().getUint("settings_radio_width") / 5,
               R::get().getUint("settings_radio_height")
           ),
-          AssetLoader::get().getTexture("settings_height_0_0"),
-          AssetLoader::get().getTexture("settings_height_0_1"),
+          AssetLoader::get().getTexture("settings_temperature_0_0"),
+          AssetLoader::get().getTexture("settings_temperature_0_1"),
           []() {})),
       pair("1", new Button(
           Vector2s(
@@ -123,8 +123,8 @@ void SettingsScreen::setGUI() {
               R::get().getUint("settings_radio_width") / 5,
               R::get().getUint("settings_radio_height")
           ),
-          AssetLoader::get().getTexture("settings_height_1_0"),
-          AssetLoader::get().getTexture("settings_height_1_1"),
+          AssetLoader::get().getTexture("settings_temperature_1_0"),
+          AssetLoader::get().getTexture("settings_temperature_1_1"),
           []() {})),
       pair("2", new Button(
           Vector2s(
@@ -135,8 +135,8 @@ void SettingsScreen::setGUI() {
               R::get().getUint("settings_radio_width") / 5,
               R::get().getUint("settings_radio_height")
           ),
-          AssetLoader::get().getTexture("settings_height_2_0"),
-          AssetLoader::get().getTexture("settings_height_2_1"),
+          AssetLoader::get().getTexture("settings_temperature_2_0"),
+          AssetLoader::get().getTexture("settings_temperature_2_1"),
           []() {}))
   }, "0"));
   // TODO кнопки настройки влажности

@@ -29,6 +29,16 @@ AssetLoader::AssetLoader() {
   loadTexture("interface/settings_height.png", "settings_height_0_1", IntRect(280, 0, 140, 150));
   loadTexture("interface/settings_height.png", "settings_height_1_1", IntRect(420, 0, 140, 150));
   loadTexture("interface/settings_height.png", "settings_height_2_1", IntRect(560, 0, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_m2_0", IntRect(0, 150, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_m1_0", IntRect(140, 150, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_0_0", IntRect(280, 150, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_1_0", IntRect(420, 150, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_2_0", IntRect(560, 150, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_m2_1", IntRect(0, 0, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_m1_1", IntRect(140, 0, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_0_1", IntRect(280, 0, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_1_1", IntRect(420, 0, 140, 150));
+  loadTexture("interface/settings_temperature.png", "settings_temperature_2_1", IntRect(560, 0, 140, 150));
   loadTexture("background/settings_background.png", "settings_background");
 
   loadFont("abel.ttf", "default");
