@@ -10,8 +10,8 @@ void MapScreen::prepare() {
   // установка камеры
   map_view.setSize(initial_size.x, initial_size.y);
   Vector2f camera_pos = {
-      TILE_WIDTH * (0.5f + MAP_WIDTH) / 2,
-      0.125f * TILE_HEIGHT * (3 * MAP_HEIGHT - 2)
+      G::TILE_WIDTH * (0.5f + G::getMapW()) / 2,
+      0.125f * G::TILE_HEIGHT * (3 * G::getMapH() - 2)
   };
   map_view.setCenter(camera_pos);
   // минимальный зум - сетка полностью помещается на экран по высоте
@@ -33,10 +33,7 @@ void MapScreen::setGUI() {
               window_size.x - 5 * R::map_mode_button_width,
               window_size.y - R::minimap_height - R::map_mode_button_height
           ),
-          Vector2s(
-              R::map_mode_button_width,
-              R::map_mode_button_height
-          ),
+          {R::map_mode_button_width, R::map_mode_button_height},
           AssetLoader::get().getTexture("map_mode_default_0"),
           AssetLoader::get().getTexture("map_mode_default_1"),
           [this]() { map_mode = NORMAL; })),
@@ -45,10 +42,7 @@ void MapScreen::setGUI() {
               window_size.x - 4 * R::map_mode_button_width,
               window_size.y - R::minimap_height - R::map_mode_button_height
           ),
-          Vector2s(
-              R::map_mode_button_width,
-              R::map_mode_button_height
-          ),
+          {R::map_mode_button_width, R::map_mode_button_height},
           AssetLoader::get().getTexture("map_mode_biomes_0"),
           AssetLoader::get().getTexture("map_mode_biomes_1"),
           [this]() { map_mode = BIOMES; })),
@@ -57,10 +51,7 @@ void MapScreen::setGUI() {
               window_size.x - 3 * R::map_mode_button_width,
               window_size.y - R::minimap_height - R::map_mode_button_height
           ),
-          Vector2s(
-              R::map_mode_button_width,
-              R::map_mode_button_height
-          ),
+          {R::map_mode_button_width, R::map_mode_button_height},
           AssetLoader::get().getTexture("map_mode_temperature_0"),
           AssetLoader::get().getTexture("map_mode_temperature_1"),
           [this]() { map_mode = TEMPERATURE; })),
@@ -69,10 +60,7 @@ void MapScreen::setGUI() {
               window_size.x - 2 * R::map_mode_button_width,
               window_size.y - R::minimap_height - R::map_mode_button_height
           ),
-          Vector2s(
-              R::map_mode_button_width,
-              R::map_mode_button_height
-          ),
+          {R::map_mode_button_width, R::map_mode_button_height},
           AssetLoader::get().getTexture("map_mode_height_0"),
           AssetLoader::get().getTexture("map_mode_height_1"),
           [this]() { map_mode = HEIGHT; })),
@@ -81,10 +69,7 @@ void MapScreen::setGUI() {
               window_size.x - R::map_mode_button_width,
               window_size.y - R::minimap_height - R::map_mode_button_height
           ),
-          Vector2s(
-              R::map_mode_button_width,
-              R::map_mode_button_height
-          ),
+          {R::map_mode_button_width, R::map_mode_button_height},
           AssetLoader::get().getTexture("map_mode_moisture_0"),
           AssetLoader::get().getTexture("map_mode_moisture_1"),
           [this]() { map_mode = MOISTURE; }))
@@ -158,24 +143,22 @@ void MapScreen::handleInput() {
   if (zoom < 0.5) zoom = 0.5;
   if (zoom > min_zoom) zoom = min_zoom;
   // запрет на прокрутку за пределы карты по вертикали
-  if (map_view.getCenter().y < 0.25 * TILE_HEIGHT + (float) window_size.y * zoom / 4)
-    map_view.setCenter(map_view.getCenter().x, 0.25f * TILE_HEIGHT + (float) window_size.y * zoom / 4);
-  if (map_view.getCenter().y > 0.25 * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - window_size.y / 4. * zoom)
-    map_view.setCenter(map_view.getCenter().x,
-                       0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT - 1) - (float) window_size.y / 4.f * zoom);
+  if (map_view.getCenter().y < 0.25f * G::TILE_HEIGHT + zoom * window_size.y / 4)
+    map_view.setCenter(map_view.getCenter().x, 0.25f * G::TILE_HEIGHT + zoom * window_size.y / 4);
+  if (map_view.getCenter().y > 0.75f * G::TILE_HEIGHT * G::getMapH() - zoom * window_size.y / 4)
+    map_view.setCenter(map_view.getCenter().x, 0.75f * G::TILE_HEIGHT * G::getMapH() - zoom * window_size.y / 4);
   // бесконечная прокрутка по горизонтали
-  if (map_view.getCenter().x <= -(float) window_size.x * zoom / 4)
-    map_view.setCenter((TILE_WIDTH * MAP_WIDTH) - (float) window_size.x / 4.f * zoom, map_view.getCenter().y);
-  if (map_view.getCenter().x >= (TILE_WIDTH * (0.5 + MAP_WIDTH)) + (float) window_size.x * zoom / 4.f)
-    map_view.setCenter((float) window_size.x * zoom / 4.f + TILE_WIDTH * 0.5f, map_view.getCenter().y);
+  if (map_view.getCenter().x <= -zoom * window_size.x / 4)
+    map_view.setCenter(G::TILE_WIDTH * G::getMapW() - zoom * window_size.x / 4, map_view.getCenter().y);
+  if (map_view.getCenter().x >= G::TILE_WIDTH * G::getMapW() + zoom * window_size.x / 4)
+    map_view.setCenter(zoom * window_size.x / 4, map_view.getCenter().y);
 }
 
 void MapScreen::draw() {
   // отрисовка карты
   window->setView(map_view);
-  Vector2s lowerLeftTile = DrawableGrid::getTileByCoordinates(window->mapPixelToCoords({0, 0}));
-  Vector2s upperRightTile =
-      DrawableGrid::getTileByCoordinates(window->mapPixelToCoords(Vector2i(window_size.x, window_size.y)));
+  auto lowerLeftTile = DrawableGrid::getTileByCoords(window->mapPixelToCoords({0, 0}));
+  auto upperRightTile = DrawableGrid::getTileByCoords(window->mapPixelToCoords(Vector2i(window_size.x, window_size.y)));
   ((Minimap *) gui->get("minimap"))->updateViewRegion(lowerLeftTile, upperRightTile);
   // чтобы отрисовывать тайлы, чьи центры не попали в область отрисовки, но края все равно видны
   lowerLeftTile -= {1, 1};
@@ -201,7 +184,6 @@ void MapScreen::zoomAtPoint(Vector2i point) {
   // зум
   window->setView(map_view);
   Vector2f worldCoordinatesAfterZoom = window->mapPixelToCoords(point);
-  Vector2f diff = worldCoordinatesBeforeZoom - worldCoordinatesAfterZoom;
-  map_view.move(diff);
+  map_view.move(worldCoordinatesBeforeZoom - worldCoordinatesAfterZoom);
   window->setView(map_view);
 }

@@ -1,0 +1,5 @@
+#pragma once
+
+enum MapMode {
+  NORMAL, TEMPERATURE, HEIGHT, BIOMES, MINIMAP, MOISTURE, SELECTED
+};

@@ -2,7 +2,7 @@
 
 #include "screens/map/objects/tiles/Tile.h"
 #include "screens/map/objects/tiles/TileGrid.h"
-#include "utils/GenerationParameters.h"
+#include "utils/G.h"
 #include "utils/Random.h"
 #include "utils/PerlinNoise.h"
 

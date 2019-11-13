@@ -32,6 +32,12 @@ AssetLoader::AssetLoader() {
     loadTexture("interface/settings_temperature.png",
                 "s_temperature_" + to_string(i) + "_1",
                 {(i + 2) * 140, 0, 140, 150});
+    loadTexture("interface/settings_size.png",
+                "s_size_" + to_string(i) + "_0",
+                {(i + 2) * 140, 150, 140, 150});
+    loadTexture("interface/settings_size.png",
+                "s_size_" + to_string(i) + "_1",
+                {(i + 2) * 140, 0, 140, 150});
   }
 
   loadTexture("background/settings_background.png", "s_background");

@@ -6,7 +6,7 @@ DrawableGrid::DrawableGrid() {
   max_z = tile_grid->getMaxZ();
   min_z = tile_grid->getMinZ();
 
-  Vector2f map_size = {TILE_WIDTH * (0.5f + MAP_WIDTH), 0.25f * TILE_HEIGHT * (3 * MAP_HEIGHT)};
+  Vector2f map_size = {G::TILE_WIDTH * (0.5f + G::getMapW()), 0.25f * G::TILE_HEIGHT * (3 * G::getMapH())};
 
   View view;
   view.setCenter(map_size / 2.f);
@@ -24,15 +24,15 @@ DrawableGrid::DrawableGrid() {
 
   s_right.setTexture(center->getTexture());
   s_right.scale(map_size.x / s_right.getTexture()->getSize().x, map_size.y / s_right.getTexture()->getSize().y);
-  s_right.setPosition(map_size.x - 0.5f * TILE_WIDTH, 0);
+  s_right.setPosition(map_size.x - 0.5f * G::TILE_WIDTH, 0);
 
   s_left.setTexture(center->getTexture());
   s_left.scale(map_size.x / s_left.getTexture()->getSize().x, map_size.y / s_left.getTexture()->getSize().y);
-  s_left.setPosition(-map_size.x + 0.5f * TILE_WIDTH, 0);
+  s_left.setPosition(-map_size.x + 0.5f * G::TILE_WIDTH, 0);
 
   selected_tile.setTexture(*AssetLoader::get().getTexture("selected_tile"));
-  selected_tile.scale(TILE_WIDTH / selected_tile.getTexture()->getSize().x,
-                      TILE_HEIGHT / selected_tile.getTexture()->getSize().y);
+  selected_tile.scale(G::TILE_WIDTH / selected_tile.getTexture()->getSize().x,
+                      G::TILE_HEIGHT / selected_tile.getTexture()->getSize().y);
 }
 
 void DrawableGrid::renderTexture(RenderTarget *_target, MapMode mode, int x0, int x1) {
@@ -41,7 +41,7 @@ void DrawableGrid::renderTexture(RenderTarget *_target, MapMode mode, int x0, in
     prev_mode = mode;
   }
   _target->draw(s_center);
-  if (x1 > MAP_WIDTH) _target->draw(s_right);
+  if (x1 > G::getMapW()) _target->draw(s_right);
   if (x0 < 0) _target->draw(s_left);
 
   renderSelectedTile(_target, x0, x1);
@@ -49,20 +49,20 @@ void DrawableGrid::renderTexture(RenderTarget *_target, MapMode mode, int x0, in
 
 void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2s lower_left, Vector2s upper_right) {
   if (lower_left.y < 0) lower_left.y = 0;
-  if (upper_right.y > MAP_HEIGHT) upper_right.y = MAP_HEIGHT;
+  if (upper_right.y > G::getMapH()) upper_right.y = G::getMapH();
   if (lower_left.x < 0) {
     for (uint16_t i = lower_left.y; i < upper_right.y; i++) {
       for (uint16_t j = 0; j < upper_right.x; j++)
         tile_grid->getTile({j, i})->render(_target, mode, {j, i}, max_z, min_z);
-      for (uint16_t j = lower_left.x + MAP_WIDTH; j < MAP_WIDTH; j++)
-        tile_grid->getTile({j, i})->render(_target, mode, {j - MAP_WIDTH, i}, max_z, min_z);
+      for (uint16_t j = lower_left.x + G::getMapW(); j < G::getMapW(); j++)
+        tile_grid->getTile({j, i})->render(_target, mode, {j - G::getMapW(), i}, max_z, min_z);
     }
-  } else if (upper_right.x > MAP_WIDTH) {
-    upper_right.x = upper_right.x % MAP_WIDTH;
+  } else if (upper_right.x > G::getMapW()) {
+    upper_right.x = upper_right.x % G::getMapW();
     for (uint16_t i = lower_left.y; i < upper_right.y; i++) {
-      for (uint16_t j = MAP_WIDTH; j < upper_right.x + MAP_WIDTH; j++)
-        tile_grid->getTile(Vector2u(j - MAP_WIDTH, i))->render(_target, mode, {j, i}, max_z, min_z);
-      for (uint16_t j = lower_left.x; j < MAP_WIDTH; j++)
+      for (uint16_t j = G::getMapW(); j < upper_right.x + G::getMapW(); j++)
+        tile_grid->getTile(Vector2u(j - G::getMapW(), i))->render(_target, mode, {j, i}, max_z, min_z);
+      for (uint16_t j = lower_left.x; j < G::getMapW(); j++)
         tile_grid->getTile({j, i})->render(_target, mode, {j, i}, max_z, min_z);
     }
   } else {
@@ -76,8 +76,8 @@ void DrawableGrid::renderVector(RenderTarget *_target, MapMode mode, Vector2s lo
 
 void DrawableGrid::updateTexture(MapMode mode) {
   center->clear(Color::Transparent);
-  for (uint16_t i = 0; i < MAP_WIDTH; i++) {
-    for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
+  for (uint16_t i = 0; i < G::getMapW(); i++) {
+    for (uint16_t j = 0; j < G::getMapH(); j++) {
       tile_grid->getTile({i, j})->render(center, mode, {i, j}, max_z, min_z);
     }
   }
@@ -87,13 +87,13 @@ void DrawableGrid::updateTexture(MapMode mode) {
 void DrawableGrid::renderSelectedTile(RenderTarget *_target, int x0, int x1) {
   if (selected.x >= 0 && selected.y >= 0) {
     Vector2f tile_pos = {
-        TILE_WIDTH * (selected.x + (selected.y % 2 == 1 ? 0.5f : 0)),
-        TILE_HEIGHT * (selected.y - (selected.y / 2) / 2.f - (selected.y % 2 == 1 ? 0.25f : 0))
+        G::TILE_WIDTH * (selected.x + (selected.y % 2 == 1 ? 0.5f : 0)),
+        G::TILE_HEIGHT * (selected.y - (selected.y / 2) / 2.f - (selected.y % 2 == 1 ? 0.25f : 0))
     };
     if (x0 < 0 && (selected.x < 0 || selected.x >= x1)) {
-      selected_tile.setPosition(tile_pos.x - TILE_WIDTH * MAP_WIDTH, tile_pos.y);
-    } else if (x1 > MAP_WIDTH && selected.x < x1 % MAP_WIDTH) {
-      selected_tile.setPosition(tile_pos.x + TILE_WIDTH * MAP_WIDTH, tile_pos.y);
+      selected_tile.setPosition(tile_pos.x - G::TILE_WIDTH * G::getMapW(), tile_pos.y);
+    } else if (x1 > G::getMapW() && selected.x < x1 % G::getMapW()) {
+      selected_tile.setPosition(tile_pos.x + G::TILE_WIDTH * G::getMapW(), tile_pos.y);
     } else {
       selected_tile.setPosition(tile_pos);
     }
@@ -102,16 +102,16 @@ void DrawableGrid::renderSelectedTile(RenderTarget *_target, int x0, int x1) {
 }
 
 Vector2u DrawableGrid::updateSelection(Vector2f position) {
-  selected = getTileByCoordinates(position);
+  selected = getTileByCoords(position);
   // если клик на тайл на боковой карте - перенести его координаты на основную
-  if (selected.x > MAP_WIDTH - 1) selected.x -= MAP_WIDTH;
-  if (selected.x < 0) selected.x += MAP_WIDTH;
+  if (selected.x > G::getMapW() - 1) selected.x -= G::getMapW();
+  if (selected.x < 0) selected.x += G::getMapW();
   return Vector2u(selected.x, selected.y);
 }
 
-Vector2s DrawableGrid::getTileByCoordinates(Vector2f coords) {
+Vector2s DrawableGrid::getTileByCoords(Vector2f coords) {
   // relative - относительное положение точки внутри тайла, единица длины - сторона тайла
-  Vector2f temp = {coords.x / (TILE_WIDTH), coords.y / (TILE_HEIGHT / 2.f)};
+  Vector2f temp = {coords.x / G::TILE_WIDTH, coords.y / (G::TILE_HEIGHT / 2.f)};
   if (temp.x < 0.5) temp.x -= 1;
   Vector2f relative = {fmod(temp.x, 1.f), fmod(temp.y, 1.5f)};
   if (relative.x < 0) relative.x++;

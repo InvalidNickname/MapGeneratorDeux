@@ -7,8 +7,6 @@ void SplashScreen::prepare() {
 }
 
 void SplashScreen::load() {
-  // первоначальная загрузка тайлсета из json
-  Tileset::get();
   // первоначальная загрузка ассетов
   AssetLoader::get();
 }

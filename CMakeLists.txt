@@ -14,7 +14,7 @@ set(SOURCE_FILES src/main.cpp src/screens/ScreenManager.cpp src/screens/splashsc
         src/ui/GUI.cpp src/ui/Button.cpp src/utils/AssetLoader.cpp src/ui/RadioButtons.cpp
         src/screens/map/drawables/Minimap.cpp src/utils/PerlinNoise.cpp src/utils/R.h
         src/screens/map/drawables/TileInfoList.cpp src/screens/settings/SettingsScreen.cpp src/ui/DrawableImage.cpp)
-add_executable(MapGeneratorDeux WIN32 ${SOURCE_FILES})
+add_executable(MapGeneratorDeux ${SOURCE_FILES})
 
 target_include_directories(MapGeneratorDeux PUBLIC src)
 target_include_directories(MapGeneratorDeux PUBLIC libs/nlohmann)

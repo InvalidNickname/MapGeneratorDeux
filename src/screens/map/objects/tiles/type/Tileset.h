@@ -4,7 +4,7 @@
 
 #include <json.hpp>
 
-#include "utils/GenerationParameters.h"
+#include "utils/G.h"
 #include "Type.h"
 
 using Json = nlohmann::json;

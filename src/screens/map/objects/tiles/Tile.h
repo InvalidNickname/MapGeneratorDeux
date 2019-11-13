@@ -2,9 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "utils/GenerationParameters.h"
+#include "utils/G.h"
 #include "type/Type.h"
 #include "type/Tileset.h"
+#include "screens/map/MapMode.h"
 
 class Tile {
  public:

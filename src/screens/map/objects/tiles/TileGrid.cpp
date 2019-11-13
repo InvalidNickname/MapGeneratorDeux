@@ -1,10 +1,10 @@
 #include "TileGrid.h"
 
 TileGrid::TileGrid() {
-  grid = new std::vector<std::vector<Tile *> *>(MAP_WIDTH);
-  for (uint16_t i = 0; i < MAP_WIDTH; i++) {
-    grid->at(i) = new std::vector<Tile *>(MAP_HEIGHT);
-    for (uint16_t j = 0; j < MAP_HEIGHT; j++) {
+  grid = new std::vector<std::vector<Tile *> *>(G::getMapW());
+  for (uint16_t i = 0; i < G::getMapW(); i++) {
+    grid->at(i) = new std::vector<Tile *>(G::getMapH());
+    for (uint16_t j = 0; j < G::getMapH(); j++) {
       grid->at(i)->at(j) = new Tile({i, j});
     }
   }
@@ -25,19 +25,19 @@ Tile *TileGrid::getNeighbour(int direction, Vector2u pos) {
         if (pos.x > 0)
           return getTile({pos.x - 1, pos.y});
         else
-          return getTile({MAP_WIDTH - 1, pos.y});
+          return getTile({G::getMapW() - 1u, pos.y});
       case 1:
-        if (pos.x > 0 && pos.y < MAP_HEIGHT - 1)
+        if (pos.x > 0 && pos.y < G::getMapH() - 1)
           return getTile({pos.x - 1, pos.y + 1});
-        else if (pos.y < MAP_HEIGHT - 1)
-          return getTile({MAP_WIDTH - 1, pos.y + 1});
+        else if (pos.y < G::getMapH() - 1)
+          return getTile({G::getMapW() - 1u, pos.y + 1});
       case 2:
-        if (pos.y < MAP_HEIGHT - 1)
+        if (pos.y < G::getMapH() - 1)
           return getTile({pos.x, pos.y + 1});
       case 3:
-        if (pos.x < MAP_WIDTH - 1)
+        if (pos.x < G::getMapW() - 1)
           return getTile({pos.x + 1, pos.y});
-        else if (pos.x == MAP_WIDTH - 1)
+        else if (pos.x == G::getMapW() - 1)
           return getTile({0, pos.y});
       case 4:
         if (pos.y > 0)
@@ -46,7 +46,7 @@ Tile *TileGrid::getNeighbour(int direction, Vector2u pos) {
         if (pos.y > 0 && pos.x > 0)
           return getTile({pos.x - 1, pos.y - 1});
         else if (pos.y > 0)
-          return getTile({MAP_WIDTH - 1, pos.y - 1});
+          return getTile({G::getMapW() - 1u, pos.y - 1});
       default:return nullptr;
     }
   } else {
@@ -55,22 +55,22 @@ Tile *TileGrid::getNeighbour(int direction, Vector2u pos) {
         if (pos.x > 0)
           return getTile({pos.x - 1, pos.y});
         else
-          return getTile({MAP_WIDTH - 1, pos.y});
+          return getTile({G::getMapW() - 1u, pos.y});
       case 1:
-        if (pos.y < MAP_HEIGHT - 1)
+        if (pos.y < G::getMapH() - 1)
           return getTile({pos.x, pos.y + 1});
       case 2:
-        if (pos.y < MAP_HEIGHT - 1 && pos.x < MAP_WIDTH - 1)
+        if (pos.y < G::getMapH() - 1 && pos.x < G::getMapW() - 1)
           return getTile({pos.x + 1, pos.y + 1});
-        else if (pos.y < MAP_HEIGHT - 1)
+        else if (pos.y < G::getMapH() - 1)
           return getTile({0, pos.y + 1});
       case 3:
-        if (pos.x < MAP_WIDTH - 1)
+        if (pos.x < G::getMapW() - 1)
           return getTile({pos.x + 1, pos.y});
         else
           return getTile({0, pos.y});
       case 4:
-        if (pos.y > 0 && pos.x < MAP_WIDTH - 1)
+        if (pos.y > 0 && pos.x < G::getMapW() - 1)
           return getTile({pos.x + 1, pos.y - 1});
         else if (pos.y > 0)
           return getTile({0, pos.y - 1});

@@ -13,6 +13,7 @@
 #include "utils/R.h"
 #include "utils/AssetLoader.h"
 #include "ui/DrawableImage.h"
+#include "utils/G.h"
 
 using Json = nlohmann::json;
 
@@ -24,7 +25,7 @@ class SettingsScreen : public Screen {
   Vector2u window_size;
   GUI *gui;
   View ui_view;
-  map<string, int> settings;
+  map<string, int16_t> settings;
 
   void prepare() override;
 

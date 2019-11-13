@@ -1,7 +1,7 @@
 #pragma once
 
 #include "screens/map/objects/tiles/TileGrid.h"
-#include "utils/GenerationParameters.h"
+#include "utils/G.h"
 #include "utils/AssetLoader.h"
 #include "screens/map/generator/Generator.h"
 
@@ -17,7 +17,7 @@ class DrawableGrid {
 
   Vector2u updateSelection(Vector2f position);
 
-  [[nodiscard]] Vector2s static getTileByCoordinates(Vector2f coords);
+  [[nodiscard]] Vector2s static getTileByCoords(Vector2f coords);
 
   [[nodiscard]] Tile *getTile(Vector2u coords) const;
 
