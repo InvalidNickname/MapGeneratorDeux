@@ -29,4 +29,5 @@ add_custom_command(TARGET MapGeneratorDeux POST_BUILD
 install(TARGETS MapGeneratorDeux
         RUNTIME DESTINATION build
         LIBRARY DESTINATION build)
-install(DIRECTORY assets/ libs/SFML-2.5.1/bin/ DESTINATION build)
+install(DIRECTORY assets/ DESTINATION build PATTERN "last_settings.json" EXCLUDE)
+install(DIRECTORY libs/SFML-2.5.1/bin/ DESTINATION build)

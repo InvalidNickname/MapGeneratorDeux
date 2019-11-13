@@ -1,5 +1,12 @@
 #pragma once
 
+#include <iomanip>
+#include <string>
+#include <map>
+#include <fstream> // для считывания json-файла
+
+#include <json.hpp>
+
 #include "ui/GUI.h"
 #include "screens/Screen.h"
 #include "ui/RadioButtons.h"
@@ -16,10 +23,17 @@ class SettingsScreen : public Screen {
   GUI *gui;
   View ui_view;
   GameState temp_key{THIS_STATE};
+  map<string, int> settings;
 
   void prepare() override;
 
+  void loadPrevSettings();
+
+  bool getFromJSON(ifstream input);
+
   void setGUI();
+
+  void writeSettings();
 
   GameState doAction() override;
 
