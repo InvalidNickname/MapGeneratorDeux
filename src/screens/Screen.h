@@ -17,5 +17,6 @@ class Screen {
 
  protected:
   sf::RenderWindow *window;
+  GameState temp_key{THIS_STATE};
 
 };

@@ -30,60 +30,60 @@ void MapScreen::setGUI() {
   gui->addObject("map_mode", new RadioButtons(new map<string, Button *>{
       pair("default", new Button(
           Vector2s(
-              window_size.x - 5 * R::get().getUint("map_mode_button_width"),
-              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - 5 * R::map_mode_button_width,
+              window_size.y - R::minimap_height - R::map_mode_button_height
           ),
           Vector2s(
-              R::get().getUint("map_mode_button_width"),
-              R::get().getUint("map_mode_button_height")
+              R::map_mode_button_width,
+              R::map_mode_button_height
           ),
           AssetLoader::get().getTexture("map_mode_default_0"),
           AssetLoader::get().getTexture("map_mode_default_1"),
           [this]() { map_mode = NORMAL; })),
       pair("biomes", new Button(
           Vector2s(
-              window_size.x - 4 * R::get().getUint("map_mode_button_width"),
-              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - 4 * R::map_mode_button_width,
+              window_size.y - R::minimap_height - R::map_mode_button_height
           ),
           Vector2s(
-              R::get().getUint("map_mode_button_width"),
-              R::get().getUint("map_mode_button_height")
+              R::map_mode_button_width,
+              R::map_mode_button_height
           ),
           AssetLoader::get().getTexture("map_mode_biomes_0"),
           AssetLoader::get().getTexture("map_mode_biomes_1"),
           [this]() { map_mode = BIOMES; })),
       pair("temperature", new Button(
           Vector2s(
-              window_size.x - 3 * R::get().getUint("map_mode_button_width"),
-              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - 3 * R::map_mode_button_width,
+              window_size.y - R::minimap_height - R::map_mode_button_height
           ),
           Vector2s(
-              R::get().getUint("map_mode_button_width"),
-              R::get().getUint("map_mode_button_height")
+              R::map_mode_button_width,
+              R::map_mode_button_height
           ),
           AssetLoader::get().getTexture("map_mode_temperature_0"),
           AssetLoader::get().getTexture("map_mode_temperature_1"),
           [this]() { map_mode = TEMPERATURE; })),
       pair("height", new Button(
           Vector2s(
-              window_size.x - 2 * R::get().getUint("map_mode_button_width"),
-              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - 2 * R::map_mode_button_width,
+              window_size.y - R::minimap_height - R::map_mode_button_height
           ),
           Vector2s(
-              R::get().getUint("map_mode_button_width"),
-              R::get().getUint("map_mode_button_height")
+              R::map_mode_button_width,
+              R::map_mode_button_height
           ),
           AssetLoader::get().getTexture("map_mode_height_0"),
           AssetLoader::get().getTexture("map_mode_height_1"),
           [this]() { map_mode = HEIGHT; })),
       pair("moisture", new Button(
           Vector2s(
-              window_size.x - R::get().getUint("map_mode_button_width"),
-              window_size.y - R::get().getUint("minimap_height") - R::get().getUint("map_mode_button_height")
+              window_size.x - R::map_mode_button_width,
+              window_size.y - R::minimap_height - R::map_mode_button_height
           ),
           Vector2s(
-              R::get().getUint("map_mode_button_width"),
-              R::get().getUint("map_mode_button_height")
+              R::map_mode_button_width,
+              R::map_mode_button_height
           ),
           AssetLoader::get().getTexture("map_mode_moisture_0"),
           AssetLoader::get().getTexture("map_mode_moisture_1"),
@@ -95,7 +95,7 @@ void MapScreen::setGUI() {
 
 GameState MapScreen::doAction() {
   handleInput();
-  return THIS_STATE;
+  return temp_key;
 }
 
 void MapScreen::handleInput() {
@@ -115,6 +115,9 @@ void MapScreen::handleInput() {
                       window->mapPixelToCoords(Mouse::getPosition(), map_view))));
         }
       }
+    }
+    if (event.type == Event::Closed) {
+      temp_key = EXIT;
     }
     // смена режимов карты
     if (Keyboard::isKeyPressed(Keyboard::Q)) {

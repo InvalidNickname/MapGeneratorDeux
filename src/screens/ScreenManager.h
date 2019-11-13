@@ -9,7 +9,7 @@ class ScreenManager {
 
   void addScreen(GameState _key, Screen *screen);
 
-  void doActiveScreenActions();
+  bool doActiveScreenActions();
 
   void drawActiveScreen();
 

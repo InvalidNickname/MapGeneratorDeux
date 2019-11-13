@@ -8,7 +8,7 @@ void ScreenManager::addScreen(GameState _key, Screen *screen) {
   screens[_key] = screen;
 }
 
-void ScreenManager::doActiveScreenActions() {
+bool ScreenManager::doActiveScreenActions() {
   if (key >= 0) {
     // если это новый экран - подготовить
     if (key != prev_key) {
@@ -19,7 +19,9 @@ void ScreenManager::doActiveScreenActions() {
     if (temp_key != THIS_STATE) {
       key = temp_key;
     }
+    return true;
   }
+  return false;
 }
 
 void ScreenManager::drawActiveScreen() {

@@ -11,24 +11,22 @@ void SplashScreen::load() {
   Tileset::get();
   // первоначальная загрузка ассетов
   AssetLoader::get();
-  // первоначальная загрузка ресурсов
-  R::get();
 }
 
 GameState SplashScreen::doAction() {
   Event event{};
   while (window->pollEvent(event)) {
     if (event.type == Event::Closed) {
-      window->close();
+      temp_key = EXIT;
     }
   }
   auto status = loading_thread.wait_for(0ms);
   if (status == std::future_status::ready) {
     loading_thread.get();
-    // переключение на экран карты
+    // переключение на экран настроек
     return SETTINGS;
   }
-  return THIS_STATE;
+  return temp_key;
 }
 
 void SplashScreen::draw() {

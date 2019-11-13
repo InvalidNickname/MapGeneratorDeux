@@ -14,6 +14,8 @@
 #include "utils/AssetLoader.h"
 #include "ui/DrawableImage.h"
 
+using Json = nlohmann::json;
+
 class SettingsScreen : public Screen {
 
   using Screen::Screen;
@@ -22,7 +24,6 @@ class SettingsScreen : public Screen {
   Vector2u window_size;
   GUI *gui;
   View ui_view;
-  GameState temp_key{THIS_STATE};
   map<string, int> settings;
 
   void prepare() override;

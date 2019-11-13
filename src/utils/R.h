@@ -1,30 +1,15 @@
 #pragma once
 
 #include <cstdint>
-#include <string>
-#include <map>
-#include <fstream> // для считывания json-файла
 
-#include <json.hpp>
-
-using namespace std;
-using Json = nlohmann::json;
-
-class R {
+struct R {
  public:
-  static R &get();
-
-  R(R const &) = delete;
-
-  R &operator=(R const &) = delete;
-
-  [[nodiscard]] uint16_t getUint(const string &name) const;
-
- private:
-  map<string, uint16_t> unsigned_map;
-
-  R();
-
-  ~R() = default;
-
+  static const uint16_t minimap_height = 190;
+  static const uint16_t minimap_width = 300;
+  static const uint16_t map_mode_button_height = 31;
+  static const uint16_t map_mode_button_width = 41;
+  static const uint16_t tile_info_list_width = 320;
+  static const uint16_t tile_info_list_height = 120;
+  static const uint16_t settings_radio_width = 700;
+  static const uint16_t settings_radio_height = 150;
 };

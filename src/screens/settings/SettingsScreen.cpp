@@ -36,332 +36,332 @@ void SettingsScreen::setGUI() {
   gui->addObject("background", new DrawableImage(
       Vector2s(0, 0),
       Vector2s(window_size.x, window_size.y),
-      AssetLoader::get().getTexture("settings_background")));
+      AssetLoader::get().getTexture("s_background")));
   gui->addObject("height", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
+              R::settings_radio_width / 5,
               100
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_m2_0"),
-          AssetLoader::get().getTexture("settings_height_m2_1"),
+          AssetLoader::get().getTexture("s_height_-2_0"),
+          AssetLoader::get().getTexture("s_height_-2_1"),
           [this]() { settings["ocean_level"] = -2; })),
       pair("-1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 2 / 5,
+              R::settings_radio_width * 2 / 5,
               100
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_m1_0"),
-          AssetLoader::get().getTexture("settings_height_m1_1"),
+          AssetLoader::get().getTexture("s_height_-1_0"),
+          AssetLoader::get().getTexture("s_height_-1_1"),
           [this]() { settings["ocean_level"] = -1; })),
       pair("0", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 3 / 5,
+              R::settings_radio_width * 3 / 5,
               100
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_0_0"),
-          AssetLoader::get().getTexture("settings_height_0_1"),
+          AssetLoader::get().getTexture("s_height_0_0"),
+          AssetLoader::get().getTexture("s_height_0_1"),
           [this]() { settings["ocean_level"] = 0; })),
       pair("1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 4 / 5,
+              R::settings_radio_width * 4 / 5,
               100
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_1_0"),
-          AssetLoader::get().getTexture("settings_height_1_1"),
+          AssetLoader::get().getTexture("s_height_1_0"),
+          AssetLoader::get().getTexture("s_height_1_1"),
           [this]() { settings["ocean_level"] = 1; })),
       pair("2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 5 / 5,
+              R::settings_radio_width * 5 / 5,
               100
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_2_0"),
-          AssetLoader::get().getTexture("settings_height_2_1"),
+          AssetLoader::get().getTexture("s_height_2_0"),
+          AssetLoader::get().getTexture("s_height_2_1"),
           [this]() { settings["ocean_level"] = 2; }))
   }, to_string(settings.at("ocean_level"))));
   gui->addObject("temperature", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height") + 120
+              R::settings_radio_width / 5,
+              R::settings_radio_height + 120
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_temperature_m2_0"),
-          AssetLoader::get().getTexture("settings_temperature_m2_1"),
+          AssetLoader::get().getTexture("s_temperature_-2_0"),
+          AssetLoader::get().getTexture("s_temperature_-2_1"),
           [this]() { settings["temperature"] = -2; })),
       pair("-1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 2 / 5,
-              R::get().getUint("settings_radio_height") + 120
+              R::settings_radio_width * 2 / 5,
+              R::settings_radio_height + 120
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_temperature_m1_0"),
-          AssetLoader::get().getTexture("settings_temperature_m1_1"),
+          AssetLoader::get().getTexture("s_temperature_-1_0"),
+          AssetLoader::get().getTexture("s_temperature_-1_1"),
           [this]() { settings["temperature"] = -1; })),
       pair("0", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 3 / 5,
-              R::get().getUint("settings_radio_height") + 120
+              R::settings_radio_width * 3 / 5,
+              R::settings_radio_height + 120
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_temperature_0_0"),
-          AssetLoader::get().getTexture("settings_temperature_0_1"),
+          AssetLoader::get().getTexture("s_temperature_0_0"),
+          AssetLoader::get().getTexture("s_temperature_0_1"),
           [this]() { settings["temperature"] = 0; })),
       pair("1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 4 / 5,
-              R::get().getUint("settings_radio_height") + 120
+              R::settings_radio_width * 4 / 5,
+              R::settings_radio_height + 120
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_temperature_1_0"),
-          AssetLoader::get().getTexture("settings_temperature_1_1"),
+          AssetLoader::get().getTexture("s_temperature_1_0"),
+          AssetLoader::get().getTexture("s_temperature_1_1"),
           [this]() { settings["temperature"] = 1; })),
       pair("2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 5 / 5,
-              R::get().getUint("settings_radio_height") + 120
+              R::settings_radio_width * 5 / 5,
+              R::settings_radio_height + 120
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_temperature_2_0"),
-          AssetLoader::get().getTexture("settings_temperature_2_1"),
+          AssetLoader::get().getTexture("s_temperature_2_0"),
+          AssetLoader::get().getTexture("s_temperature_2_1"),
           [this]() { settings["temperature"] = 2; }))
   }, to_string(settings.at("temperature"))));
   // TODO кнопки настройки влажности
   gui->addObject("moisture", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height") * 2 + 140
+              R::settings_radio_width / 5,
+              R::settings_radio_height * 2 + 140
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_m2_0"),
-          AssetLoader::get().getTexture("settings_height_m2_1"),
+          AssetLoader::get().getTexture("s_height_-2_0"),
+          AssetLoader::get().getTexture("s_height_-2_1"),
           [this]() { settings["moisture"] = -2; })),
       pair("-1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 2 / 5,
-              R::get().getUint("settings_radio_height") * 2 + 140
+              R::settings_radio_width * 2 / 5,
+              R::settings_radio_height * 2 + 140
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_m1_0"),
-          AssetLoader::get().getTexture("settings_height_m1_1"),
+          AssetLoader::get().getTexture("s_height_-1_0"),
+          AssetLoader::get().getTexture("s_height_-1_1"),
           [this]() { settings["moisture"] = -1; })),
       pair("0", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 3 / 5,
-              R::get().getUint("settings_radio_height") * 2 + 140
+              R::settings_radio_width * 3 / 5,
+              R::settings_radio_height * 2 + 140
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_0_0"),
-          AssetLoader::get().getTexture("settings_height_0_1"),
+          AssetLoader::get().getTexture("s_height_0_0"),
+          AssetLoader::get().getTexture("s_height_0_1"),
           [this]() { settings["moisture"] = 0; })),
       pair("1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 4 / 5,
-              R::get().getUint("settings_radio_height") * 2 + 140
+              R::settings_radio_width * 4 / 5,
+              R::settings_radio_height * 2 + 140
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_1_0"),
-          AssetLoader::get().getTexture("settings_height_1_1"),
+          AssetLoader::get().getTexture("s_height_1_0"),
+          AssetLoader::get().getTexture("s_height_1_1"),
           [this]() { settings["moisture"] = 1; })),
       pair("2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 5 / 5,
-              R::get().getUint("settings_radio_height") * 2 + 140
+              R::settings_radio_width * 5 / 5,
+              R::settings_radio_height * 2 + 140
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_2_0"),
-          AssetLoader::get().getTexture("settings_height_2_1"),
+          AssetLoader::get().getTexture("s_height_2_0"),
+          AssetLoader::get().getTexture("s_height_2_1"),
           [this]() { settings["moisture"] = 2; }))
   }, to_string(settings.at("moisture"))));
   // TODO кнопки настройки размеров карты
   gui->addObject("size", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height") * 3 + 160
+              R::settings_radio_width / 5,
+              R::settings_radio_height * 3 + 160
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_m2_0"),
-          AssetLoader::get().getTexture("settings_height_m2_1"),
+          AssetLoader::get().getTexture("s_height_-2_0"),
+          AssetLoader::get().getTexture("s_height_-2_1"),
           [this]() { settings["size"] = -2; })),
       pair("-1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 2 / 5,
-              R::get().getUint("settings_radio_height") * 3 + 160
+              R::settings_radio_width * 2 / 5,
+              R::settings_radio_height * 3 + 160
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_m1_0"),
-          AssetLoader::get().getTexture("settings_height_m1_1"),
+          AssetLoader::get().getTexture("s_height_-1_0"),
+          AssetLoader::get().getTexture("s_height_-1_1"),
           [this]() { settings["size"] = -1; })),
       pair("0", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 3 / 5,
-              R::get().getUint("settings_radio_height") * 3 + 160
+              R::settings_radio_width * 3 / 5,
+              R::settings_radio_height * 3 + 160
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_0_0"),
-          AssetLoader::get().getTexture("settings_height_0_1"),
+          AssetLoader::get().getTexture("s_height_0_0"),
+          AssetLoader::get().getTexture("s_height_0_1"),
           [this]() { settings["size"] = 0; })),
       pair("1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 4 / 5,
-              R::get().getUint("settings_radio_height") * 3 + 160
+              R::settings_radio_width * 4 / 5,
+              R::settings_radio_height * 3 + 160
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_1_0"),
-          AssetLoader::get().getTexture("settings_height_1_1"),
+          AssetLoader::get().getTexture("s_height_1_0"),
+          AssetLoader::get().getTexture("s_height_1_1"),
           [this]() { settings["size"] = 1; })),
       pair("2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 5 / 5,
-              R::get().getUint("settings_radio_height") * 3 + 160
+              R::settings_radio_width * 5 / 5,
+              R::settings_radio_height * 3 + 160
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_2_0"),
-          AssetLoader::get().getTexture("settings_height_2_1"),
+          AssetLoader::get().getTexture("s_height_2_0"),
+          AssetLoader::get().getTexture("s_height_2_1"),
           [this]() { settings["size"] = 2; }))
   }, to_string(settings.at("size"))));
   // TODO кнопки настройки сглаживания карты
   gui->addObject("flatness", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height") * 4 + 180
+              R::settings_radio_width / 5,
+              R::settings_radio_height * 4 + 180
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_m2_0"),
-          AssetLoader::get().getTexture("settings_height_m2_1"),
+          AssetLoader::get().getTexture("s_height_-2_0"),
+          AssetLoader::get().getTexture("s_height_-2_1"),
           [this]() { settings["flatness"] = -2; })),
       pair("-1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 2 / 5,
-              R::get().getUint("settings_radio_height") * 4 + 180
+              R::settings_radio_width * 2 / 5,
+              R::settings_radio_height * 4 + 180
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_m1_0"),
-          AssetLoader::get().getTexture("settings_height_m1_1"),
+          AssetLoader::get().getTexture("s_height_-1_0"),
+          AssetLoader::get().getTexture("s_height_-1_1"),
           [this]() { settings["flatness"] = -1; })),
       pair("0", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 3 / 5,
-              R::get().getUint("settings_radio_height") * 4 + 180
+              R::settings_radio_width * 3 / 5,
+              R::settings_radio_height * 4 + 180
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_0_0"),
-          AssetLoader::get().getTexture("settings_height_0_1"),
+          AssetLoader::get().getTexture("s_height_0_0"),
+          AssetLoader::get().getTexture("s_height_0_1"),
           [this]() { settings["flatness"] = 0; })),
       pair("1", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 4 / 5,
-              R::get().getUint("settings_radio_height") * 4 + 180
+              R::settings_radio_width * 4 / 5,
+              R::settings_radio_height * 4 + 180
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_1_0"),
-          AssetLoader::get().getTexture("settings_height_1_1"),
+          AssetLoader::get().getTexture("s_height_1_0"),
+          AssetLoader::get().getTexture("s_height_1_1"),
           [this]() { settings["flatness"] = 1; })),
       pair("2", new Button(
           Vector2s(
-              R::get().getUint("settings_radio_width") * 5 / 5,
-              R::get().getUint("settings_radio_height") * 4 + 180
+              R::settings_radio_width * 5 / 5,
+              R::settings_radio_height * 4 + 180
           ),
           Vector2s(
-              R::get().getUint("settings_radio_width") / 5,
-              R::get().getUint("settings_radio_height")
+              R::settings_radio_width / 5,
+              R::settings_radio_height
           ),
-          AssetLoader::get().getTexture("settings_height_2_0"),
-          AssetLoader::get().getTexture("settings_height_2_1"),
+          AssetLoader::get().getTexture("s_height_2_0"),
+          AssetLoader::get().getTexture("s_height_2_1"),
           [this]() { settings["flatness"] = 2; }))
   }, to_string(settings.at("flatness"))));
   // TODO кнопка генерации карты
   gui->addObject("start_gen", new Button(
       Vector2s(
           window_size.x - 200,
-          R::get().getUint("settings_radio_height") * 4 + 180
+          R::settings_radio_height * 4 + 180
       ),
       Vector2s(
-          R::get().getUint("settings_radio_width") / 5,
-          R::get().getUint("settings_radio_height")
+          R::settings_radio_width / 5,
+          R::settings_radio_height
       ),
-      AssetLoader::get().getTexture("settings_height_2_0"),
-      AssetLoader::get().getTexture("settings_height_2_1"),
+      AssetLoader::get().getTexture("s_height_2_0"),
+      AssetLoader::get().getTexture("s_height_2_1"),
       [this]() {
         writeSettings();
         temp_key = MAP_SCREEN;
@@ -387,6 +387,9 @@ void SettingsScreen::handleInput() {
       if (Mouse::isButtonPressed(Mouse::Left)) {
         gui->checkClicked(Mouse::getPosition());
       }
+    }
+    if (event.type == Event::Closed) {
+      temp_key = EXIT;
     }
   }
 }

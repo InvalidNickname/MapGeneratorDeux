@@ -27,10 +27,14 @@ int main() {
 
   // отрисовка и прочие вещи
   while (window.isOpen()) {
-    screen_manager.doActiveScreenActions();
-    window.clear(Color::Black);
-    screen_manager.drawActiveScreen();
-    window.display();
+    if (screen_manager.doActiveScreenActions()) {
+      window.clear(Color::Black);
+      screen_manager.drawActiveScreen();
+      window.display();
+    } else {
+      window.close();
+    }
   }
+
   return 0;
 }

@@ -1,8 +1,8 @@
 #include "Minimap.h"
 
 Minimap::Minimap(Vector2u window_size, DrawableGrid *dg) : window_size(window_size) {
-  pos.x = window_size.x - R::get().getUint("minimap_width");
-  pos.y = window_size.y - R::get().getUint("minimap_height");
+  pos.x = window_size.x - R::minimap_width;
+  pos.y = window_size.y - R::minimap_height;
 
   createMinimapImage(dg);
   createViewRectangles();
@@ -20,35 +20,34 @@ void Minimap::render(RenderWindow *window) {
 void Minimap::updateViewRegion(Vector2s lowerLeft, Vector2s upperRight) {
   if (lowerLeft.x >= 0 && upperRight.x < MAP_WIDTH) {
     right.setSize(
-        {(float) R::get().getUint("minimap_width") * (float) (upperRight.x - lowerLeft.x) / MAP_WIDTH,
-         (float) R::get().getUint("minimap_height") * (float) (upperRight.y - lowerLeft.y) / MAP_HEIGHT}
+        {R::minimap_width * (float) (upperRight.x - lowerLeft.x) / MAP_WIDTH,
+         R::minimap_height * (float) (upperRight.y - lowerLeft.y) / MAP_HEIGHT}
     );
     right.setPosition(
-        {pos.x + (float) R::get().getUint("minimap_width") * (float) lowerLeft.x / MAP_WIDTH,
-         pos.y + (float) R::get().getUint("minimap_height") * (float) lowerLeft.y / MAP_HEIGHT}
+        {pos.x + R::minimap_width * (float) lowerLeft.x / MAP_WIDTH,
+         pos.y + R::minimap_height * (float) lowerLeft.y / MAP_HEIGHT}
     );
-
     left.setSize({0, 0});
   } else {
-    if (lowerLeft.x < 0) lowerLeft.x = MAP_WIDTH + lowerLeft.x;
-    if (upperRight.x >= MAP_WIDTH) upperRight.x = upperRight.x % MAP_WIDTH;
+    if (lowerLeft.x < 0) lowerLeft.x += MAP_WIDTH;
+    if (upperRight.x >= MAP_WIDTH) upperRight.x %= MAP_WIDTH;
 
     right.setSize(
-        {(float) R::get().getUint("minimap_width") * (float) (MAP_WIDTH - lowerLeft.x) / MAP_WIDTH,
-         (float) R::get().getUint("minimap_height") * (float) (upperRight.y - lowerLeft.y) / MAP_HEIGHT}
+        {R::minimap_width * (float) (MAP_WIDTH - lowerLeft.x) / MAP_WIDTH,
+         R::minimap_height * (float) (upperRight.y - lowerLeft.y) / MAP_HEIGHT}
     );
     right.setPosition(
-        {pos.x + (float) R::get().getUint("minimap_width") * (float) lowerLeft.x / MAP_WIDTH,
-         pos.y + (float) R::get().getUint("minimap_height") * (float) lowerLeft.y / MAP_HEIGHT}
+        {pos.x + R::minimap_width * (float) lowerLeft.x / MAP_WIDTH,
+         pos.y + R::minimap_height * (float) lowerLeft.y / MAP_HEIGHT}
     );
 
     left.setSize(
-        {(float) R::get().getUint("minimap_width") * (float) (upperRight.x) / MAP_WIDTH,
-         (float) R::get().getUint("minimap_height") * (float) (upperRight.y - lowerLeft.y) / MAP_HEIGHT}
+        {R::minimap_width * (float) (upperRight.x) / MAP_WIDTH,
+         R::minimap_height * (float) (upperRight.y - lowerLeft.y) / MAP_HEIGHT}
     );
     left.setPosition(
         {pos.x + 2,
-         pos.y + (float) R::get().getUint("minimap_height") * (float) lowerLeft.y / MAP_HEIGHT}
+         pos.y + R::minimap_height * (float) lowerLeft.y / MAP_HEIGHT}
     );
   }
 }
@@ -66,15 +65,15 @@ void Minimap::createMinimapImage(DrawableGrid *drawable_grid) {
 
   minimap.setTexture(minimap_texture->getTexture());
   minimap.setScale(
-      {(float) R::get().getUint("minimap_width") / minimap_texture->getTexture().getSize().x,
-       (float) R::get().getUint("minimap_height") / minimap_texture->getTexture().getSize().y}
+      {(float) R::minimap_width / minimap_texture->getTexture().getSize().x,
+       (float) R::minimap_height / minimap_texture->getTexture().getSize().y}
   );
   minimap.setPosition(pos);
 
   overlay.setTexture(*AssetLoader::get().getTexture("minimap_overlay"));
   overlay.setScale(
-      {(float) R::get().getUint("minimap_width") / overlay.getTexture()->getSize().x,
-       (float) R::get().getUint("minimap_height") / overlay.getTexture()->getSize().y}
+      {(float) R::minimap_width / overlay.getTexture()->getSize().x,
+       (float) R::minimap_height / overlay.getTexture()->getSize().y}
   );
   overlay.setPosition(pos);
 }
