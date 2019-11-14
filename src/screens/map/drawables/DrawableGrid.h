@@ -1,7 +1,5 @@
 #pragma once
 
-#include "screens/map/objects/tiles/TileGrid.h"
-#include "utils/G.h"
 #include "utils/AssetLoader.h"
 #include "screens/map/generator/Generator.h"
 

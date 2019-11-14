@@ -2,8 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "utils/G.h"
-#include "type/Type.h"
 #include "type/Tileset.h"
 #include "screens/map/MapMode.h"
 

@@ -1,10 +1,8 @@
 #pragma once
 
 #include "ui/UIDrawable.h"
-#include "utils/G.h"
 #include "utils/R.h"
 #include "DrawableGrid.h"
-#include "screens/map/MapMode.h"
 
 using namespace sf;
 

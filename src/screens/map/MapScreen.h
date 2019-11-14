@@ -1,13 +1,10 @@
 #pragma once
 
 #include "screens/Screen.h"
-#include "screens/map/drawables/DrawableGrid.h"
 #include "ui/GUI.h"
 #include "screens/map/drawables/Minimap.h"
 #include "ui/RadioButtons.h"
 #include "screens/map/drawables/TileInfoList.h"
-#include "screens/map/MapMode.h"
-#include "utils/G.h"
 
 class MapScreen : public Screen {
 
