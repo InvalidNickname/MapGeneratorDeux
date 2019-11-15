@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 #include "type/Tileset.h"
 #include "utils/MapMode.h"
@@ -10,8 +10,6 @@ class Tile {
   const Vector2u pos;
 
   explicit Tile(Vector2u pos);
-
-  void render(RenderTarget *_target, MapMode mode, Vector2i pos, int max_z, int min_z);
 
   [[nodiscard]] float getLatitude() const;
 
@@ -37,19 +35,13 @@ class Tile {
 
   void setMoisture(float _moisture);
 
-  [[nodiscard]] Level GetLevel() const;
+  [[nodiscard]] Level getLevel() const;
 
  private:
   uint16_t z{0};
   float latitude{}, longitude{};
-  Vector2f render_pos{0.f, 0.f};
   float moisture{0};
   uint16_t temperature{0};
   Type *type{nullptr};
   Level level{Level::NO};
-
- private:
-  VertexArray shape;
-
-  void drawTile(RenderTarget *_target, Color color);
 };

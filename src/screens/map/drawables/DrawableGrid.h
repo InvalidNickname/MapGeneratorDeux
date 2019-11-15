@@ -3,6 +3,7 @@
 #include <Generator.h>
 
 #include "utils/AssetLoader.h"
+#include "utils/R.h"
 
 using Vector2s = Vector2<int16_t>;
 
@@ -32,5 +33,9 @@ class DrawableGrid {
   void updateTexture(MapMode mode);
 
   void renderSelectedTile(RenderTarget *_target, int x0, int x1);
+
+  void renderTile(RenderTarget *_target, MapMode mode, Vector2u coords, Vector2i pos);
+
+  static void renderTileTriangles(RenderTarget *_target, Color color, Vector2i pos);
 
 };

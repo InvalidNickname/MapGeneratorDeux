@@ -1,7 +1,5 @@
 #include "Tileset.h"
 
-#include <iostream>
-
 Tileset::Tileset() {
   std::ifstream input("jsons/tiles.json");
   Json base_file = Json::parse(input);
@@ -10,11 +8,11 @@ Tileset::Tileset() {
   // тип суши для генератора
   tileset.push_back(
       new Type("GenLand", "GenLand", vector<string>(), Color::Green, vector<Color>(4, Color::Green), true, 0,
-               new pair{G::getMinTemp(), G::getMaxTemp()}, new pair{0.f, 1.f}, "nullptr"));
+               new pair{G::GetMinTemp(), G::GetMaxTemp()}, new pair{0.f, 1.f}, "nullptr"));
   // тип воды для генератора
   tileset.push_back(
       new Type("GenWater", "GenWater", vector<string>(), Color::Blue, vector<Color>(4, Color::Blue), false, 0,
-               new pair{G::getMinTemp(), G::getMaxTemp()}, new pair{0.f, 1.f}, "nullptr"));
+               new pair{G::GetMinTemp(), G::GetMaxTemp()}, new pair{0.f, 1.f}, "nullptr"));
   for (Json temp : base_file) {
     Json color_value = temp.at("color");
     Json name_value = temp.at("name");
@@ -38,7 +36,7 @@ Tileset::Tileset() {
     }
     bool above_sea_level = gen_info.at("above_sea_level");
     int priority = gen_info.at("priority");
-    auto *temperature_range = new pair{G::getMinTemp(), G::getMaxTemp()};
+    auto *temperature_range = new pair{G::GetMinTemp(), G::GetMaxTemp()};
     if (gen_info.contains("temp_min")) temperature_range->first = gen_info.at("temp_min");
     if (gen_info.contains("temp_max")) temperature_range->second = gen_info.at("temp_max");
     auto *moisture_range = new pair{0.f, 1.f};

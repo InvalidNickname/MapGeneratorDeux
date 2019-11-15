@@ -10,8 +10,8 @@ void MapScreen::prepare() {
   // установка камеры
   map_view.setSize(initial_size.x, initial_size.y);
   Vector2f camera_pos = {
-      G::TILE_WIDTH * (0.5f + G::getMapW()) / 2,
-      0.125f * G::TILE_HEIGHT * (3 * G::getMapH() - 2)
+      R::kTileWidth * (0.5f + G::GetMapW()) / 2,
+      0.125f * R::kTileHeight * (3 * G::GetMapH() - 2)
   };
   map_view.setCenter(camera_pos);
   // минимальный зум - сетка полностью помещается на экран по высоте
@@ -30,46 +30,46 @@ void MapScreen::setGUI() {
   gui->addObject("map_mode", new RadioButtons(new map<string, Button *>{
       pair("default", new Button(
           Vector2s(
-              window_size.x - 5 * R::map_mode_button_width,
-              window_size.y - R::minimap_height - R::map_mode_button_height
+              window_size.x - 5 * R::kMapModeButtonWidth,
+              window_size.y - R::kMinimapHeight - R::kMapModeButtonHeight
           ),
-          {R::map_mode_button_width, R::map_mode_button_height},
+          {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::get().getTexture("map_mode_default_0"),
           AssetLoader::get().getTexture("map_mode_default_1"),
           [this]() { map_mode = NORMAL; })),
       pair("biomes", new Button(
           Vector2s(
-              window_size.x - 4 * R::map_mode_button_width,
-              window_size.y - R::minimap_height - R::map_mode_button_height
+              window_size.x - 4 * R::kMapModeButtonWidth,
+              window_size.y - R::kMinimapHeight - R::kMapModeButtonHeight
           ),
-          {R::map_mode_button_width, R::map_mode_button_height},
+          {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::get().getTexture("map_mode_biomes_0"),
           AssetLoader::get().getTexture("map_mode_biomes_1"),
           [this]() { map_mode = BIOMES; })),
       pair("temperature", new Button(
           Vector2s(
-              window_size.x - 3 * R::map_mode_button_width,
-              window_size.y - R::minimap_height - R::map_mode_button_height
+              window_size.x - 3 * R::kMapModeButtonWidth,
+              window_size.y - R::kMinimapHeight - R::kMapModeButtonHeight
           ),
-          {R::map_mode_button_width, R::map_mode_button_height},
+          {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::get().getTexture("map_mode_temperature_0"),
           AssetLoader::get().getTexture("map_mode_temperature_1"),
           [this]() { map_mode = TEMPERATURE; })),
       pair("height", new Button(
           Vector2s(
-              window_size.x - 2 * R::map_mode_button_width,
-              window_size.y - R::minimap_height - R::map_mode_button_height
+              window_size.x - 2 * R::kMapModeButtonWidth,
+              window_size.y - R::kMinimapHeight - R::kMapModeButtonHeight
           ),
-          {R::map_mode_button_width, R::map_mode_button_height},
+          {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::get().getTexture("map_mode_height_0"),
           AssetLoader::get().getTexture("map_mode_height_1"),
           [this]() { map_mode = HEIGHT; })),
       pair("moisture", new Button(
           Vector2s(
-              window_size.x - R::map_mode_button_width,
-              window_size.y - R::minimap_height - R::map_mode_button_height
+              window_size.x - R::kMapModeButtonWidth,
+              window_size.y - R::kMinimapHeight - R::kMapModeButtonHeight
           ),
-          {R::map_mode_button_width, R::map_mode_button_height},
+          {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::get().getTexture("map_mode_moisture_0"),
           AssetLoader::get().getTexture("map_mode_moisture_1"),
           [this]() { map_mode = MOISTURE; }))
@@ -143,14 +143,14 @@ void MapScreen::handleInput() {
   if (zoom < 0.5) zoom = 0.5;
   if (zoom > min_zoom) zoom = min_zoom;
   // запрет на прокрутку за пределы карты по вертикали
-  if (map_view.getCenter().y < 0.25f * G::TILE_HEIGHT + zoom * window_size.y / 4)
-    map_view.setCenter(map_view.getCenter().x, 0.25f * G::TILE_HEIGHT + zoom * window_size.y / 4);
-  if (map_view.getCenter().y > 0.75f * G::TILE_HEIGHT * G::getMapH() - zoom * window_size.y / 4)
-    map_view.setCenter(map_view.getCenter().x, 0.75f * G::TILE_HEIGHT * G::getMapH() - zoom * window_size.y / 4);
+  if (map_view.getCenter().y < 0.25f * R::kTileHeight + zoom * window_size.y / 4)
+    map_view.setCenter(map_view.getCenter().x, 0.25f * R::kTileHeight + zoom * window_size.y / 4);
+  if (map_view.getCenter().y > 0.75f * R::kTileHeight * G::GetMapH() - zoom * window_size.y / 4)
+    map_view.setCenter(map_view.getCenter().x, 0.75f * R::kTileHeight * G::GetMapH() - zoom * window_size.y / 4);
   // бесконечная прокрутка по горизонтали
   if (map_view.getCenter().x <= -zoom * window_size.x / 4)
-    map_view.setCenter(G::TILE_WIDTH * G::getMapW() - zoom * window_size.x / 4, map_view.getCenter().y);
-  if (map_view.getCenter().x >= G::TILE_WIDTH * G::getMapW() + zoom * window_size.x / 4)
+    map_view.setCenter(R::kTileWidth * G::GetMapW() - zoom * window_size.x / 4, map_view.getCenter().y);
+  if (map_view.getCenter().x >= R::kTileWidth * G::GetMapW() + zoom * window_size.x / 4)
     map_view.setCenter(zoom * window_size.x / 4, map_view.getCenter().y);
 }
 
