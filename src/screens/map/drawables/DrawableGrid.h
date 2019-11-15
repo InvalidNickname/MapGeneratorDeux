@@ -1,7 +1,8 @@
 #pragma once
 
+#include <Generator.h>
+
 #include "utils/AssetLoader.h"
-#include "screens/map/generator/Generator.h"
 
 using Vector2s = Vector2<int16_t>;
 

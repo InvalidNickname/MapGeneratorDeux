@@ -1,7 +1,8 @@
 #pragma once
 
+#include <tile/Tile.h>
+
 #include "ui/UIDrawable.h"
-#include "screens/map/objects/tiles/Tile.h"
 #include "utils/AssetLoader.h"
 
 class TileInfoList : public UIDrawable {

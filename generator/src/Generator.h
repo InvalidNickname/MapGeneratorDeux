@@ -1,6 +1,6 @@
 #pragma once
 
-#include "screens/map/objects/tiles/TileGrid.h"
+#include "tile/TileGrid.h"
 #include "utils/Random.h"
 #include "utils/PerlinNoise.h"
 

@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "type/Tileset.h"
-#include "screens/map/MapMode.h"
+#include "utils/MapMode.h"
 
 class Tile {
  public:
