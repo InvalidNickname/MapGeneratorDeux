@@ -1,5 +1,7 @@
 #pragma once
 
+#include <codecvt>
+
 #include <tile/Tile.h>
 
 #include "ui/UIDrawable.h"
@@ -20,4 +22,6 @@ class TileInfoList : public UIDrawable {
  private:
   Text coordinates, type, temperature;
   Sprite background;
+
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 };

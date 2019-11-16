@@ -1,0 +1,174 @@
+{
+  "data": [
+    {
+      "type": "Ocean",
+      "archtype": "Water",
+      "name": {
+        "no_level": "Побережье",
+        "low_level": "Мелководье",
+        "medium_level": "Океан",
+        "high_level": "Глубокий океан"
+      },
+      "color": {
+        "base": {
+          "no_level": "0x55c7ffff",
+          "low_level": "0x55c0ffff",
+          "medium_level": "0x55b3ffff",
+          "high_level": "0x50afffff"
+        },
+        "biome": "0x55b2feff"
+      },
+      "generator_info": {
+        "priority": 1,
+        "above_sea_level": false
+      }
+    },
+    {
+      "type": "Plains",
+      "archtype": "Plains",
+      "name": {
+        "no_level": "Равнины",
+        "low_level": "Холмы",
+        "medium_level": "Высокие холмы",
+        "high_level": "Горы"
+      },
+      "color": {
+        "base": {
+          "no_level": "0x00bf46ff",
+          "low_level": "0x00b146ff",
+          "medium_level": "0x00a746ff",
+          "high_level": "0x009c46ff"
+        },
+        "biome": "0x00bf46ff"
+      },
+      "generator_info": {
+        "priority": 2,
+        "above_sea_level": true
+      }
+    },
+    {
+      "type": "Jungle",
+      "archtype": "Plains",
+      "name": {
+        "no_level": "Тропический лес",
+        "low_level": "Тропический лес, холмы",
+        "medium_level": "Тропический лес, высокие холмы",
+        "high_level": "Тропический лес, горы"
+      },
+      "color": {
+        "base": {
+          "no_level": "0x00aa3fff",
+          "low_level": "0x009f3fff",
+          "medium_level": "0x00953fff",
+          "high_level": "0x008b3fff"
+        },
+        "biome": "0x00aa3fff"
+      },
+      "generator_info": {
+        "priority": 3,
+        "above_sea_level": true,
+        "temp_min": 303,
+        "moisture_min": 0.6
+      }
+    },
+    {
+      "type": "Taiga",
+      "archtype": "Plains",
+      "name": {
+        "no_level": "Тайга",
+        "low_level": "Тайга, холмы",
+        "medium_level": "Тайга, высокие холмы",
+        "high_level": "Тайга, горы"
+      },
+      "color": {
+        "base": {
+          "no_level": "0x00bf7fff",
+          "low_level": "0x00b17fff",
+          "medium_level": "0x00a77fff",
+          "high_level": "0x009c7fff"
+        },
+        "biome": "0x00b17fff"
+      },
+      "generator_info": {
+        "priority": 4,
+        "above_sea_level": true,
+        "temp_max": 293
+      }
+    },
+    {
+      "type": "Ice",
+      "archtype": "Ice",
+      "name": {
+        "no_level": "Ледник",
+        "low_level": "Ледяные холмы",
+        "medium_level": "Высокие ледяные холмы",
+        "high_level": "Ледяные горы"
+      },
+      "color": {
+        "base": {
+          "no_level": "0xc5f7ffff",
+          "low_level": "0xb4e4f4ff",
+          "medium_level": "0xcdedefff",
+          "high_level": "0xc3e3efff"
+        },
+        "biome": "0xc5f7ffff"
+      },
+      "generator_info": {
+        "priority": 5,
+        "above_sea_level": true,
+        "temp_max": 273
+      }
+    },
+    {
+      "type": "Desert",
+      "archtype": "Desert",
+      "name": {
+        "no_level": "Пустыня",
+        "low_level": "Пустыня, холмы",
+        "medium_level": "Пустыня, высокие холмы",
+        "high_level": "Пустыня, горы"
+      },
+      "color": {
+        "base": {
+          "no_level": "0xffd84aff",
+          "low_level": "0xfecd4aff",
+          "medium_level": "0xfbc640ff",
+          "high_level": "0xfbb940ff"
+        },
+        "biome": "0xffd84aff"
+      },
+      "generator_info": {
+        "priority": 6,
+        "above_sea_level": true,
+        "temp_min": 313,
+        "moisture_max": 0.3
+      }
+    },
+    {
+      "type": "Semi-desert",
+      "archtype": "Desert",
+      "name": {
+        "no_level": "Полупустыня",
+        "low_level": "Полупустыня, холмы",
+        "medium_level": "Полупустыня, высокие холмы",
+        "high_level": "Полупустыня, горы"
+      },
+      "color": {
+        "base": {
+          "no_level": "0xd2d84aff",
+          "low_level": "0xc5d400ff",
+          "medium_level": "0xc3ca00ff",
+          "high_level": "0xc1c000ff"
+        },
+        "biome": "0xd2d84aff"
+      },
+      "generator_info": {
+        "priority": 7,
+        "above_sea_level": true,
+        "temp_min": 303,
+        "neighbour": "Desert",
+        "moisture_max": 0.4
+      }
+    }
+  ]
+}

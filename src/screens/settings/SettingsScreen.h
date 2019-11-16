@@ -25,7 +25,7 @@ class SettingsScreen : public Screen {
   Vector2u window_size;
   GUI *gui;
   View ui_view;
-  map<string, int16_t> settings;
+  map<string, string> settings;
 
   void prepare() override;
 

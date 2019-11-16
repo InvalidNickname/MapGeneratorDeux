@@ -15,39 +15,54 @@ TileGrid *Generator::generate() {
 }
 
 void Generator::raiseTerrain() {
-  // общее количество клеток суши
-  int land_budget = G::GetMapH() * G::GetMapW();
-  // количество начальных точек континентов
-  int size = Random::get().getInt(40, 60);
-  // количество точек в континенте
-  int continent_size = land_budget / size;
-  for (int i = 0; i < size; i++) {
-    // определение центрального гекса континента
-    auto prev = Vector2u(
-        Random::get().getInt(0, G::GetMapW() - 1),
-        Random::get().getInt(G::GetLandBorder(), G::GetMapH() - G::GetLandBorder() - 1)
-    );
-    // построение континента вокруг центрального гекса
-    for (int j = 0; j < continent_size; j++) {
-      Tile *neighbour = grid->getNeighbour(Random::get().getInt(0, 6), prev);
-      if (neighbour != nullptr) {
-        float factor = 1;
-        // если выбранный сосед за границей суши, уменьшается вероятность поднятия суши там
-        if (neighbour->pos.y < G::GetLandBorder())
-          factor = min(factor, (float) neighbour->pos.y / G::GetLandBorder());
-        if (neighbour->pos.y > G::GetMapH() - G::GetLandBorder() - 1)
-          factor = min(factor, (float) (G::GetMapH() - 1 - neighbour->pos.y) / G::GetLandBorder());
-        if ((float) Random::get().getInt(10, 100) / 100.f < factor) {
-          neighbour->increaseZ(1);
-          if (neighbour->getZ() > 0) {
-            j--;
+  if (G::GetGeneratorType() == "best") {
+    // общее количество клеток суши
+    int land_budget = G::GetMapH() * G::GetMapW();
+    // количество начальных точек континентов
+    int size = Random::get().getInt(40, 60);
+    // количество точек в континенте
+    int continent_size = land_budget / size;
+    for (int i = 0; i < size; i++) {
+      // определение центрального гекса континента
+      auto prev = Vector2u(
+          Random::get().getInt(0, G::GetMapW() - 1),
+          Random::get().getInt(G::GetLandBorder(), G::GetMapH() - G::GetLandBorder() - 1)
+      );
+      // построение континента вокруг центрального гекса
+      for (int j = 0; j < continent_size; j++) {
+        Tile *neighbour = grid->getNeighbour(Random::get().getInt(0, 6), prev);
+        if (neighbour != nullptr) {
+          float factor = 1;
+          // если выбранный сосед за границей суши, уменьшается вероятность поднятия суши там
+          if (neighbour->pos.y < G::GetLandBorder())
+            factor = min(factor, (float) neighbour->pos.y / G::GetLandBorder());
+          if (neighbour->pos.y > G::GetMapH() - G::GetLandBorder() - 1)
+            factor = min(factor, (float) (G::GetMapH() - 1 - neighbour->pos.y) / G::GetLandBorder());
+          if ((float) Random::get().getInt(10, 100) / 100.f < factor) {
+            neighbour->increaseZ(1);
+            if (neighbour->getZ() > 0) {
+              j--;
+            }
           }
+          prev = neighbour->pos;
+        } else {
+          j--;
         }
-        prev = neighbour->pos;
-      } else {
-        j--;
       }
     }
+  } else {
+    PerlinNoise perlin_noise = PerlinNoise(Random::get().getSeed());
+    for (uint16_t i = 0; i < G::GetMapW(); i++)
+      for (uint16_t j = 0; j < G::GetMapH(); j++) {
+        Tile *tile = grid->getTile({i, j});
+        float z = 1 - tile->getLatitude() / 90.f;
+        z *= (perlin_noise.noise(
+            0.01f * (float) i,
+            0.01f * (float) j,
+            G::GetMapW() * 0.01f,
+            G::GetMapH() * 0.01f, 4) + 1) / 2.f;
+        tile->setZ(1000 * z);
+      }
   }
 }
 
