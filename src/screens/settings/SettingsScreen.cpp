@@ -40,64 +40,64 @@ void SettingsScreen::setGUI() {
       AssetLoader::get().getTexture("s_background")));
   gui->addObject("height", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          {R::kSettingsRadioWidth / 5, 100},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth / 5, 100},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_-2_0"),
           AssetLoader::get().getTexture("s_height_-2_1"),
           [this]() { settings["ocean_level"] = "-2"; })),
       pair("-1", new Button(
-          {R::kSettingsRadioWidth * 2 / 5, 100},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 2 / 5, 100},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_-1_0"),
           AssetLoader::get().getTexture("s_height_-1_1"),
           [this]() { settings["ocean_level"] = "-1"; })),
       pair("0", new Button(
-          {R::kSettingsRadioWidth * 3 / 5, 100},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 3 / 5, 100},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_0_0"),
           AssetLoader::get().getTexture("s_height_0_1"),
           [this]() { settings["ocean_level"] = "0"; })),
       pair("1", new Button(
-          {R::kSettingsRadioWidth * 4 / 5, 100},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 4 / 5, 100},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_1_0"),
           AssetLoader::get().getTexture("s_height_1_1"),
           [this]() { settings["ocean_level"] = "1"; })),
       pair("2", new Button(
-          {R::kSettingsRadioWidth, 100},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth, 100},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_2_0"),
           AssetLoader::get().getTexture("s_height_2_1"),
           [this]() { settings["ocean_level"] = "2"; }))
   }, settings["ocean_level"]));
   gui->addObject("temperature", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight + 120},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth / 5, R::kSRadioHeight + 120},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_temperature_-2_0"),
           AssetLoader::get().getTexture("s_temperature_-2_1"),
           [this]() { settings["temperature"] = "-2"; })),
       pair("-1", new Button(
-          {R::kSettingsRadioWidth * 2 / 5, R::kSettingsRadioHeight + 120},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 2 / 5, R::kSRadioHeight + 120},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_temperature_-1_0"),
           AssetLoader::get().getTexture("s_temperature_-1_1"),
           [this]() { settings["temperature"] = "-1"; })),
       pair("0", new Button(
-          {R::kSettingsRadioWidth * 3 / 5, R::kSettingsRadioHeight + 120},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 3 / 5, R::kSRadioHeight + 120},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_temperature_0_0"),
           AssetLoader::get().getTexture("s_temperature_0_1"),
           [this]() { settings["temperature"] = "0"; })),
       pair("1", new Button(
-          {R::kSettingsRadioWidth * 4 / 5, R::kSettingsRadioHeight + 120},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 4 / 5, R::kSRadioHeight + 120},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_temperature_1_0"),
           AssetLoader::get().getTexture("s_temperature_1_1"),
           [this]() { settings["temperature"] = "1"; })),
       pair("2", new Button(
-          {R::kSettingsRadioWidth, R::kSettingsRadioHeight + 120},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth, R::kSRadioHeight + 120},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_temperature_2_0"),
           AssetLoader::get().getTexture("s_temperature_2_1"),
           [this]() { settings["temperature"] = "2"; }))
@@ -105,64 +105,64 @@ void SettingsScreen::setGUI() {
   // TODO кнопки настройки влажности
   gui->addObject("moisture", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight * 2 + 140},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth / 5, R::kSRadioHeight * 2 + 140},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_-2_0"),
           AssetLoader::get().getTexture("s_height_-2_1"),
           [this]() { settings["moisture"] = "-2"; })),
       pair("-1", new Button(
-          {R::kSettingsRadioWidth * 2 / 5, R::kSettingsRadioHeight * 2 + 140},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 2 / 5, R::kSRadioHeight * 2 + 140},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_-1_0"),
           AssetLoader::get().getTexture("s_height_-1_1"),
           [this]() { settings["moisture"] = "-1"; })),
       pair("0", new Button(
-          {R::kSettingsRadioWidth * 3 / 5, R::kSettingsRadioHeight * 2 + 140},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 3 / 5, R::kSRadioHeight * 2 + 140},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_0_0"),
           AssetLoader::get().getTexture("s_height_0_1"),
           [this]() { settings["moisture"] = "0"; })),
       pair("1", new Button(
-          {R::kSettingsRadioWidth * 4 / 5, R::kSettingsRadioHeight * 2 + 140},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 4 / 5, R::kSRadioHeight * 2 + 140},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_1_0"),
           AssetLoader::get().getTexture("s_height_1_1"),
           [this]() { settings["moisture"] = "1"; })),
       pair("2", new Button(
-          {R::kSettingsRadioWidth, R::kSettingsRadioHeight * 2 + 140},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth, R::kSRadioHeight * 2 + 140},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_2_0"),
           AssetLoader::get().getTexture("s_height_2_1"),
           [this]() { settings["moisture"] = "2"; }))
   }, settings["moisture"]));
   gui->addObject("size", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight * 3 + 160},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth / 5, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_size_-2_0"),
           AssetLoader::get().getTexture("s_size_-2_1"),
           [this]() { settings["size"] = "-2"; })),
       pair("-1", new Button(
-          {R::kSettingsRadioWidth * 2 / 5, R::kSettingsRadioHeight * 3 + 160},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 2 / 5, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_size_-1_0"),
           AssetLoader::get().getTexture("s_size_-1_1"),
           [this]() { settings["size"] = "-1"; })),
       pair("0", new Button(
-          {R::kSettingsRadioWidth * 3 / 5, R::kSettingsRadioHeight * 3 + 160},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 3 / 5, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_size_0_0"),
           AssetLoader::get().getTexture("s_size_0_1"),
           [this]() { settings["size"] = "0"; })),
       pair("1", new Button(
-          {R::kSettingsRadioWidth * 4 / 5, R::kSettingsRadioHeight * 3 + 160},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 4 / 5, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_size_1_0"),
           AssetLoader::get().getTexture("s_size_1_1"),
           [this]() { settings["size"] = "1"; })),
       pair("2", new Button(
-          {R::kSettingsRadioWidth, R::kSettingsRadioHeight * 3 + 160},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_size_2_0"),
           AssetLoader::get().getTexture("s_size_2_1"),
           [this]() { settings["size"] = "2"; }))
@@ -170,61 +170,76 @@ void SettingsScreen::setGUI() {
   // TODO кнопки настройки сглаживания карты
   gui->addObject("flatness", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight * 4 + 180},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth / 5, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_-2_0"),
           AssetLoader::get().getTexture("s_height_-2_1"),
           [this]() { settings["flatness"] = "-2"; })),
       pair("-1", new Button(
-          {R::kSettingsRadioWidth * 2 / 5, R::kSettingsRadioHeight * 4 + 180},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 2 / 5, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_-1_0"),
           AssetLoader::get().getTexture("s_height_-1_1"),
           [this]() { settings["flatness"] = "-1"; })),
       pair("0", new Button(
-          {R::kSettingsRadioWidth * 3 / 5, R::kSettingsRadioHeight * 4 + 180},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 3 / 5, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_0_0"),
           AssetLoader::get().getTexture("s_height_0_1"),
           [this]() { settings["flatness"] = "0"; })),
       pair("1", new Button(
-          {R::kSettingsRadioWidth * 4 / 5, R::kSettingsRadioHeight * 4 + 180},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth * 4 / 5, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_1_0"),
           AssetLoader::get().getTexture("s_height_1_1"),
           [this]() { settings["flatness"] = "1"; })),
       pair("2", new Button(
-          {R::kSettingsRadioWidth, R::kSettingsRadioHeight * 4 + 180},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
+          {R::kSRadioWidth, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::get().getTexture("s_height_2_0"),
           AssetLoader::get().getTexture("s_height_2_1"),
           [this]() { settings["flatness"] = "2"; }))
   }, settings["flatness"]));
   // TODO поле для ввода сида
-  // TODO кнопка выбора типа генератора
+  // кнопка выбора типа генератора
   gui->addObject("generator", new RadioButtons(new map<string, Button *>{
       pair("best", new Button(
-          {R::kSettingsRadioWidth * 7 / 5, R::kSettingsRadioHeight * 4 + 180},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
-          AssetLoader::get().getTexture("s_height_-2_0"),
-          AssetLoader::get().getTexture("s_height_-2_1"),
+          {R::kSRadioWidth * 7 / 5, (R::kSRadioHeight / 2 - R::kSCheckSize) / 2 + 100},
+          {R::kSCheckSize, R::kSCheckSize},
+          AssetLoader::get().getTexture("check_0"),
+          AssetLoader::get().getTexture("check_1"),
           [this]() { settings["generator"] = "best"; })),
       pair("perlin", new Button(
-          {R::kSettingsRadioWidth * 8 / 5, R::kSettingsRadioHeight * 4 + 180},
-          {R::kSettingsRadioWidth / 5, R::kSettingsRadioHeight},
-          AssetLoader::get().getTexture("s_height_-1_0"),
-          AssetLoader::get().getTexture("s_height_-1_1"),
+          {R::kSRadioWidth * 7 / 5, R::kSRadioHeight / 2 + (R::kSRadioHeight / 2 - R::kSCheckSize) / 2 + 100},
+          {R::kSCheckSize, R::kSCheckSize},
+          AssetLoader::get().getTexture("check_0"),
+          AssetLoader::get().getTexture("check_1"),
           [this]() { settings["generator"] = "perlin"; }))
   }, settings["generator"]));
+  gui->addObject("gen_best_text", new DrawableText(
+      {R::kSRadioWidth * 7 / 5 + R::kSCheckSize + 20, (R::kSRadioHeight / 2 - R::kSCheckSize) / 2 + 100},
+      "генератор v1",
+      30,
+      AssetLoader::get().getFont("default"),
+      Color::Black
+  ));
+  gui->addObject("gen_perlin_text", new DrawableText(
+      {R::kSRadioWidth * 7 / 5 + R::kSCheckSize + 20,
+       R::kSRadioHeight / 2 + (R::kSRadioHeight / 2 - R::kSCheckSize) / 2 + 100},
+      "генератор v2",
+      30,
+      AssetLoader::get().getFont("default"),
+      Color::Black
+  ));
   // TODO кнопка генерации карты
   gui->addObject("start_gen", new Button(
       Vector2s(
           window_size.x - 200,
-          R::kSettingsRadioHeight * 4 + 180
+          R::kSRadioHeight * 4 + 180
       ),
       Vector2s(
-          R::kSettingsRadioWidth / 5,
-          R::kSettingsRadioHeight
+          R::kSRadioWidth / 5,
+          R::kSRadioHeight
       ),
       AssetLoader::get().getTexture("s_height_2_0"),
       AssetLoader::get().getTexture("s_height_2_1"),

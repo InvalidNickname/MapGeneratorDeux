@@ -7,6 +7,6 @@ DrawableImage::DrawableImage(Vector2s position, Vector2s size, Texture *texture)
   sprite_.setPosition(position.x, position.y);
 }
 
-void DrawableImage::render(sf::RenderWindow *window) {
+void DrawableImage::Render(sf::RenderWindow *window) {
   window->draw(sprite_);
 }

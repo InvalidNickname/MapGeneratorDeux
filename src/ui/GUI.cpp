@@ -2,13 +2,13 @@
 
 void GUI::render(RenderWindow *window) {
   for (auto &i : drawables) {
-    i.second->render(window);
+    i.second->Render(window);
   }
 }
 
 bool GUI::checkClicked(Vector2i coords) {
   for (auto &i : drawables) {
-    if (i.second->checkClicked(coords)) {
+    if (i.second->CheckClicked(coords)) {
       return true;
     }
   }

@@ -11,11 +11,11 @@ class RadioButtons : public UIDrawable {
  public:
   RadioButtons(map<string, Button *> *buttons, const string &default_clicked);
 
-  void render(RenderWindow *window) override;
+  void Render(RenderWindow *window) override;
 
-  [[nodiscard]] bool checkClicked(Vector2i coords) override;
+  [[nodiscard]] bool CheckClicked(Vector2i coords) override;
 
-  [[nodiscard]] bool isClickable() override { return true; }
+  [[nodiscard]] bool IsClickable() override { return true; }
 
   void setClicked(const string &name);
 

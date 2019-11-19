@@ -8,7 +8,7 @@ Minimap::Minimap(Vector2u window_size, DrawableGrid *dg) : window_size(window_si
   createViewRectangles();
 }
 
-void Minimap::render(RenderWindow *window) {
+void Minimap::Render(RenderWindow *window) {
   window->draw(minimap);
   window->draw(right);
   if (left.getSize() != Vector2f(0, 0)) {

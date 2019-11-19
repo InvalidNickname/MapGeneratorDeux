@@ -10,7 +10,7 @@ find_package(SFML COMPONENTS system window graphics network audio main REQUIRED)
 set(SOURCE_FILES src/main.cpp src/screens/ScreenManager.cpp src/screens/splashscreen/SplashScreen.cpp
         src/screens/map/MapScreen.cpp src/screens/map/drawables/DrawableGrid.cpp src/ui/GUI.cpp src/ui/Button.cpp
         src/utils/AssetLoader.cpp src/ui/RadioButtons.cpp src/screens/map/drawables/Minimap.cpp src/utils/R.h
-        src/screens/map/drawables/TileInfoList.cpp src/screens/settings/SettingsScreen.cpp src/ui/DrawableImage.cpp)
+        src/screens/map/drawables/TileInfoList.cpp src/screens/settings/SettingsScreen.cpp src/ui/DrawableImage.cpp src/ui/DrawableText.cpp src/ui/DrawableText.h)
 add_executable(MapGeneratorDeux WIN32 ${SOURCE_FILES})
 
 add_subdirectory(generator)

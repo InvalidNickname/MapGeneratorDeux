@@ -40,6 +40,9 @@ AssetLoader::AssetLoader() {
                 {(i + 2) * 140, 0, 140, 150});
   }
 
+  loadTexture("interface/check.png", "check_0", {0, 0, 50, 50});
+  loadTexture("interface/check.png", "check_1", {50, 0, 50, 50});
+
   loadTexture("background/settings_background.png", "s_background");
 
   loadFont("abel.ttf", "default");

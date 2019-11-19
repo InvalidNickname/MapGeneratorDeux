@@ -1,10 +1,10 @@
-#pragma once
+#include <codecvt>
 
 #include "UIDrawable.h"
 
-class DrawableImage : public UIDrawable {
+class DrawableText : public UIDrawable {
  public:
-  DrawableImage(Vector2s position, Vector2s size, Texture *texture);
+  DrawableText(Vector2s position, const std::string &text, uint8_t charSize, Font *font, Color color);
 
   void Render(RenderWindow *window) override;
 
@@ -13,5 +13,5 @@ class DrawableImage : public UIDrawable {
   [[nodiscard]] bool IsClickable() override { return false; };
 
  private:
-  Sprite sprite_;
+  Text text_;
 };

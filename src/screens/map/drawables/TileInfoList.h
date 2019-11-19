@@ -13,11 +13,11 @@ class TileInfoList : public UIDrawable {
 
   void setTile(Tile *tile);
 
-  void render(RenderWindow *window) override;
+  void Render(RenderWindow *window) override;
 
-  bool isClickable() override { return false; };
+  bool IsClickable() override { return false; };
 
-  bool checkClicked(Vector2i coords) override { return false; };
+  bool CheckClicked(Vector2i coords) override { return false; };
 
  private:
   Text coordinates, type, temperature;

@@ -4,16 +4,16 @@ RadioButtons::RadioButtons(map<string, Button *> *buttons, const string &default
   setClicked(default_clicked);
 }
 
-void RadioButtons::render(RenderWindow *window) {
+void RadioButtons::Render(RenderWindow *window) {
   for (auto &i : *buttons) {
-    i.second->render(window);
+    i.second->Render(window);
   }
 }
 
-bool RadioButtons::checkClicked(Vector2i coords) {
+bool RadioButtons::CheckClicked(Vector2i coords) {
   bool check = false;
   for (auto &i : *buttons) {
-    if (i.second->checkClicked(coords)) {
+    if (i.second->CheckClicked(coords)) {
       clicked = i.first;
       check = true;
     }

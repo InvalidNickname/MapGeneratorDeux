@@ -13,6 +13,7 @@ struct R {
   static const uint16_t kMapModeButtonWidth = 41;
   static const uint16_t kTileInfoListWidth = 320;
   static const uint16_t kTileInfoListHeight = 120;
-  static const uint16_t kSettingsRadioWidth = 700;
-  static const uint16_t kSettingsRadioHeight = 150;
+  static const uint16_t kSRadioWidth = 700;
+  static const uint16_t kSRadioHeight = 150;
+  static const uint16_t kSCheckSize = kSRadioHeight / 3;
 };

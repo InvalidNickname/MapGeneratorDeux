@@ -14,13 +14,13 @@ class Button : public UIDrawable {
  public:
   Button(Vector2s position, Vector2s size, Texture *normal, Texture *clicked, function<void()> onClick);
 
-  void render(RenderWindow *window) override;
+  void Render(RenderWindow *window) override;
 
-  bool checkClicked(Vector2i coords) override;
+  bool CheckClicked(Vector2i coords) override;
 
   void setClicked(bool _clicked);
 
-  bool isClickable() override { return true; }
+  bool IsClickable() override { return true; }
 
  private:
   Sprite sprite;

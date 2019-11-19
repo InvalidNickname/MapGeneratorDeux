@@ -8,11 +8,11 @@ Button::Button(Vector2s position, Vector2s size, Texture *normal, Texture *click
   sprite.setPosition(position.x, position.y);
 }
 
-void Button::render(RenderWindow *window) {
+void Button::Render(RenderWindow *window) {
   window->draw(sprite);
 }
 
-bool Button::checkClicked(Vector2i coords) {
+bool Button::CheckClicked(Vector2i coords) {
   if (sprite.getGlobalBounds().contains(coords.x, coords.y)) {
     setClicked(true);
     return true;

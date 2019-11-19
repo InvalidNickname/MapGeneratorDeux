@@ -14,6 +14,7 @@
 #include "utils/AssetLoader.h"
 #include "ui/DrawableImage.h"
 #include "utils/G.h"
+#include "ui/DrawableText.h"
 
 using Json = nlohmann::json;
 

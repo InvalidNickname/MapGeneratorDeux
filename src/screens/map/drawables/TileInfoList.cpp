@@ -19,7 +19,7 @@ void TileInfoList::setTile(Tile *tile) {
   temperature.setString(String(to_string(tile->getTemperature() - 273) + " \u00B0C")); // °C
 }
 
-void TileInfoList::render(RenderWindow *window) {
+void TileInfoList::Render(RenderWindow *window) {
   window->draw(background);
   window->draw(coordinates);
   window->draw(type);
