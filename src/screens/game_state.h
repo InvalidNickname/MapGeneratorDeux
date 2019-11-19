@@ -1,0 +1,13 @@
+#ifndef MGD_SRC_SCREENS_GAME_STATE_H
+#define MGD_SRC_SCREENS_GAME_STATE_H
+
+enum GameState {
+  EXIT = -1,
+  MAIN_SCREEN = 3,
+  SETTINGS = 2,
+  SPLASHSCREEN = 0,
+  MAP_SCREEN = 1,
+  THIS_STATE = -2
+};
+
+#endif

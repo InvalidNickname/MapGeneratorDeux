@@ -1,10 +1,10 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "screens/ScreenManager.h"
-#include "screens/splashscreen/SplashScreen.h"
-#include "screens/map/MapScreen.h"
-#include "screens/settings/SettingsScreen.h"
+#include "screens/screen_manager.h"
+#include "screens/splashscreen/splash_screen.h"
+#include "screens/map/map_screen.h"
+#include "screens/settings/settings_screen.h"
 
 using namespace sf;
 
@@ -19,17 +19,17 @@ int main() {
 
   // запуск splashscreen
   ScreenManager screen_manager(SPLASHSCREEN, 3);
-  screen_manager.addScreen(SETTINGS, new SettingsScreen(&window));
-  screen_manager.addScreen(SPLASHSCREEN, new SplashScreen(&window));
-  screen_manager.addScreen(MAP_SCREEN, new MapScreen(&window));
+  screen_manager.AddScreen(SETTINGS, new SettingsScreen(&window));
+  screen_manager.AddScreen(SPLASHSCREEN, new SplashScreen(&window));
+  screen_manager.AddScreen(MAP_SCREEN, new MapScreen(&window));
 
-  Random::get().setSeed(3);
+  Random::Get().SetSeed(3);
 
   // отрисовка и прочие вещи
   while (window.isOpen()) {
-    if (screen_manager.doActiveScreenActions()) {
+    if (screen_manager.DoActiveScreenActions()) {
       window.clear(Color::Black);
-      screen_manager.drawActiveScreen();
+      screen_manager.DrawActiveScreen();
       window.display();
     } else {
       window.close();

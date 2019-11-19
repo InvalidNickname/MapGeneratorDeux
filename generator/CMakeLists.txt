@@ -1,7 +1,7 @@
-add_library(generator src/Generator.cpp src/Generator.h src/utils/G.h src/utils/MapMode.h src/utils/PerlinNoise.h
-        src/utils/PerlinNoise.cpp src/utils/Random.h src/tile/TileGrid.cpp src/tile/TileGrid.h src/tile/Tile.h
-        src/tile/Tile.cpp src/tile/type/Level.h src/tile/type/Tileset.cpp src/tile/type/Tileset.h
-        src/tile/type/Type.h src/tile/type/Type.cpp)
+add_library(generator src/generator.cpp src/generator.h src/utils/g.h ../src/screens/map/map_mode.h src/utils/perlin_noise.h
+        src/utils/perlin_noise.cpp src/utils/random.h src/tile/tile_grid.cpp src/tile/tile_grid.h src/tile/tile.h
+        src/tile/tile.cpp src/tile/type/level.h src/tile/type/tileset.cpp src/tile/type/tileset.h
+        src/tile/type/type.h src/tile/type/type.cpp)
 
 target_link_libraries(generator sfml-system sfml-main)
 

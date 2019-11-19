@@ -1,0 +1,89 @@
+#include "minimap.h"
+
+Minimap::Minimap(Vector2u window_size, DrawableGrid *dg) : window_size_(window_size) {
+  pos_.x = window_size.x - R::kMinimapWidth;
+  pos_.y = window_size.y - R::kMinimapHeight;
+
+  CreateMinimapImage(dg);
+  CreateViewRectangles();
+}
+
+void Minimap::Render(RenderWindow *window) {
+  window->draw(minimap_);
+  window->draw(right_);
+  if (left_.getSize() != Vector2f(0, 0)) {
+    window->draw(left_);
+  }
+  window->draw(overlay_);
+}
+
+void Minimap::UpdateViewRegion(Vector2s lower_left, Vector2s upper_right) {
+  if (lower_left.x >= 0 && upper_right.x < G::GetMapW()) {
+    right_.setSize(
+        {R::kMinimapWidth * (float) (upper_right.x - lower_left.x) / G::GetMapW(),
+         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / G::GetMapH()}
+    );
+    right_.setPosition(
+        {pos_.x + R::kMinimapWidth * (float) lower_left.x / G::GetMapW(),
+         pos_.y + R::kMinimapHeight * (float) lower_left.y / G::GetMapH()}
+    );
+    left_.setSize({0, 0});
+  } else {
+    if (lower_left.x < 0) lower_left.x += G::GetMapW();
+    if (upper_right.x >= G::GetMapW()) upper_right.x %= G::GetMapW();
+
+    right_.setSize(
+        {R::kMinimapWidth * (float) (G::GetMapW() - lower_left.x) / G::GetMapW(),
+         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / G::GetMapH()}
+    );
+    right_.setPosition(
+        {pos_.x + R::kMinimapWidth * (float) lower_left.x / G::GetMapW(),
+         pos_.y + R::kMinimapHeight * (float) lower_left.y / G::GetMapH()}
+    );
+
+    left_.setSize(
+        {R::kMinimapWidth * (float) (upper_right.x) / G::GetMapW(),
+         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / G::GetMapH()}
+    );
+    left_.setPosition(
+        {pos_.x + 2,
+         pos_.y + R::kMinimapHeight * (float) lower_left.y / G::GetMapH()}
+    );
+  }
+}
+
+void Minimap::CreateMinimapImage(DrawableGrid *drawable_grid) {
+  // отрисованная карта
+  auto minimap_texture = new RenderTexture();
+  minimap_texture->create(window_size_.x, window_size_.y);
+  minimap_texture->setView(View(
+      {R::kTileWidth * (0.5f + G::GetMapW()) / 2, 0.125f * R::kTileHeight * (3 * G::GetMapH())},
+      {R::kTileWidth * (0.5f + G::GetMapW()), 0.25f * R::kTileHeight * (3 * G::GetMapH())}
+  ));
+  drawable_grid->RenderGridTexture(minimap_texture, MapMode::MINIMAP, 0, G::GetMapW());
+  minimap_texture->display();
+
+  minimap_.setTexture(minimap_texture->getTexture());
+  minimap_.setScale(
+      {(float) R::kMinimapWidth / minimap_texture->getTexture().getSize().x,
+       (float) R::kMinimapHeight / minimap_texture->getTexture().getSize().y}
+  );
+  minimap_.setPosition(pos_);
+
+  overlay_.setTexture(*AssetLoader::Get().GetTexture("minimap_overlay"));
+  overlay_.setScale(
+      {(float) R::kMinimapWidth / overlay_.getTexture()->getSize().x,
+       (float) R::kMinimapHeight / overlay_.getTexture()->getSize().y}
+  );
+  overlay_.setPosition(pos_);
+}
+
+void Minimap::CreateViewRectangles() {
+  left_.setOutlineThickness(-2);
+  left_.setOutlineColor(Color::White);
+  left_.setFillColor(Color::Transparent);
+
+  right_.setOutlineThickness(-2);
+  right_.setOutlineColor(Color::White);
+  right_.setFillColor(Color::Transparent);
+}

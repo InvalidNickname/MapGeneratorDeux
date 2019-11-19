@@ -7,10 +7,11 @@ set(SFML_DIR "libs/SFML-2.5.1/lib/cmake/SFML")
 
 find_package(SFML COMPONENTS system window graphics network audio main REQUIRED)
 
-set(SOURCE_FILES src/main.cpp src/screens/ScreenManager.cpp src/screens/splashscreen/SplashScreen.cpp
-        src/screens/map/MapScreen.cpp src/screens/map/drawables/DrawableGrid.cpp src/ui/GUI.cpp src/ui/Button.cpp
-        src/utils/AssetLoader.cpp src/ui/RadioButtons.cpp src/screens/map/drawables/Minimap.cpp src/utils/R.h
-        src/screens/map/drawables/TileInfoList.cpp src/screens/settings/SettingsScreen.cpp src/ui/DrawableImage.cpp src/ui/DrawableText.cpp src/ui/DrawableText.h)
+set(SOURCE_FILES src/main.cpp src/screens/screen_manager.cpp src/screens/splashscreen/splash_screen.cpp
+        src/screens/map/map_screen.cpp src/screens/map/drawables/drawable_grid.cpp src/ui/gui.cpp src/ui/button.cpp
+        src/utils/asset_loader.cpp src/ui/radio_buttons.cpp src/screens/map/drawables/minimap.cpp src/utils/r.h
+        src/screens/map/drawables/tile_info_list.cpp src/screens/settings/settings_screen.cpp src/ui/drawable_image.cpp
+        src/ui/drawable_text.cpp src/ui/drawable_text.h)
 add_executable(MapGeneratorDeux WIN32 ${SOURCE_FILES})
 
 add_subdirectory(generator)
