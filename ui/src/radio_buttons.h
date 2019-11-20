@@ -1,5 +1,5 @@
-#ifndef MGD_SRC_UI_RADIO_BUTTONS_H
-#define MGD_SRC_UI_RADIO_BUTTONS_H
+#ifndef MGD_UI_SRC_RADIO_BUTTONS_H
+#define MGD_UI_SRC_RADIO_BUTTONS_H
 
 #include <map>
 #include <string>

@@ -1,5 +1,5 @@
-#ifndef MGD_SRC_UI_UI_DRAWABLE_H
-#define MGD_SRC_UI_UI_DRAWABLE_H
+#ifndef MGD_UI_SRC_UI_DRAWABLE_H
+#define MGD_UI_SRC_UI_DRAWABLE_H
 
 #include <SFML/Graphics.hpp>
 

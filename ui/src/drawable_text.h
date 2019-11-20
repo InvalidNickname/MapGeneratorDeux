@@ -1,5 +1,5 @@
-#ifndef MGD_SRC_UI_DRAWABLE_TEXT_H
-#define MGD_SRC_UI_DRAWABLE_TEXT_H
+#ifndef MGD_UI_SRC_DRAWABLE_TEXT_H
+#define MGD_UI_SRC_DRAWABLE_TEXT_H
 
 #include <codecvt>
 
@@ -14,6 +14,8 @@ class DrawableText : public UIDrawable {
   [[nodiscard]] bool CheckClicked(Vector2i coords) override { return false; };
 
   [[nodiscard]] bool IsClickable() override { return false; };
+
+  void SetText(const std::string &text);
 
  private:
   Text text_;

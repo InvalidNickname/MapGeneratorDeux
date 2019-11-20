@@ -55,7 +55,11 @@ void Generator::RaiseTerrain() {
     for (uint16_t i = 0; i < G::GetMapW(); i++)
       for (uint16_t j = 0; j < G::GetMapH(); j++) {
         Tile *tile = grid_->GetTile({i, j});
-        float z = 1 - tile->GetLatitude() / 90.f;
+        float z = 1;
+        if (tile->pos_.y < G::GetLandBorder()) z = (float) tile->pos_.y / G::GetLandBorder();
+        if (tile->pos_.y > G::GetMapH() - G::GetLandBorder() - 1) {
+          z = (float) (G::GetMapH() - 1 - tile->pos_.y) / G::GetLandBorder();
+        }
         z *= (perlin_noise.Noise(
             0.01f * (float) i,
             0.01f * (float) j,
@@ -111,7 +115,9 @@ void Generator::SetTemperature() {
           0.01f * (float) j,
           G::GetMapW() * 0.01f,
           G::GetMapH() * 0.01f, 4) + 1) / 2.f;
-      temperature *= 1 - abs(ocean_level_ - (float) tile->GetZ()) / (float) (grid_->GetMaxZ() - ocean_level_);
+      if (tile->GetZ() > ocean_level_) {
+        temperature *= 1 - (float) (tile->GetZ() - ocean_level_) / (float) (grid_->GetMaxZ() - ocean_level_);
+      }
       temperature = pow(temperature, 1.f / 3);
       tile->SetTemperature(G::GetMinTemp() + temperature * (G::GetMaxTemp() - G::GetMinTemp()));
     }

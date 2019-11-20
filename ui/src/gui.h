@@ -1,5 +1,5 @@
-#ifndef MGD_SRC_UI_GUI_H
-#define MGD_SRC_UI_GUI_H
+#ifndef MGD_UI_SRC_GUI_H
+#define MGD_UI_SRC_GUI_H
 
 #include <map>
 

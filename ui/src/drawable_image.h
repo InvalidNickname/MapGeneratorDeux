@@ -1,5 +1,5 @@
-#ifndef MGD_SRC_UI_DRAWABLE_IMAGE_H
-#define MGD_SRC_UI_DRAWABLE_IMAGE_H
+#ifndef MGD_UI_SRC_DRAWABLE_IMAGE_H
+#define MGD_UI_SRC_DRAWABLE_IMAGE_H
 
 #include "ui_drawable.h"
 

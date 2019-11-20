@@ -13,11 +13,11 @@ Tileset::Tileset() {
   base_file = base_file.at("data");
   // тип суши для генератора
   tileset_.push_back(
-      new Type("GenLand", "GenLand", vector<string>(), Color::Green, vector<Color>(4, Color::Green), true, 0,
+      new Type("GenLand", "GenLand", {"0", "1", "2", "3"}, Color::Green, vector<Color>(4, Color::Green), true, 0,
                new pair{G::GetMinTemp(), G::GetMaxTemp()}, new pair{0.f, 1.f}, "nullptr"));
   // тип воды для генератора
   tileset_.push_back(
-      new Type("GenWater", "GenWater", vector<string>(), Color::Blue, vector<Color>(4, Color::Blue), false, 0,
+      new Type("GenWater", "GenWater", {"0", "1", "2", "3"}, Color::Blue, vector<Color>(4, Color::Blue), false, 0,
                new pair{G::GetMinTemp(), G::GetMaxTemp()}, new pair{0.f, 1.f}, "nullptr"));
   for (Json temp : base_file) {
     Json color_value = temp.at("color");

@@ -1,7 +1,8 @@
 #ifndef MGD_SRC_SCREENS_MAP_DRAWABLES_MINIMAP_H
 #define MGD_SRC_SCREENS_MAP_DRAWABLES_MINIMAP_H
 
-#include "ui/ui_drawable.h"
+#include <ui_drawable.h>
+
 #include "utils/r.h"
 #include "drawable_grid.h"
 

@@ -1,11 +1,12 @@
 #ifndef MGD_SRC_SCREENS_MAP_MAP_SCREEN_H
 #define MGD_SRC_SCREENS_MAP_MAP_SCREEN_H
 
+#include <gui.h>
+#include <radio_buttons.h>
+#include <drawable_text.h>
+
 #include "screens/screen.h"
-#include "ui/gui.h"
 #include "screens/map/drawables/minimap.h"
-#include "ui/radio_buttons.h"
-#include "screens/map/drawables/tile_info_list.h"
 
 class MapScreen : public Screen {
 

@@ -1,5 +1,5 @@
-#ifndef MGD_SRC_UI_BUTTON_H
-#define MGD_SRC_UI_BUTTON_H
+#ifndef MGD_UI_SRC_BUTTON_H
+#define MGD_UI_SRC_BUTTON_H
 
 #include <functional>
 #include <utility>

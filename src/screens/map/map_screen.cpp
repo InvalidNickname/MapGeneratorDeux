@@ -11,7 +11,7 @@ void MapScreen::Prepare() {
   map_.setSize(initial_size_.x, initial_size_.y);
   Vector2f camera_pos = {
       R::kTileWidth * (0.5f + G::GetMapW()) / 2,
-      0.125f * R::kTileHeight * (3 * G::GetMapH() - 2)
+      0.125f * R::kTileHeight * (float) (3 * G::GetMapH() - 1)
   };
   map_.setCenter(camera_pos);
   // минимальный зум - сетка полностью помещается на экран по высоте
@@ -75,7 +75,24 @@ void MapScreen::SetGUI() {
           [this]() { map_mode_ = MOISTURE; }))
   }, "default"));
   gui_->AddObject("minimap", new Minimap(window_size_, grid_));
-  gui_->AddObject("tile_info_list", new TileInfoList(window_size_));
+  gui_->AddObject("info_coords", new DrawableText(
+      Vector2s(20, window_size_.y - 60),
+      "",
+      20,
+      AssetLoader::Get().GetFont("default"),
+      Color::White));
+  gui_->AddObject("info_type", new DrawableText(
+      Vector2s(20, window_size_.y - 95),
+      "",
+      30,
+      AssetLoader::Get().GetFont("default"),
+      Color::White));
+  gui_->AddObject("info_temperature", new DrawableText(
+      Vector2s(20, window_size_.y - 40),
+      "",
+      20,
+      AssetLoader::Get().GetFont("default"),
+      Color::White));
 }
 
 GameState MapScreen::DoAction() {
@@ -94,10 +111,16 @@ void MapScreen::HandleInput() {
       if (Mouse::isButtonPressed(Mouse::Left)) {
         if (gui_->CheckClicked(Mouse::getPosition()));
         else {
-          ((TileInfoList *) (gui_->Get("tile_info_list")))->SetTile(
-              grid_->GetTile(
-                  grid_->UpdateSelection(
-                      window_->mapPixelToCoords(Mouse::getPosition(), map_))));
+          Tile *selected = grid_->GetTile(grid_->UpdateSelection(
+              window_->mapPixelToCoords(Mouse::getPosition(), map_)));
+          ((DrawableText *) gui_->Get("info_type"))->SetText(selected->GetType()->GetName(selected->GetLevel()));
+          ((DrawableText *) gui_->Get("info_temperature"))->SetText(
+              to_string(selected->GetTemperature() - 273).append(" °C"));
+          string latitudeText
+              (to_string((int) selected->GetLatitude()).append((selected->pos_.y < G::GetMapH() / 2 ? " °N" : " °S")));
+          string longitudeText
+              (to_string((int) selected->GetLongitude()).append((selected->pos_.x > G::GetMapW() / 2 ? " °E" : " °W")));
+          ((DrawableText *) gui_->Get("info_coords"))->SetText(latitudeText.append(" ").append(longitudeText));
         }
       }
     }
@@ -107,19 +130,19 @@ void MapScreen::HandleInput() {
     // смена режимов карты
     if (Keyboard::isKeyPressed(Keyboard::Q)) {
       map_mode_ = MapMode::NORMAL;
-      ((RadioButtons *) (gui_->Get("map_mode")))->SetClicked("default");
+      ((RadioButtons *) gui_->Get("map_mode"))->SetClicked("default");
     } else if (Keyboard::isKeyPressed(Keyboard::T)) {
       map_mode_ = MapMode::TEMPERATURE;
-      ((RadioButtons *) (gui_->Get("map_mode")))->SetClicked("temperature");
+      ((RadioButtons *) gui_->Get("map_mode"))->SetClicked("temperature");
     } else if (Keyboard::isKeyPressed(Keyboard::H)) {
       map_mode_ = MapMode::HEIGHT;
-      ((RadioButtons *) (gui_->Get("map_mode")))->SetClicked("height");
+      ((RadioButtons *) gui_->Get("map_mode"))->SetClicked("height");
     } else if (Keyboard::isKeyPressed(Keyboard::B)) {
       map_mode_ = MapMode::BIOMES;
-      ((RadioButtons *) (gui_->Get("map_mode")))->SetClicked("biomes");
+      ((RadioButtons *) gui_->Get("map_mode"))->SetClicked("biomes");
     } else if (Keyboard::isKeyPressed(Keyboard::M)) {
       map_mode_ = MapMode::MOISTURE;
-      ((RadioButtons *) (gui_->Get("map_mode")))->SetClicked("moisture");
+      ((RadioButtons *) gui_->Get("map_mode"))->SetClicked("moisture");
     }
   }
   // отдаление

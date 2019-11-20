@@ -8,14 +8,15 @@
 
 #include <json.hpp>
 
-#include "ui/gui.h"
+#include <gui.h>
+#include <radio_buttons.h>
+#include <drawable_image.h>
+#include <drawable_text.h>
+
 #include "screens/screen.h"
-#include "ui/radio_buttons.h"
 #include "utils/r.h"
 #include "utils/asset_loader.h"
-#include "ui/drawable_image.h"
 #include "utils/g.h"
-#include "ui/drawable_text.h"
 
 using Json = nlohmann::json;
 

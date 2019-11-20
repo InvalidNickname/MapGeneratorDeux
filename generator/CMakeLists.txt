@@ -1,4 +1,4 @@
-add_library(generator src/generator.cpp src/generator.h src/utils/g.h ../src/screens/map/map_mode.h src/utils/perlin_noise.h
+add_library(generator src/generator.cpp src/generator.h src/utils/g.h src/utils/perlin_noise.h
         src/utils/perlin_noise.cpp src/utils/random.h src/tile/tile_grid.cpp src/tile/tile_grid.h src/tile/tile.h
         src/tile/tile.cpp src/tile/type/level.h src/tile/type/tileset.cpp src/tile/type/tileset.h
         src/tile/type/type.h src/tile/type/type.cpp)
