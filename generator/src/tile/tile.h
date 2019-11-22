@@ -8,12 +8,9 @@
 class Tile {
  public:
   const Vector2u pos_;
+  const float latitude_, longitude_;
 
   explicit Tile(Vector2u pos);
-
-  [[nodiscard]] float GetLatitude() const;
-
-  [[nodiscard]] float GetLongitude() const;
 
   [[nodiscard]] uint16_t GetZ() const;
 
@@ -39,7 +36,6 @@ class Tile {
 
  private:
   uint16_t z_{0};
-  float latitude_{}, longitude_{};
   float moisture_{0};
   uint16_t temperature_{0};
   Type *type_{nullptr};

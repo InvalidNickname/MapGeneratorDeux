@@ -23,6 +23,8 @@ class DrawableGrid {
 
   [[nodiscard]] Tile *GetTile(Vector2u coords) const;
 
+  [[nodiscard]] Vector2<uint16_t> GetSize() const;
+
  private:
   TileGrid *grid_;
   Vector2s selected_{-1, -1};

@@ -10,8 +10,8 @@ void MapScreen::Prepare() {
   // установка камеры
   map_.setSize(initial_size_.x, initial_size_.y);
   Vector2f camera_pos = {
-      R::kTileWidth * (0.5f + G::GetMapW()) / 2,
-      0.125f * R::kTileHeight * (float) (3 * G::GetMapH() - 1)
+      R::kTileWidth * (0.5f + grid_->GetSize().x) / 2,
+      0.125f * R::kTileHeight * (float) (3 * grid_->GetSize().y - 1)
   };
   map_.setCenter(camera_pos);
   // минимальный зум - сетка полностью помещается на экран по высоте
@@ -111,15 +111,15 @@ void MapScreen::HandleInput() {
       if (Mouse::isButtonPressed(Mouse::Left)) {
         if (gui_->CheckClicked(Mouse::getPosition()));
         else {
-          Tile *selected = grid_->GetTile(grid_->UpdateSelection(
+          Tile *tile = grid_->GetTile(grid_->UpdateSelection(
               window_->mapPixelToCoords(Mouse::getPosition(), map_)));
-          ((DrawableText *) gui_->Get("info_type"))->SetText(selected->GetType()->GetName(selected->GetLevel()));
+          ((DrawableText *) gui_->Get("info_type"))->SetText(tile->GetType()->GetName(tile->GetLevel()));
           ((DrawableText *) gui_->Get("info_temperature"))->SetText(
-              to_string(selected->GetTemperature() - 273).append(" °C"));
+              to_string(tile->GetTemperature() - 273).append(" °C"));
           string latitudeText
-              (to_string((int) selected->GetLatitude()).append((selected->pos_.y < G::GetMapH() / 2 ? " °N" : " °S")));
+              (to_string((int) tile->latitude_).append((tile->pos_.y < grid_->GetSize().y / 2 ? " °N" : " °S")));
           string longitudeText
-              (to_string((int) selected->GetLongitude()).append((selected->pos_.x > G::GetMapW() / 2 ? " °E" : " °W")));
+              (to_string((int) tile->longitude_).append((tile->pos_.x > grid_->GetSize().x / 2 ? " °E" : " °W")));
           ((DrawableText *) gui_->Get("info_coords"))->SetText(latitudeText.append(" ").append(longitudeText));
         }
       }
@@ -168,12 +168,12 @@ void MapScreen::HandleInput() {
   // запрет на прокрутку за пределы карты по вертикали
   if (map_.getCenter().y < 0.25f * R::kTileHeight + zoom_ * window_size_.y / 4)
     map_.setCenter(map_.getCenter().x, 0.25f * R::kTileHeight + zoom_ * window_size_.y / 4);
-  if (map_.getCenter().y > 0.75f * R::kTileHeight * G::GetMapH() - zoom_ * window_size_.y / 4)
-    map_.setCenter(map_.getCenter().x, 0.75f * R::kTileHeight * G::GetMapH() - zoom_ * window_size_.y / 4);
+  if (map_.getCenter().y > 0.75f * R::kTileHeight * grid_->GetSize().y - zoom_ * window_size_.y / 4)
+    map_.setCenter(map_.getCenter().x, 0.75f * R::kTileHeight * grid_->GetSize().y - zoom_ * window_size_.y / 4);
   // бесконечная прокрутка по горизонтали
   if (map_.getCenter().x <= -zoom_ * window_size_.x / 4)
-    map_.setCenter(R::kTileWidth * G::GetMapW() - zoom_ * window_size_.x / 4, map_.getCenter().y);
-  if (map_.getCenter().x >= R::kTileWidth * G::GetMapW() + zoom_ * window_size_.x / 4)
+    map_.setCenter(R::kTileWidth * grid_->GetSize().x - zoom_ * window_size_.x / 4, map_.getCenter().y);
+  if (map_.getCenter().x >= R::kTileWidth * grid_->GetSize().x + zoom_ * window_size_.x / 4)
     map_.setCenter(zoom_ * window_size_.x / 4, map_.getCenter().y);
 }
 

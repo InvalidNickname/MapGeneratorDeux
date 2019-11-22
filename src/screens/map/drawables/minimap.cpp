@@ -1,6 +1,6 @@
 #include "minimap.h"
 
-Minimap::Minimap(Vector2u window_size, DrawableGrid *dg) : window_size_(window_size) {
+Minimap::Minimap(Vector2u window_size, DrawableGrid *dg) : window_size_(window_size), size_(dg->GetSize()) {
   pos_.x = window_size.x - R::kMinimapWidth;
   pos_.y = window_size.y - R::kMinimapHeight;
 
@@ -18,49 +18,49 @@ void Minimap::Render(RenderWindow *window) {
 }
 
 void Minimap::UpdateViewRegion(Vector2s lower_left, Vector2s upper_right) {
-  if (lower_left.x >= 0 && upper_right.x < G::GetMapW()) {
+  if (lower_left.x >= 0 && upper_right.x < size_.x) {
     right_.setSize(
-        {R::kMinimapWidth * (float) (upper_right.x - lower_left.x) / G::GetMapW(),
-         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / G::GetMapH()}
+        {R::kMinimapWidth * (float) (upper_right.x - lower_left.x) / size_.x,
+         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / size_.y}
     );
     right_.setPosition(
-        {pos_.x + R::kMinimapWidth * (float) lower_left.x / G::GetMapW(),
-         pos_.y + R::kMinimapHeight * (float) lower_left.y / G::GetMapH()}
+        {pos_.x + R::kMinimapWidth * (float) lower_left.x / size_.x,
+         pos_.y + R::kMinimapHeight * (float) lower_left.y / size_.y}
     );
     left_.setSize({0, 0});
   } else {
-    if (lower_left.x < 0) lower_left.x += G::GetMapW();
-    if (upper_right.x >= G::GetMapW()) upper_right.x %= G::GetMapW();
+    if (lower_left.x < 0) lower_left.x += size_.x;
+    if (upper_right.x >= size_.x) upper_right.x %= size_.x;
 
     right_.setSize(
-        {R::kMinimapWidth * (float) (G::GetMapW() - lower_left.x) / G::GetMapW(),
-         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / G::GetMapH()}
+        {R::kMinimapWidth * (float) (size_.x - lower_left.x) / size_.x,
+         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / size_.y}
     );
     right_.setPosition(
-        {pos_.x + R::kMinimapWidth * (float) lower_left.x / G::GetMapW(),
-         pos_.y + R::kMinimapHeight * (float) lower_left.y / G::GetMapH()}
+        {pos_.x + R::kMinimapWidth * (float) lower_left.x / size_.x,
+         pos_.y + R::kMinimapHeight * (float) lower_left.y / size_.y}
     );
 
     left_.setSize(
-        {R::kMinimapWidth * (float) (upper_right.x) / G::GetMapW(),
-         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / G::GetMapH()}
+        {R::kMinimapWidth * (float) (upper_right.x) / size_.x,
+         R::kMinimapHeight * (float) (upper_right.y - lower_left.y) / size_.y}
     );
     left_.setPosition(
         {pos_.x + 2,
-         pos_.y + R::kMinimapHeight * (float) lower_left.y / G::GetMapH()}
+         pos_.y + R::kMinimapHeight * (float) lower_left.y / size_.y}
     );
   }
 }
 
-void Minimap::CreateMinimapImage(DrawableGrid *drawable_grid) {
+void Minimap::CreateMinimapImage(DrawableGrid *grid) {
   // отрисованная карта
   auto minimap_texture = new RenderTexture();
   minimap_texture->create(window_size_.x, window_size_.y);
   minimap_texture->setView(View(
-      {R::kTileWidth * (0.5f + G::GetMapW()) / 2, 0.125f * R::kTileHeight * (3 * G::GetMapH())},
-      {R::kTileWidth * (0.5f + G::GetMapW()), 0.25f * R::kTileHeight * (3 * G::GetMapH())}
+      {R::kTileWidth * (0.5f + size_.x) / 2, 0.125f * R::kTileHeight * (3 * size_.y)},
+      {R::kTileWidth * (0.5f + size_.x), 0.25f * R::kTileHeight * (3 * size_.y)}
   ));
-  drawable_grid->RenderGridTexture(minimap_texture, MapMode::MINIMAP, 0, G::GetMapW());
+  grid->RenderGridTexture(minimap_texture, MapMode::MINIMAP, 0, size_.x);
   minimap_texture->display();
 
   minimap_.setTexture(minimap_texture->getTexture());

@@ -12,14 +12,11 @@ class MapScreen : public Screen {
 
   using Screen::Screen;
 
- public:
-  float min_zoom_;
-
  private:
   Vector2u window_size_, initial_size_;
   View map_, ui_;
   MapMode map_mode_{NORMAL};
-  float zoom_;
+  float zoom_, min_zoom_;
   DrawableGrid *grid_;
   GUI *gui_;
 

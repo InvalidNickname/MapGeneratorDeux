@@ -37,10 +37,6 @@ struct G {
     return ocean_level_[stoi(Get().index_["ocean_level"])];
   }
 
-  [[nodiscard]] static uint16_t GetLandBorder() {
-    return 0.07f * GetMapH();
-  }
-
   [[nodiscard]] static string GetGeneratorType() {
     return Get().index_["generator"];
   }

@@ -6,7 +6,7 @@ DrawableGrid::DrawableGrid() {
   max_z_ = grid_->GetMaxZ();
   min_z_ = grid_->GetMinZ();
 
-  Vector2f map_size = {R::kTileWidth * (0.5f + G::GetMapW()), 0.25f * R::kTileHeight * (3 * G::GetMapH())};
+  Vector2f map_size = {R::kTileWidth * (0.5f + grid_->size_.x), 0.25f * R::kTileHeight * (3 * grid_->size_.y)};
 
   View view;
   view.setCenter(map_size / 2.f);
@@ -41,7 +41,7 @@ void DrawableGrid::RenderGridTexture(RenderTarget *target, MapMode mode, int x0,
     prev_mode_ = mode;
   }
   target->draw(s_center_);
-  if (x1 > G::GetMapW()) target->draw(s_right_);
+  if (x1 > grid_->size_.x) target->draw(s_right_);
   if (x0 < 0) target->draw(s_left_);
 
   RenderSelectedTile(target, x0, x1);
@@ -49,20 +49,20 @@ void DrawableGrid::RenderGridTexture(RenderTarget *target, MapMode mode, int x0,
 
 void DrawableGrid::RenderVector(RenderTarget *target, MapMode mode, Vector2s lower_left, Vector2s upper_right) {
   if (lower_left.y < 0) lower_left.y = 0;
-  if (upper_right.y > G::GetMapH()) upper_right.y = G::GetMapH();
+  if (upper_right.y > grid_->size_.y) upper_right.y = grid_->size_.y;
   if (lower_left.x < 0) {
     for (uint16_t i = lower_left.y; i < upper_right.y; i++) {
       for (uint16_t j = 0; j < upper_right.x; j++)
         RenderTile(target, mode, {j, i}, {j, i});
-      for (uint16_t j = lower_left.x + G::GetMapW(); j < G::GetMapW(); j++)
-        RenderTile(target, mode, {j, i}, {j - G::GetMapW(), i});
+      for (uint16_t j = lower_left.x + grid_->size_.x; j < grid_->size_.x; j++)
+        RenderTile(target, mode, {j, i}, {j - grid_->size_.x, i});
     }
-  } else if (upper_right.x > G::GetMapW()) {
-    upper_right.x = upper_right.x % G::GetMapW();
+  } else if (upper_right.x > grid_->size_.x) {
+    upper_right.x = upper_right.x % grid_->size_.x;
     for (uint16_t i = lower_left.y; i < upper_right.y; i++) {
-      for (uint16_t j = G::GetMapW(); j < upper_right.x + G::GetMapW(); j++)
-        RenderTile(target, mode, Vector2u(j - G::GetMapW(), i), {j, i});
-      for (uint16_t j = lower_left.x; j < G::GetMapW(); j++)
+      for (uint16_t j = grid_->size_.x; j < upper_right.x + grid_->size_.x; j++)
+        RenderTile(target, mode, Vector2u(j - grid_->size_.x, i), {j, i});
+      for (uint16_t j = lower_left.x; j < grid_->size_.x; j++)
         RenderTile(target, mode, {j, i}, {j, i});
     }
   } else {
@@ -76,8 +76,8 @@ void DrawableGrid::RenderVector(RenderTarget *target, MapMode mode, Vector2s low
 
 void DrawableGrid::UpdateTexture(MapMode mode) {
   center_->clear(Color::Transparent);
-  for (uint16_t i = 0; i < G::GetMapW(); i++) {
-    for (uint16_t j = 0; j < G::GetMapH(); j++) {
+  for (uint16_t i = 0; i < grid_->size_.x; i++) {
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
       RenderTile(center_, mode, {i, j}, {i, j});
     }
   }
@@ -91,9 +91,9 @@ void DrawableGrid::RenderSelectedTile(RenderTarget *target, int x0, int x1) {
         R::kTileHeight * (selected_.y - (selected_.y / 2) / 2.f - (selected_.y % 2 == 1 ? 0.25f : 0))
     };
     if (x0 < 0 && (selected_.x < 0 || selected_.x >= x1)) {
-      selected_tile_.setPosition(tile_pos.x - R::kTileWidth * G::GetMapW(), tile_pos.y);
-    } else if (x1 > G::GetMapW() && selected_.x < x1 % G::GetMapW()) {
-      selected_tile_.setPosition(tile_pos.x + R::kTileWidth * G::GetMapW(), tile_pos.y);
+      selected_tile_.setPosition(tile_pos.x - R::kTileWidth * grid_->size_.x, tile_pos.y);
+    } else if (x1 > grid_->size_.x && selected_.x < x1 % grid_->size_.x) {
+      selected_tile_.setPosition(tile_pos.x + R::kTileWidth * grid_->size_.x, tile_pos.y);
     } else {
       selected_tile_.setPosition(tile_pos);
     }
@@ -104,8 +104,8 @@ void DrawableGrid::RenderSelectedTile(RenderTarget *target, int x0, int x1) {
 Vector2u DrawableGrid::UpdateSelection(Vector2f position) {
   selected_ = GetTileByCoords(position);
   // если клик на тайл на боковой карте - перенести его координаты на основную
-  if (selected_.x > G::GetMapW() - 1) selected_.x -= G::GetMapW();
-  if (selected_.x < 0) selected_.x += G::GetMapW();
+  if (selected_.x > grid_->size_.x - 1) selected_.x -= grid_->size_.x;
+  if (selected_.x < 0) selected_.x += grid_->size_.x;
   return Vector2u(selected_.x, selected_.y);
 }
 
@@ -205,4 +205,8 @@ void DrawableGrid::RenderTileTriangles(RenderTarget *target, Color color, Vector
   shape[7].position = Vector2f(render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight);
   shape[7].color = color;
   target->draw(shape);
+}
+
+Vector2<uint16_t> DrawableGrid::GetSize() const {
+  return grid_->size_;
 }

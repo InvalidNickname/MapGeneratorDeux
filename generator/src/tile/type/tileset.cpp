@@ -14,11 +14,11 @@ Tileset::Tileset() {
   // тип суши для генератора
   tileset_.push_back(
       new Type("GenLand", "GenLand", {"0", "1", "2", "3"}, Color::Green, vector<Color>(4, Color::Green), true, 0,
-               new pair{G::GetMinTemp(), G::GetMaxTemp()}, new pair{0.f, 1.f}, "nullptr"));
+               new pair{0ui16, UINT16_MAX}, new pair{0.f, 1.f}, "nullptr"));
   // тип воды для генератора
   tileset_.push_back(
       new Type("GenWater", "GenWater", {"0", "1", "2", "3"}, Color::Blue, vector<Color>(4, Color::Blue), false, 0,
-               new pair{G::GetMinTemp(), G::GetMaxTemp()}, new pair{0.f, 1.f}, "nullptr"));
+               new pair{0ui16, UINT16_MAX}, new pair{0.f, 1.f}, "nullptr"));
   for (Json temp : base_file) {
     Json color_value = temp.at("color");
     Json name_value = temp.at("name");
@@ -40,19 +40,18 @@ Tileset::Tileset() {
                               stoi(color.substr(4, 2), nullptr, 16),
                               stoi(color.substr(6, 2), nullptr, 16));
     }
-    bool above_sea_level = gen_info.at("above_sea_level");
+    bool above_sea = gen_info.at("above_sea_level");
     int priority = gen_info.at("priority");
-    auto *temperature_range = new pair{G::GetMinTemp(), G::GetMaxTemp()};
-    if (gen_info.contains("temp_min")) temperature_range->first = gen_info.at("temp_min");
-    if (gen_info.contains("temp_max")) temperature_range->second = gen_info.at("temp_max");
-    auto *moisture_range = new pair{0.f, 1.f};
-    if (gen_info.contains("moisture_min")) moisture_range->first = gen_info.at("moisture_min");
-    if (gen_info.contains("moisture_max")) moisture_range->second = gen_info.at("moisture_max");
+    auto temperature = new pair{0ui16, UINT16_MAX};
+    if (gen_info.contains("temp_min")) temperature->first = gen_info.at("temp_min");
+    if (gen_info.contains("temp_max")) temperature->second = gen_info.at("temp_max");
+    auto moisture = new pair{0.f, 1.f};
+    if (gen_info.contains("moisture_min")) moisture->first = gen_info.at("moisture_min");
+    if (gen_info.contains("moisture_max")) moisture->second = gen_info.at("moisture_max");
     string neighbour = string();
     if (gen_info.contains("neighbour")) neighbour = gen_info.at("neighbour");
     tileset_.push_back(
-        new Type(type, archtype, name, biome_color, base_color, above_sea_level, priority, temperature_range,
-                 moisture_range, neighbour));
+        new Type(type, archtype, name, biome_color, base_color, above_sea, priority, temperature, moisture, neighbour));
   }
   // сортировка тайлсета по приоритету генерации
   sort(tileset_.begin(), tileset_.end(), [](Type *type1, Type *type2) -> bool {

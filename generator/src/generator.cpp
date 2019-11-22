@@ -1,7 +1,8 @@
 #include "generator.h"
 
 TileGrid *Generator::Generate() {
-  grid_ = new TileGrid();
+  land_border_ = 0.07 * G::GetMapH();
+  grid_ = new TileGrid({G::GetMapW(), G::GetMapH()});
   RaiseTerrain();
   FlattenTerrain();
   FindZLimits();
@@ -11,33 +12,34 @@ TileGrid *Generator::Generate() {
   SetTerrainLevel();
   SetMoisture();
   SetTerrainFromTileset();
+  SetRivers();
   return grid_;
 }
 
 void Generator::RaiseTerrain() {
   if (G::GetGeneratorType() == "best") {
     // общее количество клеток суши
-    int land_budget = G::GetMapH() * G::GetMapW();
+    uint32_t land_budget = grid_->size_.y * grid_->size_.x;
     // количество начальных точек континентов
-    int size = Random::Get().GetInt(40, 60);
+    uint16_t size = Random::Get().GetInt(40, 60);
     // количество точек в континенте
-    int continent_size = land_budget / size;
-    for (int i = 0; i < size; i++) {
+    uint16_t continent_size = land_budget / size;
+    for (uint16_t i = 0; i < size; i++) {
       // определение центрального гекса континента
       auto prev = Vector2u(
-          Random::Get().GetInt(0, G::GetMapW() - 1),
-          Random::Get().GetInt(G::GetLandBorder(), G::GetMapH() - G::GetLandBorder() - 1)
+          Random::Get().GetInt(0, grid_->size_.x - 1),
+          Random::Get().GetInt(land_border_, G::GetMapH() - land_border_ - 1)
       );
       // построение континента вокруг центрального гекса
-      for (int j = 0; j < continent_size; j++) {
+      for (uint16_t j = 0; j < continent_size; j++) {
         Tile *neighbour = grid_->GetNeighbour(Random::Get().GetInt(0, 6), prev);
         if (neighbour != nullptr) {
           float factor = 1;
           // если выбранный сосед за границей суши, уменьшается вероятность поднятия суши там
-          if (neighbour->pos_.y < G::GetLandBorder())
-            factor = min(factor, (float) neighbour->pos_.y / G::GetLandBorder());
-          if (neighbour->pos_.y > G::GetMapH() - G::GetLandBorder() - 1)
-            factor = min(factor, (float) (G::GetMapH() - 1 - neighbour->pos_.y) / G::GetLandBorder());
+          if (neighbour->pos_.y < land_border_)
+            factor = min(factor, (float) neighbour->pos_.y / land_border_);
+          if (neighbour->pos_.y > grid_->size_.y - land_border_ - 1)
+            factor = min(factor, (float) (grid_->size_.y - 1 - neighbour->pos_.y) / land_border_);
           if ((float) Random::Get().GetInt(10, 100) / 100.f < factor) {
             neighbour->IncreaseZ(1);
             if (neighbour->GetZ() > 0) {
@@ -52,19 +54,19 @@ void Generator::RaiseTerrain() {
     }
   } else {
     PerlinNoise perlin_noise = PerlinNoise(Random::Get().GetSeed());
-    for (uint16_t i = 0; i < G::GetMapW(); i++)
-      for (uint16_t j = 0; j < G::GetMapH(); j++) {
+    for (uint16_t i = 0; i < grid_->size_.x; i++)
+      for (uint16_t j = 0; j < grid_->size_.y; j++) {
         Tile *tile = grid_->GetTile({i, j});
         float z = 1;
-        if (tile->pos_.y < G::GetLandBorder()) z = (float) tile->pos_.y / G::GetLandBorder();
-        if (tile->pos_.y > G::GetMapH() - G::GetLandBorder() - 1) {
-          z = (float) (G::GetMapH() - 1 - tile->pos_.y) / G::GetLandBorder();
+        if (tile->pos_.y < land_border_) z = (float) tile->pos_.y / land_border_;
+        if (tile->pos_.y > grid_->size_.y - land_border_ - 1) {
+          z = (float) (grid_->size_.y - 1 - tile->pos_.y) / land_border_;
         }
         z *= (perlin_noise.Noise(
             0.01f * (float) i,
             0.01f * (float) j,
-            G::GetMapW() * 0.01f,
-            G::GetMapH() * 0.01f, 4) + 1) / 2.f;
+            grid_->size_.x * 0.01f,
+            grid_->size_.y * 0.01f, 4) + 1) / 2.f;
         tile->SetZ(1000 * z);
       }
   }
@@ -72,8 +74,8 @@ void Generator::RaiseTerrain() {
 
 // сглаживание суши, эрозия
 void Generator::FlattenTerrain() {
-  for (uint16_t i = 0; i < G::GetMapW(); i++)
-    for (uint16_t j = 0; j < G::GetMapH(); j++) {
+  for (uint16_t i = 0; i < grid_->size_.x; i++)
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
       Tile *tile = grid_->GetTile({i, j});
       for (uint8_t k = 0; k < 6; k++) {
         Tile *neighbour = grid_->GetNeighbour(k, {i, j});
@@ -88,9 +90,9 @@ void Generator::FlattenTerrain() {
 
 void Generator::FindZLimits() {
   // общая высота всех тайлов
-  int terrain_mass = 0;
-  for (uint16_t i = 0; i < G::GetMapW(); i++)
-    for (uint16_t j = 0; j < G::GetMapH(); j++) {
+  uint32_t terrain_mass = 0;
+  for (uint16_t i = 0; i < grid_->size_.x; i++)
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
       Tile *tile = grid_->GetTile({i, j});
       if (tile->GetZ() > grid_->GetMaxZ()) {
         grid_->SetMaxZ(tile->GetZ());
@@ -100,21 +102,21 @@ void Generator::FindZLimits() {
       }
       terrain_mass += tile->GetZ();
     }
-  terrain_mass /= (G::GetMapH() * G::GetMapW());
+  terrain_mass /= grid_->size_.y * grid_->size_.x;
   ocean_level_ = (float) terrain_mass * G::GetOceanLevel();
 }
 
 void Generator::SetTemperature() {
   PerlinNoise perlin_noise = PerlinNoise(Random::Get().GetSeed() * 2);
-  for (uint16_t i = 0; i < G::GetMapW(); i++)
-    for (uint16_t j = 0; j < G::GetMapH(); j++) {
+  for (uint16_t i = 0; i < grid_->size_.x; i++)
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
       Tile *tile = grid_->GetTile({i, j});
-      float temperature = 1 - tile->GetLatitude() / 90.f;
+      float temperature = 1 - tile->latitude_ / 90.f;
       temperature *= (perlin_noise.Noise(
           0.01f * (float) i,
           0.01f * (float) j,
-          G::GetMapW() * 0.01f,
-          G::GetMapH() * 0.01f, 4) + 1) / 2.f;
+          grid_->size_.x * 0.01f,
+          grid_->size_.y * 0.01f, 4) + 1) / 2.f;
       if (tile->GetZ() > ocean_level_) {
         temperature *= 1 - (float) (tile->GetZ() - ocean_level_) / (float) (grid_->GetMaxZ() - ocean_level_);
       }
@@ -125,8 +127,8 @@ void Generator::SetTemperature() {
 
 // установка суши по уровню океана
 void Generator::SetLand() {
-  for (uint16_t i = 0; i < G::GetMapW(); i++)
-    for (uint16_t j = 0; j < G::GetMapH(); j++) {
+  for (uint16_t i = 0; i < grid_->size_.x; i++)
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
       Tile *tile = grid_->GetTile({i, j});
       if (tile->GetZ() > ocean_level_) {
         tile->SetType("GenLand");
@@ -137,8 +139,8 @@ void Generator::SetLand() {
 // сглаживание границ континентов, удаление полосок тайлов
 void Generator::FlattenContinentBorders() {
   for (uint8_t z = 0; z < 4; z++) {
-    for (uint16_t i = 0; i < G::GetMapW(); i++)
-      for (uint16_t j = 0; j < G::GetMapH(); j++) {
+    for (uint16_t i = 0; i < grid_->size_.x; i++)
+      for (uint16_t j = 0; j < grid_->size_.y; j++) {
         Tile *tile = grid_->GetTile({i, j});
         if (tile->GetType()->type_name == "GenWater" && CountNeighboursWithType("GenWater", tile) <= 2) {
           DeleteTilePaths("GenWater", "GenLand", tile);
@@ -151,8 +153,8 @@ void Generator::FlattenContinentBorders() {
 }
 
 void Generator::SetTerrainLevel() {
-  for (uint16_t i = 0; i < G::GetMapW(); i++)
-    for (uint16_t j = 0; j < G::GetMapH(); j++) {
+  for (uint16_t i = 0; i < grid_->size_.x; i++)
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
       Tile *tile = grid_->GetTile({i, j});
       float relative_elevation;
       if (tile->GetType()->above_sea_level) {
@@ -175,15 +177,15 @@ void Generator::SetTerrainLevel() {
 void Generator::SetMoisture() {
   PerlinNoise perlin_noise = PerlinNoise(Random::Get().GetSeed());
   float max_moisture = 0;
-  for (uint16_t i = 0; i < G::GetMapW(); i++)
-    for (uint16_t j = 0; j < G::GetMapH(); j++) {
+  for (uint16_t i = 0; i < grid_->size_.x; i++)
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
       Tile *tile = grid_->GetTile({i, j});
-      float moisture = 1 - tile->GetLatitude() / 90.f;
+      float moisture = 1 - tile->latitude_ / 90.f;
       moisture *= (perlin_noise.Noise(
           0.01f * (float) i,
           0.01f * (float) j,
-          G::GetMapW() * 0.01f,
-          G::GetMapH() * 0.01f, 4) + 1) / 2.f;
+          grid_->size_.x * 0.01f,
+          grid_->size_.y * 0.01f, 4) + 1) / 2.f;
       tile->SetMoisture(moisture);
       if (moisture > max_moisture) max_moisture = moisture;
     }
@@ -192,8 +194,8 @@ void Generator::SetMoisture() {
 void Generator::SetTerrainFromTileset() {
   for (uint16_t i = 0; i < Tileset::Get().GetSize(); i++) {
     Type *type = Tileset::Get().GetType(i);
-    for (uint16_t j = 0; j < G::GetMapW(); j++)
-      for (uint16_t k = 0; k < G::GetMapH(); k++) {
+    for (uint16_t j = 0; j < grid_->size_.x; j++)
+      for (uint16_t k = 0; k < grid_->size_.y; k++) {
         Tile *tile = grid_->GetTile({j, k});
         if (tile->GetZ() > ocean_level_ == type->above_sea_level &&
             tile->GetTemperature() >= type->temperature_range->first &&
@@ -204,6 +206,76 @@ void Generator::SetTerrainFromTileset() {
           tile->SetType(type->type_name);
         }
       }
+  }
+}
+
+void Generator::SetRivers() {
+  factor_ = vector<vector<float>>(grid_->size_.x, vector<float>(grid_->size_.y, 0.05));
+  for (uint16_t i = 0; i < grid_->size_.x; i++) {
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
+      Tile *tile = grid_->GetTile({i, j});
+      if (!tile->GetType()->above_sea_level) {
+        // под водой рек не бывает
+        factor_[i][j] = 0;
+      } else {
+        factor_[i][j] *= sqrt((float) (tile->GetZ() - ocean_level_) / (float) (grid_->GetMaxZ() - ocean_level_));
+        factor_[i][j] *= tile->GetMoisture();
+      }
+    }
+  }
+  for (uint16_t i = 0; i < grid_->size_.x; i++) {
+    for (uint16_t j = 0; j < grid_->size_.y; j++) {
+      auto random = (float) Random::Get().GetInt(0, 100) / 100.f;
+      if (factor_[i][j] > random) {
+        // в этой точке начинается река
+        grid_->SetRiver({i, j}, true);
+        river_length_ = 1;
+        ContinueRiver({i, j});
+      }
+    }
+  }
+}
+
+void Generator::ContinueRiver(Vector2u pos) {
+  // находим соседний тайл с минимальной высотой
+  int8_t min_dir = -1;
+  float min_z = 2;
+  for (uint8_t i = 0; i < 6; ++i) {
+    Vector2u n_pos = grid_->GetNeighbour(i, pos)->pos_;
+    // или земля с фактором выше 0, или вода
+    if ((factor_[n_pos.x][n_pos.y] < min_z && factor_[n_pos.x][n_pos.y] > 0) ||
+        !grid_->GetTile(n_pos)->GetType()->above_sea_level) {
+      min_dir = i;
+      min_z = factor_[n_pos.x][n_pos.y];
+    }
+  }
+  if (min_dir > -1) {
+    for (uint8_t i = 0; i < 6; ++i) {
+      Vector2u n_pos = grid_->GetNeighbour(i, pos)->pos_;
+      factor_[n_pos.x][n_pos.y] = 0;
+    }
+    if (grid_->GetNeighbour(min_dir, pos)->GetType()->above_sea_level) {
+      Vector2u min_pos = grid_->GetNeighbour(min_dir, pos)->pos_;
+      grid_->SetRiver(min_pos, true);
+      river_length_++;
+      ContinueRiver(min_pos);
+    } else if (river_length_ == 1) {
+      grid_->SetRiver(pos, false);
+    }
+  } else {
+    // река не впадает в океан, удалить
+    DeleteRiver(pos);
+  }
+}
+
+void Generator::DeleteRiver(Vector2u pos) {
+  factor_[pos.x][pos.y] = 0;
+  grid_->SetRiver(pos, false);
+  for (uint8_t i = 0; i < 6; ++i) {
+    Vector2u tile_pos = grid_->GetNeighbour(i, pos)->pos_;
+    if (grid_->GetRiver(tile_pos)) {
+      DeleteRiver(tile_pos);
+    }
   }
 }
 

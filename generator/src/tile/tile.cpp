@@ -1,18 +1,12 @@
 #include "tile.h"
 
-Tile::Tile(Vector2u pos) : pos_(pos) {
+Tile::Tile(Vector2u pos)
+    : pos_(pos),
+      latitude_(
+          90 * (1 - (2. * pos.y / G::GetMapH() > 1 ? 2 - 2. * pos.y / G::GetMapH() : 2. * pos.y / G::GetMapH()))),
+      longitude_(
+          180 * (1 - (2. * pos.x / G::GetMapW() > 1 ? 2 - 2. * pos.x / G::GetMapW() : 2. * pos.x / G::GetMapW()))) {
   SetType("GenWater");
-  latitude_ = 90 * (1 - (2.f * pos.y / G::GetMapH() > 1 ? 2 - 2.f * pos.y / G::GetMapH() : 2.f * pos.y / G::GetMapH()));
-  longitude_ =
-      180 * (1 - (2.f * pos.x / G::GetMapW() > 1 ? 2 - 2.f * pos.x / G::GetMapW() : 2.f * pos.x / G::GetMapW()));
-}
-
-float Tile::GetLatitude() const {
-  return latitude_;
-}
-
-float Tile::GetLongitude() const {
-  return longitude_;
 }
 
 uint16_t Tile::GetZ() const {

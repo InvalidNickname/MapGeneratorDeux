@@ -23,10 +23,11 @@ class Minimap : public UIDrawable {
  private:
   Sprite minimap_, overlay_;
   RectangleShape left_, right_;
-  Vector2u window_size_;
+  const Vector2u window_size_;
   Vector2f pos_;
+  const Vector2<uint16_t> size_;
 
-  void CreateMinimapImage(DrawableGrid *drawable_grid);
+  void CreateMinimapImage(DrawableGrid *grid);
 
   void CreateViewRectangles();
 };

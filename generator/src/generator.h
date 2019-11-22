@@ -11,7 +11,9 @@ class Generator {
 
  private:
   TileGrid *grid_{nullptr};
-  uint16_t ocean_level_{0};
+  uint16_t ocean_level_{0}, land_border_;
+  vector<vector<float>> factor_;
+  uint16_t river_length_;
 
   void RaiseTerrain();
 
@@ -31,6 +33,12 @@ class Generator {
   void SetMoisture();
 
   void SetTerrainFromTileset();
+
+  void SetRivers();
+
+  void ContinueRiver(Vector2u pos);
+
+  void DeleteRiver(Vector2u pos);
 
   // рекурсивное удаление гексов, имеющих только 2 соседей того же типа
   void DeleteTilePaths(const string &type, const string &change_to, Tile *tile);
