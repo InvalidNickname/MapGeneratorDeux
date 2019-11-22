@@ -180,6 +180,7 @@ void DrawableGrid::RenderTile(RenderTarget *target, MapMode mode, Vector2u coord
       break;
   }
   RenderTileTriangles(target, color, pos);
+  RenderRiver(target, coords, pos);
 }
 
 void DrawableGrid::RenderTileTriangles(RenderTarget *target, Color color, Vector2i pos) {
@@ -209,4 +210,75 @@ void DrawableGrid::RenderTileTriangles(RenderTarget *target, Color color, Vector
 
 Vector2<uint16_t> DrawableGrid::GetSize() const {
   return grid_->size_;
+}
+
+void DrawableGrid::RenderRiver(RenderTarget *target, Vector2u coords, Vector2i pos) {
+  if (grid_->GetRiver(coords)) {
+    Vector2f render_pos = {
+        R::kTileWidth * ((float) pos.x + (pos.y % 2 == 1 ? 0.5f : 0)),
+        R::kTileHeight * ((float) pos.y - (float) (pos.y / 2) / 2 - (pos.y % 2 == 1 ? 0.25f : 0))
+    };
+    river = VertexArray(Quads, 4);
+    river[0].position = {render_pos.x, render_pos.y};
+    river[1].position = {render_pos.x + R::kTileWidth, render_pos.y};
+    river[2].position = {render_pos.x + R::kTileWidth, render_pos.y + R::kTileHeight};
+    river[3].position = {render_pos.x, render_pos.y + R::kTileHeight};
+    // все текстуры рек должны быть одинаковыми по размеру, так то пофиг какую брать
+    Vector2u tex_size = AssetLoader::Get().GetTexture("river_end")->getSize();
+    river[3].texCoords = Vector2f(0, 0);
+    river[2].texCoords = Vector2f(tex_size.x, 0);
+    river[1].texCoords = Vector2f(tex_size.x, tex_size.y);
+    river[0].texCoords = Vector2f(0, tex_size.y);
+
+    uint8_t from_dir{0}, to_dir{0};
+    uint8_t dirs = 0;
+    for (uint8_t i = 0; i < 6; ++i) {
+      Vector2u n_pos = grid_->GetNeighbour(i, coords)->pos_;
+      if (grid_->GetRiver(n_pos) && dirs == 0) {
+        from_dir = i;
+        dirs++;
+      } else if (grid_->GetRiver(n_pos)) {
+        to_dir = i;
+        dirs++;
+      }
+    }
+    RenderStates states;
+    if (dirs == 1) {
+      states.texture = AssetLoader::Get().GetTexture("river_end");
+      states.transform = Transform().
+          rotate(GetRotation(from_dir), {render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight / 2});
+      target->draw(river, states);
+    } else if (abs(from_dir - to_dir) == 2 || abs(from_dir - to_dir) == 4) {
+      int16_t rotation = GetRotation(from_dir);
+      if ((from_dir == 0 && to_dir == 2)
+          || (from_dir == 1 && to_dir == 3)
+          || (from_dir == 2 && to_dir == 4)
+          || (from_dir == 3 && to_dir == 5)
+          || (from_dir == 4 && to_dir == 0)
+          || (from_dir == 5 && to_dir == 1)) {
+        rotation -= 120;
+      }
+      states.texture = AssetLoader::Get().GetTexture("river_2");
+      states.transform = Transform().
+          rotate(rotation, {render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight / 2});
+      target->draw(river, states);
+    } else {
+      states.texture = AssetLoader::Get().GetTexture("river_straight");
+      states.transform = Transform().
+          rotate(GetRotation(from_dir), {render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight / 2});
+      target->draw(river, states);
+    }
+  }
+}
+
+uint16_t DrawableGrid::GetRotation(uint8_t direction) {
+  switch (direction) {
+    case 0:return 180;
+    case 1:return 120;
+    case 2:return 60;
+    case 3:return 0;
+    case 4:return 300;
+    case 5:return 240;
+    default:return 0;
+  }
 }

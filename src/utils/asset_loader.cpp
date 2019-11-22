@@ -18,6 +18,10 @@ AssetLoader::AssetLoader() {
   LoadTexture("interface/map_mode_moisture.png", "map_mode_moisture_1", {41, 0, 41, 31});
   LoadTexture("interface/minimap_overlay.png", "minimap_overlay");
   LoadTexture("tiles/selected_tile.png", "selected_tile");
+  LoadTexture("tiles/river_0.png", "river_straight");
+  LoadTexture("tiles/river_2.png", "river_2");
+  LoadTexture("tiles/river_3.png", "river_end");
+  LoadTexture("tiles/river_4.png", "river_start");
 
   for (int i = -2; i < 3; i++) {
     LoadTexture("interface/settings_height.png",

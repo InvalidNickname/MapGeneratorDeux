@@ -33,6 +33,7 @@ class DrawableGrid {
   Sprite s_left_, s_center_, s_right_;
   Sprite selected_tile_;
   MapMode prev_mode_{};
+  VertexArray river;
 
   void UpdateTexture(MapMode mode);
 
@@ -41,6 +42,10 @@ class DrawableGrid {
   void RenderTile(RenderTarget *target, MapMode mode, Vector2u coords, Vector2i pos);
 
   static void RenderTileTriangles(RenderTarget *target, Color color, Vector2i pos);
+
+  void RenderRiver(RenderTarget *target, Vector2u coords, Vector2i pos);
+
+  static uint16_t GetRotation(uint8_t direction);
 };
 
 #endif
