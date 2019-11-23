@@ -42,10 +42,23 @@ AssetLoader::AssetLoader() {
     LoadTexture("interface/settings_size.png",
                 "s_size_" + to_string(i) + "_1",
                 {(i + 2) * 140, 0, 140, 150});
+    LoadTexture("interface/settings_flatness.png",
+                "s_flatness_" + to_string(i) + "_0",
+                {(i + 2) * 140, 150, 140, 150});
+    LoadTexture("interface/settings_flatness.png",
+                "s_flatness_" + to_string(i) + "_1",
+                {(i + 2) * 140, 0, 140, 150});
+    LoadTexture("interface/settings_moisture.png",
+                "s_moisture_" + to_string(i) + "_0",
+                {(i + 2) * 140, 150, 140, 150});
+    LoadTexture("interface/settings_moisture.png",
+                "s_moisture_" + to_string(i) + "_1",
+                {(i + 2) * 140, 0, 140, 150});
   }
 
   LoadTexture("interface/check.png", "check_0", {0, 0, 50, 50});
   LoadTexture("interface/check.png", "check_1", {50, 0, 50, 50});
+  LoadTexture("interface/go.png", "go");
 
   LoadTexture("background/settings_background.png", "s_background");
 

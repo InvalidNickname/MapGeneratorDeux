@@ -17,6 +17,7 @@ struct R {
   static const uint16_t kSRadioWidth = 700;
   static const uint16_t kSRadioHeight = 150;
   static const uint16_t kSCheckSize = kSRadioHeight / 3;
+  static const uint16_t kGoSize = 120;
 };
 
 #endif

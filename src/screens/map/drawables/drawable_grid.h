@@ -28,22 +28,18 @@ class DrawableGrid {
  private:
   TileGrid *grid_;
   Vector2s selected_{-1, -1};
-  int max_z_, min_z_;
   RenderTexture *center_;
   Sprite s_left_, s_center_, s_right_;
   Sprite selected_tile_;
   MapMode prev_mode_{};
-  VertexArray river;
 
   void UpdateTexture(MapMode mode);
 
-  void RenderSelectedTile(RenderTarget *target, int x0, int x1);
-
   void RenderTile(RenderTarget *target, MapMode mode, Vector2u coords, Vector2i pos);
 
-  static void RenderTileTriangles(RenderTarget *target, Color color, Vector2i pos);
+  static void RenderTileTriangles(RenderTarget *target, Color color, Vector2f pos);
 
-  void RenderRiver(RenderTarget *target, Vector2u coords, Vector2i pos);
+  void RenderRiver(RenderTarget *target, Vector2u coords, Vector2f pos);
 
   static uint16_t GetRotation(uint8_t direction);
 };

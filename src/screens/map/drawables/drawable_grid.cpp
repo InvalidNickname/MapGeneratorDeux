@@ -3,18 +3,11 @@
 DrawableGrid::DrawableGrid() {
   grid_ = Generator().Generate();
 
-  max_z_ = grid_->GetMaxZ();
-  min_z_ = grid_->GetMinZ();
-
   Vector2f map_size = {R::kTileWidth * (0.5f + grid_->size_.x), 0.25f * R::kTileHeight * (3 * grid_->size_.y)};
-
-  View view;
-  view.setCenter(map_size / 2.f);
-  view.setSize(map_size);
 
   center_ = new RenderTexture();
   center_->create(Texture::getMaximumSize() / 2, (Texture::getMaximumSize() / 2) / 300 * 190);
-  center_->setView(view);
+  center_->setView({map_size / 2.f, map_size});
 
   UpdateTexture(MapMode::NORMAL);
 
@@ -23,11 +16,11 @@ DrawableGrid::DrawableGrid() {
   s_center_.setPosition(0, 0);
 
   s_right_.setTexture(center_->getTexture());
-  s_right_.scale(map_size.x / s_right_.getTexture()->getSize().x, map_size.y / s_right_.getTexture()->getSize().y);
+  s_right_.scale(s_center_.getScale());
   s_right_.setPosition(map_size.x - 0.5f * R::kTileWidth, 0);
 
   s_left_.setTexture(center_->getTexture());
-  s_left_.scale(map_size.x / s_left_.getTexture()->getSize().x, map_size.y / s_left_.getTexture()->getSize().y);
+  s_left_.scale(s_center_.getScale());
   s_left_.setPosition(-map_size.x + 0.5f * R::kTileWidth, 0);
 
   selected_tile_.setTexture(*AssetLoader::Get().GetTexture("selected_tile"));
@@ -43,8 +36,6 @@ void DrawableGrid::RenderGridTexture(RenderTarget *target, MapMode mode, int x0,
   target->draw(s_center_);
   if (x1 > grid_->size_.x) target->draw(s_right_);
   if (x0 < 0) target->draw(s_left_);
-
-  RenderSelectedTile(target, x0, x1);
 }
 
 void DrawableGrid::RenderVector(RenderTarget *target, MapMode mode, Vector2s lower_left, Vector2s upper_right) {
@@ -70,8 +61,6 @@ void DrawableGrid::RenderVector(RenderTarget *target, MapMode mode, Vector2s low
       for (uint16_t j = lower_left.x; j < upper_right.x; j++)
         RenderTile(target, mode, {j, i}, {j, i});
   }
-
-  RenderSelectedTile(target, lower_left.x, upper_right.x);
 }
 
 void DrawableGrid::UpdateTexture(MapMode mode) {
@@ -84,28 +73,12 @@ void DrawableGrid::UpdateTexture(MapMode mode) {
   center_->display();
 }
 
-void DrawableGrid::RenderSelectedTile(RenderTarget *target, int x0, int x1) {
-  if (selected_.x >= 0 && selected_.y >= 0) {
-    Vector2f tile_pos = {
-        R::kTileWidth * (selected_.x + (selected_.y % 2 == 1 ? 0.5f : 0)),
-        R::kTileHeight * (selected_.y - (selected_.y / 2) / 2.f - (selected_.y % 2 == 1 ? 0.25f : 0))
-    };
-    if (x0 < 0 && (selected_.x < 0 || selected_.x >= x1)) {
-      selected_tile_.setPosition(tile_pos.x - R::kTileWidth * grid_->size_.x, tile_pos.y);
-    } else if (x1 > grid_->size_.x && selected_.x < x1 % grid_->size_.x) {
-      selected_tile_.setPosition(tile_pos.x + R::kTileWidth * grid_->size_.x, tile_pos.y);
-    } else {
-      selected_tile_.setPosition(tile_pos);
-    }
-    target->draw(selected_tile_);
-  }
-}
-
 Vector2u DrawableGrid::UpdateSelection(Vector2f position) {
   selected_ = GetTileByCoords(position);
   // если клик на тайл на боковой карте - перенести его координаты на основную
   if (selected_.x > grid_->size_.x - 1) selected_.x -= grid_->size_.x;
   if (selected_.x < 0) selected_.x += grid_->size_.x;
+  UpdateTexture(prev_mode_);
   return Vector2u(selected_.x, selected_.y);
 }
 
@@ -161,13 +134,13 @@ void DrawableGrid::RenderTile(RenderTarget *target, MapMode mode, Vector2u coord
       color = Color(255, (1 - temp) * 255, (1 - temp) * 255, 255);
       break;
     case HEIGHT: // большая высота - белый, маленькая - синий
-      temp = (float) (tile->GetZ() - min_z_) / (float) (max_z_ - min_z_ + 1);
+      temp = (float) (tile->GetZ() - grid_->GetMinZ()) / (float) (grid_->GetMaxZ() - grid_->GetMinZ() + 1);
       color = Color((1 - temp) * 255, (1 - temp) * 255, 255);
       break;
     case BIOMES:color = tile->GetType()->biome_color;
       break;
     case MINIMAP:
-      if (tile->GetType()->archtype == "Water") {
+      if (!tile->GetType()->above_sea_level) {
         color = Color(179, 171, 128);
       } else {
         color = Color(108, 106, 68);
@@ -179,31 +152,35 @@ void DrawableGrid::RenderTile(RenderTarget *target, MapMode mode, Vector2u coord
     case SELECTED:color = Color(0, 0, 0, 150);
       break;
   }
-  RenderTileTriangles(target, color, pos);
-  RenderRiver(target, coords, pos);
+  Vector2f render_pos = {
+      R::kTileWidth * (pos.x + (fmod(pos.y, 2) == 1 ? 0.5f : 0)),
+      R::kTileHeight * (pos.y - (float) (pos.y / 2) / 2 - (fmod(pos.y, 2) == 1 ? 0.25f : 0))
+  };
+  RenderTileTriangles(target, color, render_pos);
+  if (mode == NORMAL) RenderRiver(target, coords, render_pos);
+  if (coords.x == selected_.x && coords.y == selected_.y) {
+    selected_tile_.setPosition(render_pos);
+    target->draw(selected_tile_);
+  }
 }
 
-void DrawableGrid::RenderTileTriangles(RenderTarget *target, Color color, Vector2i pos) {
-  Vector2f render_pos = {
-      R::kTileWidth * ((float) pos.x + (pos.y % 2 == 1 ? 0.5f : 0)),
-      R::kTileHeight * ((float) pos.y - (float) (pos.y / 2) / 2 - (pos.y % 2 == 1 ? 0.25f : 0))
-  };
+void DrawableGrid::RenderTileTriangles(RenderTarget *target, Color color, Vector2f pos) {
   auto shape = VertexArray(TriangleFan, 8);
-  shape[0].position = Vector2f(render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight / 2);
+  shape[0].position = Vector2f(pos.x + R::kTileWidth / 2, pos.y + R::kTileHeight / 2);
   shape[0].color = color;
-  shape[1].position = Vector2f(render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight);
+  shape[1].position = Vector2f(pos.x + R::kTileWidth / 2, pos.y + R::kTileHeight);
   shape[1].color = color;
-  shape[2].position = Vector2f(render_pos.x + R::kTileWidth, render_pos.y + R::kTileHeight * 3 / 4.f);
+  shape[2].position = Vector2f(pos.x + R::kTileWidth, pos.y + R::kTileHeight * 3 / 4.f);
   shape[2].color = color;
-  shape[3].position = Vector2f(render_pos.x + R::kTileWidth, render_pos.y + R::kTileHeight / 4.f);
+  shape[3].position = Vector2f(pos.x + R::kTileWidth, pos.y + R::kTileHeight / 4.f);
   shape[3].color = color;
-  shape[4].position = Vector2f(render_pos.x + R::kTileWidth / 2, render_pos.y);
+  shape[4].position = Vector2f(pos.x + R::kTileWidth / 2, pos.y);
   shape[4].color = color;
-  shape[5].position = Vector2f(render_pos.x, render_pos.y + R::kTileHeight / 4.f);
+  shape[5].position = Vector2f(pos.x, pos.y + R::kTileHeight / 4.f);
   shape[5].color = color;
-  shape[6].position = Vector2f(render_pos.x, render_pos.y + R::kTileHeight * 3 / 4.f);
+  shape[6].position = Vector2f(pos.x, pos.y + R::kTileHeight * 3 / 4.f);
   shape[6].color = color;
-  shape[7].position = Vector2f(render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight);
+  shape[7].position = Vector2f(pos.x + R::kTileWidth / 2, pos.y + R::kTileHeight);
   shape[7].color = color;
   target->draw(shape);
 }
@@ -212,23 +189,20 @@ Vector2<uint16_t> DrawableGrid::GetSize() const {
   return grid_->size_;
 }
 
-void DrawableGrid::RenderRiver(RenderTarget *target, Vector2u coords, Vector2i pos) {
+void DrawableGrid::RenderRiver(RenderTarget *target, Vector2u coords, Vector2f pos) {
   if (grid_->GetRiver(coords)) {
-    Vector2f render_pos = {
-        R::kTileWidth * ((float) pos.x + (pos.y % 2 == 1 ? 0.5f : 0)),
-        R::kTileHeight * ((float) pos.y - (float) (pos.y / 2) / 2 - (pos.y % 2 == 1 ? 0.25f : 0))
-    };
-    river = VertexArray(Quads, 4);
-    river[0].position = {render_pos.x, render_pos.y};
-    river[1].position = {render_pos.x + R::kTileWidth, render_pos.y};
-    river[2].position = {render_pos.x + R::kTileWidth, render_pos.y + R::kTileHeight};
-    river[3].position = {render_pos.x, render_pos.y + R::kTileHeight};
+    auto river = VertexArray(Quads, 4);
+    river[0].position = pos;
+    river[1].position = {pos.x + R::kTileWidth, pos.y};
+    river[2].position = {pos.x + R::kTileWidth, pos.y + R::kTileHeight};
+    river[3].position = {pos.x, pos.y + R::kTileHeight};
     // все текстуры рек должны быть одинаковыми по размеру, так то пофиг какую брать
     Vector2u tex_size = AssetLoader::Get().GetTexture("river_end")->getSize();
     river[3].texCoords = Vector2f(0, 0);
     river[2].texCoords = Vector2f(tex_size.x, 0);
     river[1].texCoords = Vector2f(tex_size.x, tex_size.y);
     river[0].texCoords = Vector2f(0, tex_size.y);
+    Vector2f rot_center = {pos.x + R::kTileWidth / 2, pos.y + R::kTileHeight / 2};
 
     uint8_t from_dir{0}, to_dir{0};
     uint8_t dirs = 0;
@@ -240,13 +214,24 @@ void DrawableGrid::RenderRiver(RenderTarget *target, Vector2u coords, Vector2i p
       } else if (grid_->GetRiver(n_pos)) {
         to_dir = i;
         dirs++;
+        break;
+      }
+    }
+    // если это конец реки, она впадает в океан
+    if (dirs == 1) {
+      for (uint8_t i = 0; i < 6; ++i) {
+        Vector2u n_pos = grid_->GetNeighbour(i, coords)->pos_;
+        if (!grid_->GetTile(n_pos)->GetType()->above_sea_level) {
+          to_dir = i;
+          dirs++;
+          break;
+        }
       }
     }
     RenderStates states;
     if (dirs == 1) {
       states.texture = AssetLoader::Get().GetTexture("river_end");
-      states.transform = Transform().
-          rotate(GetRotation(from_dir), {render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight / 2});
+      states.transform.rotate(GetRotation(from_dir), rot_center);
       target->draw(river, states);
     } else if (abs(from_dir - to_dir) == 2 || abs(from_dir - to_dir) == 4) {
       int16_t rotation = GetRotation(from_dir);
@@ -259,13 +244,11 @@ void DrawableGrid::RenderRiver(RenderTarget *target, Vector2u coords, Vector2i p
         rotation -= 120;
       }
       states.texture = AssetLoader::Get().GetTexture("river_2");
-      states.transform = Transform().
-          rotate(rotation, {render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight / 2});
+      states.transform.rotate(rotation, rot_center);
       target->draw(river, states);
     } else {
       states.texture = AssetLoader::Get().GetTexture("river_straight");
-      states.transform = Transform().
-          rotate(GetRotation(from_dir), {render_pos.x + R::kTileWidth / 2, render_pos.y + R::kTileHeight / 2});
+      states.transform.rotate(GetRotation(from_dir), rot_center);
       target->draw(river, states);
     }
   }

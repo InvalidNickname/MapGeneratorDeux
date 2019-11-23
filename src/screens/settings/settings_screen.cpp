@@ -102,102 +102,102 @@ void SettingsScreen::SetGUI() {
           AssetLoader::Get().GetTexture("s_temperature_2_1"),
           [this]() { settings_["temperature"] = "2"; }))
   }, settings_["temperature"]));
-  // TODO кнопки настройки влажности
+  // кнопки настройки влажности
   gui_->AddObject("moisture", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           {R::kSRadioWidth / 5, R::kSRadioHeight * 2 + 140},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_-2_0"),
-          AssetLoader::Get().GetTexture("s_height_-2_1"),
+          AssetLoader::Get().GetTexture("s_moisture_-2_0"),
+          AssetLoader::Get().GetTexture("s_moisture_-2_1"),
           [this]() { settings_["moisture"] = "-2"; })),
       pair("-1", new Button(
           {R::kSRadioWidth * 2 / 5, R::kSRadioHeight * 2 + 140},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_-1_0"),
-          AssetLoader::Get().GetTexture("s_height_-1_1"),
+          AssetLoader::Get().GetTexture("s_moisture_-1_0"),
+          AssetLoader::Get().GetTexture("s_moisture_-1_1"),
           [this]() { settings_["moisture"] = "-1"; })),
       pair("0", new Button(
           {R::kSRadioWidth * 3 / 5, R::kSRadioHeight * 2 + 140},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_0_0"),
-          AssetLoader::Get().GetTexture("s_height_0_1"),
+          AssetLoader::Get().GetTexture("s_moisture_0_0"),
+          AssetLoader::Get().GetTexture("s_moisture_0_1"),
           [this]() { settings_["moisture"] = "0"; })),
       pair("1", new Button(
           {R::kSRadioWidth * 4 / 5, R::kSRadioHeight * 2 + 140},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_1_0"),
-          AssetLoader::Get().GetTexture("s_height_1_1"),
+          AssetLoader::Get().GetTexture("s_moisture_1_0"),
+          AssetLoader::Get().GetTexture("s_moisture_1_1"),
           [this]() { settings_["moisture"] = "1"; })),
       pair("2", new Button(
           {R::kSRadioWidth, R::kSRadioHeight * 2 + 140},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_2_0"),
-          AssetLoader::Get().GetTexture("s_height_2_1"),
+          AssetLoader::Get().GetTexture("s_moisture_2_0"),
+          AssetLoader::Get().GetTexture("s_moisture_2_1"),
           [this]() { settings_["moisture"] = "2"; }))
   }, settings_["moisture"]));
   gui_->AddObject("size", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          {R::kSRadioWidth / 5, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth / 5, R::kSRadioHeight * 4 + 180},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_-2_0"),
           AssetLoader::Get().GetTexture("s_size_-2_1"),
           [this]() { settings_["size"] = "-2"; })),
       pair("-1", new Button(
-          {R::kSRadioWidth * 2 / 5, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth * 2 / 5, R::kSRadioHeight * 4 + 180},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_-1_0"),
           AssetLoader::Get().GetTexture("s_size_-1_1"),
           [this]() { settings_["size"] = "-1"; })),
       pair("0", new Button(
-          {R::kSRadioWidth * 3 / 5, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth * 3 / 5, R::kSRadioHeight * 4 + 180},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_0_0"),
           AssetLoader::Get().GetTexture("s_size_0_1"),
           [this]() { settings_["size"] = "0"; })),
       pair("1", new Button(
-          {R::kSRadioWidth * 4 / 5, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth * 4 / 5, R::kSRadioHeight * 4 + 180},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_1_0"),
           AssetLoader::Get().GetTexture("s_size_1_1"),
           [this]() { settings_["size"] = "1"; })),
       pair("2", new Button(
-          {R::kSRadioWidth, R::kSRadioHeight * 3 + 160},
+          {R::kSRadioWidth, R::kSRadioHeight * 4 + 180},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_2_0"),
           AssetLoader::Get().GetTexture("s_size_2_1"),
           [this]() { settings_["size"] = "2"; }))
   }, settings_["size"]));
-  // TODO кнопки настройки сглаживания карты
+  // кнопки настройки сглаживания карты
   gui_->AddObject("flatness", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          {R::kSRadioWidth / 5, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth / 5, R::kSRadioHeight * 3 + 160},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_-2_0"),
-          AssetLoader::Get().GetTexture("s_height_-2_1"),
+          AssetLoader::Get().GetTexture("s_flatness_-2_0"),
+          AssetLoader::Get().GetTexture("s_flatness_-2_1"),
           [this]() { settings_["flatness"] = "-2"; })),
       pair("-1", new Button(
-          {R::kSRadioWidth * 2 / 5, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth * 2 / 5, R::kSRadioHeight * 3 + 160},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_-1_0"),
-          AssetLoader::Get().GetTexture("s_height_-1_1"),
+          AssetLoader::Get().GetTexture("s_flatness_-1_0"),
+          AssetLoader::Get().GetTexture("s_flatness_-1_1"),
           [this]() { settings_["flatness"] = "-1"; })),
       pair("0", new Button(
-          {R::kSRadioWidth * 3 / 5, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth * 3 / 5, R::kSRadioHeight * 3 + 160},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_0_0"),
-          AssetLoader::Get().GetTexture("s_height_0_1"),
+          AssetLoader::Get().GetTexture("s_flatness_0_0"),
+          AssetLoader::Get().GetTexture("s_flatness_0_1"),
           [this]() { settings_["flatness"] = "0"; })),
       pair("1", new Button(
-          {R::kSRadioWidth * 4 / 5, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth * 4 / 5, R::kSRadioHeight * 3 + 160},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_1_0"),
-          AssetLoader::Get().GetTexture("s_height_1_1"),
+          AssetLoader::Get().GetTexture("s_flatness_1_0"),
+          AssetLoader::Get().GetTexture("s_flatness_1_1"),
           [this]() { settings_["flatness"] = "1"; })),
       pair("2", new Button(
-          {R::kSRadioWidth, R::kSRadioHeight * 4 + 180},
+          {R::kSRadioWidth, R::kSRadioHeight * 3 + 160},
           {R::kSRadioWidth / 5, R::kSRadioHeight},
-          AssetLoader::Get().GetTexture("s_height_2_0"),
-          AssetLoader::Get().GetTexture("s_height_2_1"),
+          AssetLoader::Get().GetTexture("s_flatness_2_0"),
+          AssetLoader::Get().GetTexture("s_flatness_2_1"),
           [this]() { settings_["flatness"] = "2"; }))
   }, settings_["flatness"]));
   // TODO поле для ввода сида
@@ -231,18 +231,18 @@ void SettingsScreen::SetGUI() {
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
-  // TODO кнопка генерации карты
+  // кнопка генерации карты
   gui_->AddObject("start_gen", new Button(
       Vector2s(
-          window_size_.x - 200,
-          R::kSRadioHeight * 4 + 180
+          window_size_.x - 100 - R::kGoSize,
+          window_size_.y - 100 - R::kGoSize
       ),
       Vector2s(
-          R::kSRadioWidth / 5,
-          R::kSRadioHeight
+          R::kGoSize,
+          R::kGoSize
       ),
-      AssetLoader::Get().GetTexture("s_height_2_0"),
-      AssetLoader::Get().GetTexture("s_height_2_1"),
+      AssetLoader::Get().GetTexture("go"),
+      AssetLoader::Get().GetTexture("go"),
       [this]() {
         WriteSettings();
         temp_state_ = MAP_SCREEN;

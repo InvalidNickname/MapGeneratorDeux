@@ -74,18 +74,20 @@ void Generator::RaiseTerrain() {
 
 // сглаживание суши, эрозия
 void Generator::FlattenTerrain() {
-  for (uint16_t i = 0; i < grid_->size_.x; i++)
-    for (uint16_t j = 0; j < grid_->size_.y; j++) {
-      Tile *tile = grid_->GetTile({i, j});
-      for (uint8_t k = 0; k < 6; k++) {
-        Tile *neighbour = grid_->GetNeighbour(k, {i, j});
-        if (neighbour != nullptr)
-          if (tile->GetZ() - neighbour->GetZ() > 3) {
-            tile->IncreaseZ(-1);
-            neighbour->IncreaseZ(1);
-          }
+  for (uint8_t n = 0; n < G::GetFlatness(); n++) {
+    for (uint16_t i = 0; i < grid_->size_.x; i++)
+      for (uint16_t j = 0; j < grid_->size_.y; j++) {
+        Tile *tile = grid_->GetTile({i, j});
+        for (uint8_t k = 0; k < 6; k++) {
+          Tile *neighbour = grid_->GetNeighbour(k, {i, j});
+          if (neighbour != nullptr)
+            if (tile->GetZ() - neighbour->GetZ() > 3) {
+              tile->IncreaseZ(-1);
+              neighbour->IncreaseZ(1);
+            }
+        }
       }
-    }
+  }
 }
 
 void Generator::FindZLimits() {
@@ -186,7 +188,7 @@ void Generator::SetMoisture() {
           0.01f * (float) j,
           grid_->size_.x * 0.01f,
           grid_->size_.y * 0.01f, 4) + 1) / 2.f;
-      tile->SetMoisture(moisture);
+      tile->SetMoisture(G::GetMinMoisture() + moisture * (G::GetMaxMoisture() - G::GetMinMoisture()));
       if (moisture > max_moisture) max_moisture = moisture;
     }
 }
