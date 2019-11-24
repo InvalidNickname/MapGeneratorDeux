@@ -27,6 +27,8 @@ bool SettingsScreen::GetFromJSON(ifstream input) {
     settings_.insert(pair("ocean_level", base_file["ocean_level"]));
     settings_.insert(pair("flatness", base_file["flatness"]));
     settings_.insert(pair("generator", base_file["generator"]));
+    settings_.insert(pair("seed", base_file["seed"]));
+    seed = stoi(settings_.at("seed"));
     return true;
   }
   return false;
@@ -38,6 +40,14 @@ void SettingsScreen::SetGUI() {
       {0, 0},
       Vector2s(window_size_.x, window_size_.y),
       AssetLoader::Get().GetTexture("s_background")));
+  // кнопки настройки уровня моря
+  gui_->AddObject("ocean_level_hint", new DrawableText(
+      {R::kSRadioWidth / 5, 77},
+      "Уровень моря",
+      20,
+      AssetLoader::Get().GetFont("default"),
+      Color::Black
+  ));
   gui_->AddObject("height", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           {R::kSRadioWidth / 5, 100},
@@ -70,6 +80,14 @@ void SettingsScreen::SetGUI() {
           AssetLoader::Get().GetTexture("s_height_2_1"),
           [this]() { settings_["ocean_level"] = "2"; }))
   }, settings_["ocean_level"]));
+  // кнопки настройки температуры
+  gui_->AddObject("temperature_hint", new DrawableText(
+      {R::kSRadioWidth / 5, R::kSRadioHeight + 97},
+      "Средняя температура",
+      20,
+      AssetLoader::Get().GetFont("default"),
+      Color::Black
+  ));
   gui_->AddObject("temperature", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           {R::kSRadioWidth / 5, R::kSRadioHeight + 120},
@@ -103,6 +121,13 @@ void SettingsScreen::SetGUI() {
           [this]() { settings_["temperature"] = "2"; }))
   }, settings_["temperature"]));
   // кнопки настройки влажности
+  gui_->AddObject("moisture_hint", new DrawableText(
+      {R::kSRadioWidth / 5, R::kSRadioHeight * 2 + 117},
+      "Средняя влажность",
+      20,
+      AssetLoader::Get().GetFont("default"),
+      Color::Black
+  ));
   gui_->AddObject("moisture", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           {R::kSRadioWidth / 5, R::kSRadioHeight * 2 + 140},
@@ -135,6 +160,14 @@ void SettingsScreen::SetGUI() {
           AssetLoader::Get().GetTexture("s_moisture_2_1"),
           [this]() { settings_["moisture"] = "2"; }))
   }, settings_["moisture"]));
+  // кнопки настройки размера карты
+  gui_->AddObject("size_hint", new DrawableText(
+      {R::kSRadioWidth / 5, R::kSRadioHeight * 4 + 157},
+      "Размер карты",
+      20,
+      AssetLoader::Get().GetFont("default"),
+      Color::Black
+  ));
   gui_->AddObject("size", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           {R::kSRadioWidth / 5, R::kSRadioHeight * 4 + 180},
@@ -168,6 +201,13 @@ void SettingsScreen::SetGUI() {
           [this]() { settings_["size"] = "2"; }))
   }, settings_["size"]));
   // кнопки настройки сглаживания карты
+  gui_->AddObject("flatness_hint", new DrawableText(
+      {R::kSRadioWidth / 5, R::kSRadioHeight * 3 + 137},
+      "Сглаживание карты",
+      20,
+      AssetLoader::Get().GetFont("default"),
+      Color::Black
+  ));
   gui_->AddObject("flatness", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
           {R::kSRadioWidth / 5, R::kSRadioHeight * 3 + 160},
@@ -201,6 +241,25 @@ void SettingsScreen::SetGUI() {
           [this]() { settings_["flatness"] = "2"; }))
   }, settings_["flatness"]));
   // TODO поле для ввода сида
+  gui_->AddObject("seed_background", new DrawableImage(
+      {R::kSRadioWidth * 7 / 5, R::kSRadioHeight * 5 / 2 + 140 - R::kSeedHeight / 2},
+      {R::kSeedWidth, R::kSeedHeight},
+      AssetLoader::Get().GetTexture("seed")
+  ));
+  gui_->AddObject("seed_hint", new DrawableText(
+      {R::kSRadioWidth * 7 / 5, R::kSRadioHeight * 5 / 2 + 140 - R::kSeedHeight / 2 - 23},
+      "Seed карты",
+      20,
+      AssetLoader::Get().GetFont("default"),
+      Color::Black
+  ));
+  gui_->AddObject("seed_text_box", new DrawableText(
+      {R::kSRadioWidth * 7 / 5 + 20, R::kSRadioHeight * 5 / 2 + 140 - 20},
+      settings_["seed"],
+      30,
+      AssetLoader::Get().GetFont("default"),
+      Color::Black
+  ));
   // кнопка выбора типа генератора
   gui_->AddObject("generator", new RadioButtons(new map<string, Button *>{
       pair("best", new Button(
@@ -250,6 +309,9 @@ void SettingsScreen::SetGUI() {
 }
 
 void SettingsScreen::WriteSettings() {
+  settings_["seed"] = to_string(seed);
+  Random::Get().SetSeed(seed);
+
   Json current = settings_;
   ofstream output("last_settings.json");
   output << setw(2) << current << endl;
@@ -264,6 +326,10 @@ void SettingsScreen::WriteSettings() {
 
 GameState SettingsScreen::DoAction() {
   HandleInput();
+  if (seed > 0)
+    ((DrawableText *) gui_->Get("seed_text_box"))->SetText(to_string(seed));
+  else
+    ((DrawableText *) gui_->Get("seed_text_box"))->SetText("");
   return temp_state_;
 }
 
@@ -277,6 +343,21 @@ void SettingsScreen::HandleInput() {
     }
     if (event.type == Event::Closed) {
       temp_state_ = EXIT;
+    }
+    if (event.type == Event::KeyPressed) {
+      if (seed < 100000) {
+        if (event.key.code == Keyboard::Numpad0 || event.key.code == Keyboard::Num0) seed *= 10;
+        else if (event.key.code == Keyboard::Numpad1 || event.key.code == Keyboard::Num1) seed = seed * 10 + 1;
+        else if (event.key.code == Keyboard::Numpad2 || event.key.code == Keyboard::Num2) seed = seed * 10 + 2;
+        else if (event.key.code == Keyboard::Numpad3 || event.key.code == Keyboard::Num3) seed = seed * 10 + 3;
+        else if (event.key.code == Keyboard::Numpad4 || event.key.code == Keyboard::Num4) seed = seed * 10 + 4;
+        else if (event.key.code == Keyboard::Numpad5 || event.key.code == Keyboard::Num5) seed = seed * 10 + 5;
+        else if (event.key.code == Keyboard::Numpad6 || event.key.code == Keyboard::Num6) seed = seed * 10 + 6;
+        else if (event.key.code == Keyboard::Numpad7 || event.key.code == Keyboard::Num7) seed = seed * 10 + 7;
+        else if (event.key.code == Keyboard::Numpad8 || event.key.code == Keyboard::Num8) seed = seed * 10 + 8;
+        else if (event.key.code == Keyboard::Numpad9 || event.key.code == Keyboard::Num9) seed = seed * 10 + 9;
+      }
+      if (event.key.code == Keyboard::Backspace) seed /= 10;
     }
   }
 }

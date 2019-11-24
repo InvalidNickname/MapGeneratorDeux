@@ -4,5 +4,6 @@
   "moisture": "0",
   "ocean_level": "0",
   "flatness": "0",
-  "generator": "best"
+  "generator": "best",
+  "seed": "3"
 }

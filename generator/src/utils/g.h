@@ -48,6 +48,7 @@ struct G {
   [[nodiscard]] static float GetOceanLevel() {
     return ocean_level_[stoi(Get().index_["ocean_level"])];
   }
+
   [[nodiscard]] static uint8_t GetFlatness() {
     return flatness_[stoi(Get().index_["flatness"])];
   }

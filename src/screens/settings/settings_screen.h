@@ -12,11 +12,12 @@
 #include <radio_buttons.h>
 #include <drawable_image.h>
 #include <drawable_text.h>
+#include <utils/random.h>
+#include <utils/g.h>
 
 #include "screens/screen.h"
 #include "utils/r.h"
 #include "utils/asset_loader.h"
-#include "utils/g.h"
 
 using Json = nlohmann::json;
 
@@ -29,6 +30,7 @@ class SettingsScreen : public Screen {
   GUI *gui_;
   View ui_;
   map<string, string> settings_;
+  uint32_t seed;
 
   void Prepare() override;
 
