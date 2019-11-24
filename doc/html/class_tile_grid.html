@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.16"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Map Generator: Класс TileGrid</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Map Generator
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.16 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Классы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li><a href="classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-attribs">Открытые атрибуты</a> &#124;
+<a href="#pri-attribs">Закрытые данные</a> &#124;
+<a href="class_tile_grid-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Класс TileGrid</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Сетка гексов  
+ <a href="class_tile_grid.html#details">Подробнее...</a></p>
+
+<p><code>#include &lt;tile_grid.h&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:a07cbc3df6609c2ef2f5588889b7b9724"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a07cbc3df6609c2ef2f5588889b7b9724">TileGrid</a> (Vector2u map_size)</td></tr>
+<tr class="separator:a07cbc3df6609c2ef2f5588889b7b9724"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a952d0a2995d38c183712e8e255381a8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_tile.html">Tile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a952d0a2995d38c183712e8e255381a8c">GetTile</a> (Vector2u pos) const</td></tr>
+<tr class="separator:a952d0a2995d38c183712e8e255381a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b2dfda87a1f0bfc472bc1c1a1f146a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_tile.html">Tile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a9b2dfda87a1f0bfc472bc1c1a1f146a9">GetNeighbour</a> (int direction, Vector2u pos) const</td></tr>
+<tr class="separator:a9b2dfda87a1f0bfc472bc1c1a1f146a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0661663e90c94fad900581e094310319"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_tile.html">Tile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a0661663e90c94fad900581e094310319">GetNeighbour</a> (int direction, <a class="el" href="class_tile.html">Tile</a> *tile) const</td></tr>
+<tr class="separator:a0661663e90c94fad900581e094310319"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa568944b61fd6b2cdae788f2d2505dfa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#aa568944b61fd6b2cdae788f2d2505dfa">GetMaxZ</a> () const</td></tr>
+<tr class="separator:aa568944b61fd6b2cdae788f2d2505dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f4759ef5b73091e848d39ada2787a71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a9f4759ef5b73091e848d39ada2787a71">SetMaxZ</a> (int max_z)</td></tr>
+<tr class="separator:a9f4759ef5b73091e848d39ada2787a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8828ad91b7af830f9a952c7e0f94ea4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#aa8828ad91b7af830f9a952c7e0f94ea4">GetMinZ</a> () const</td></tr>
+<tr class="separator:aa8828ad91b7af830f9a952c7e0f94ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfb5548c0b81b2ab407aa3efa40fdec0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#acfb5548c0b81b2ab407aa3efa40fdec0">SetMinZ</a> (int min_z)</td></tr>
+<tr class="separator:acfb5548c0b81b2ab407aa3efa40fdec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93a27ad4309e46874e317618f86aaae9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a93a27ad4309e46874e317618f86aaae9">SetRiver</a> (Vector2u pos, bool isRiver)</td></tr>
+<tr class="separator:a93a27ad4309e46874e317618f86aaae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1983283a14d72f3aebd94976b27d10b0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a1983283a14d72f3aebd94976b27d10b0">GetRiver</a> (Vector2u pos) const</td></tr>
+<tr class="separator:a1983283a14d72f3aebd94976b27d10b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr class="memitem:ab965ab4c08ad682f665d319bea13a6d4"><td class="memItemLeft" align="right" valign="top"><a id="ab965ab4c08ad682f665d319bea13a6d4"></a>
+const Vector2&lt; uint16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#ab965ab4c08ad682f665d319bea13a6d4">size_</a></td></tr>
+<tr class="memdesc:ab965ab4c08ad682f665d319bea13a6d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Размеры карты <br /></td></tr>
+<tr class="separator:ab965ab4c08ad682f665d319bea13a6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Закрытые данные</h2></td></tr>
+<tr class="memitem:a92613b1d4cfb5bf89cab1aa4cfda73b9"><td class="memItemLeft" align="right" valign="top"><a id="a92613b1d4cfb5bf89cab1aa4cfda73b9"></a>
+vector&lt; vector&lt; <a class="el" href="class_tile.html">Tile</a> * &gt; * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a92613b1d4cfb5bf89cab1aa4cfda73b9">grid_</a></td></tr>
+<tr class="memdesc:a92613b1d4cfb5bf89cab1aa4cfda73b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Карта гексом <br /></td></tr>
+<tr class="separator:a92613b1d4cfb5bf89cab1aa4cfda73b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a100eb2c7f3826f756cbc2eb4d555f2ed"><td class="memItemLeft" align="right" valign="top"><a id="a100eb2c7f3826f756cbc2eb4d555f2ed"></a>
+vector&lt; vector&lt; bool &gt; * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a100eb2c7f3826f756cbc2eb4d555f2ed">river_map_</a></td></tr>
+<tr class="memdesc:a100eb2c7f3826f756cbc2eb4d555f2ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Карта рек <br /></td></tr>
+<tr class="separator:a100eb2c7f3826f756cbc2eb4d555f2ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad771a29d4272f18b8201de9eb0e87982"><td class="memItemLeft" align="right" valign="top"><a id="ad771a29d4272f18b8201de9eb0e87982"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#ad771a29d4272f18b8201de9eb0e87982">max_z_</a> {INT32_MIN}</td></tr>
+<tr class="memdesc:ad771a29d4272f18b8201de9eb0e87982"><td class="mdescLeft">&#160;</td><td class="mdescRight">Максимальная высота карты <br /></td></tr>
+<tr class="separator:ad771a29d4272f18b8201de9eb0e87982"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a038c97a251f782e4caeb10086bcdc0fa"><td class="memItemLeft" align="right" valign="top"><a id="a038c97a251f782e4caeb10086bcdc0fa"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_grid.html#a038c97a251f782e4caeb10086bcdc0fa">min_z_</a> {INT32_MAX}</td></tr>
+<tr class="memdesc:a038c97a251f782e4caeb10086bcdc0fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Минимальная высота карты <br /></td></tr>
+<tr class="separator:a038c97a251f782e4caeb10086bcdc0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Сетка гексов </p>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
+<a id="a07cbc3df6609c2ef2f5588889b7b9724"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07cbc3df6609c2ef2f5588889b7b9724">&#9670;&nbsp;</a></span>TileGrid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TileGrid::TileGrid </td>
+          <td>(</td>
+          <td class="paramtype">Vector2u&#160;</td>
+          <td class="paramname"><em>map_size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Конструктор сетки карты </p><dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">map_size</td><td>Размер карты </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a id="aa568944b61fd6b2cdae788f2d2505dfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa568944b61fd6b2cdae788f2d2505dfa">&#9670;&nbsp;</a></span>GetMaxZ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TileGrid::GetMaxZ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Возвращает максимальную высоту карты </p><dl class="section return"><dt>Возвращает</dt><dd>Максимальная высота карты </dd></dl>
+
+</div>
+</div>
+<a id="aa8828ad91b7af830f9a952c7e0f94ea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8828ad91b7af830f9a952c7e0f94ea4">&#9670;&nbsp;</a></span>GetMinZ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TileGrid::GetMinZ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Возвращает минимальную высоту карты </p><dl class="section return"><dt>Возвращает</dt><dd>Минимальная высота карты </dd></dl>
+
+</div>
+</div>
+<a id="a0661663e90c94fad900581e094310319"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0661663e90c94fad900581e094310319">&#9670;&nbsp;</a></span>GetNeighbour() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_tile.html">Tile</a> * TileGrid::GetNeighbour </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_tile.html">Tile</a> *&#160;</td>
+          <td class="paramname"><em>tile</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Возвращает соседа указанного гекса в укащанном направлении </p><dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>Число от 0 до 6, направление на соседа </td></tr>
+    <tr><td class="paramname">tile</td><td>Гекс, чьего соседа надо найти </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd><a class="el" href="class_tile.html" title="Гекс">Tile</a> соседа, nullptr если такого соседа не существует (например при запросе соседа сверху у самого верхнего гекса) </dd></dl>
+
+</div>
+</div>
+<a id="a9b2dfda87a1f0bfc472bc1c1a1f146a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b2dfda87a1f0bfc472bc1c1a1f146a9">&#9670;&nbsp;</a></span>GetNeighbour() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_tile.html">Tile</a> * TileGrid::GetNeighbour </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2u&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Возвращает соседа гекса по указанным координатам в укащанном направлении </p><dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>Число от 0 до 6, направление на соседа </td></tr>
+    <tr><td class="paramname">pos</td><td>Координаты гекса, чьего соседа надо найти </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd><a class="el" href="class_tile.html" title="Гекс">Tile</a> соседа, nullptr если такого соседа не существует (например при запросе соседа сверху у самого верхнего гекса) </dd></dl>
+
+</div>
+</div>
+<a id="a1983283a14d72f3aebd94976b27d10b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1983283a14d72f3aebd94976b27d10b0">&#9670;&nbsp;</a></span>GetRiver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TileGrid::GetRiver </td>
+          <td>(</td>
+          <td class="paramtype">Vector2u&#160;</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Возвращает, есть ли по указанным координатам река </p><dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>Координаты на карте </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Есть ли река по этим координатам </dd></dl>
+
+</div>
+</div>
+<a id="a952d0a2995d38c183712e8e255381a8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a952d0a2995d38c183712e8e255381a8c">&#9670;&nbsp;</a></span>GetTile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_tile.html">Tile</a> * TileGrid::GetTile </td>
+          <td>(</td>
+          <td class="paramtype">Vector2u&#160;</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Возвращает гекс по указанным координатам </p><dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>Координаты возвращаемого гекса </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd><a class="el" href="class_tile.html" title="Гекс">Tile</a> по указанным координатам </dd></dl>
+
+</div>
+</div>
+<a id="a9f4759ef5b73091e848d39ada2787a71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f4759ef5b73091e848d39ada2787a71">&#9670;&nbsp;</a></span>SetMaxZ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TileGrid::SetMaxZ </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max_z</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Устанавливание максимальную высоту карты </p><dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">max_z</td><td>Максимальная высота карты </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acfb5548c0b81b2ab407aa3efa40fdec0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfb5548c0b81b2ab407aa3efa40fdec0">&#9670;&nbsp;</a></span>SetMinZ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TileGrid::SetMinZ </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>min_z</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Устанавливает минимальную высоту карты </p><dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_z</td><td>Минимальная высота карты </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a93a27ad4309e46874e317618f86aaae9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93a27ad4309e46874e317618f86aaae9">&#9670;&nbsp;</a></span>SetRiver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TileGrid::SetRiver </td>
+          <td>(</td>
+          <td class="paramtype">Vector2u&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isRiver</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Отмечает, есть ли по этим координатам река </p><dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>Координаты на карте </td></tr>
+    <tr><td class="paramname">isRiver</td><td>Есть река или нет </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.16
+</small></address>
+</body>
+</html>

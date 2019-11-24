@@ -5,10 +5,20 @@
 #include <numeric>
 #include <random>
 
+/// @brief Шум Перлина
 class PerlinNoise {
  public:
   explicit PerlinNoise(uint32_t seed);
 
+  /**
+   * Возвращает шум для указанных параметров
+   * @param x Координаты шума
+   * @param y Координаты шума
+   * @param px Период шума по x
+   * @param py Период шума по y
+   * @param oct Количество октав шума
+   * @return
+   */
   float Noise(float x, float y, float px, float py, uint16_t oct = 1);
 
  private:
