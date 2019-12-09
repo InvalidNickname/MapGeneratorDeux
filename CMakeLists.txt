@@ -29,7 +29,7 @@ if (EXISTS ${SFML_DIR})
     target_link_libraries(MapGeneratorDeux sfml-system sfml-graphics sfml-main)
     message("SFML подключена")
 else ()
-    message("Не найдена библиотека SFML")
+    message(FATAL_ERROR "Не найдена библиотека SFML")
 endif ()
 
 # подключение JSON For Modern C++
@@ -44,7 +44,7 @@ if (EXISTS "${JSON_INSTALL}/json.hpp")
     target_include_directories(MapGeneratorDeux PUBLIC libs/nlohmann)
     message("JSON For Modern C++ подключена")
 else ()
-    message("Не найдена библиотека JSON for Modern C++")
+    message(FATAL_ERROR "Не найдена библиотека JSON for Modern C++")
 endif ()
 
 # библиотека генератора
@@ -60,6 +60,12 @@ target_link_libraries(MapGeneratorDeux generator ui)
 add_custom_command(TARGET MapGeneratorDeux POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${PROJECT_SOURCE_DIR}/libs/SFML-2.5.1/bin"
+        $<TARGET_FILE_DIR:MapGeneratorDeux>)
+
+# копирование ассетов
+add_custom_command(TARGET MapGeneratorDeux POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJECT_SOURCE_DIR}/assets"
         $<TARGET_FILE_DIR:MapGeneratorDeux>)
 
 # установка
