@@ -9,7 +9,11 @@ set(SOURCE_FILES src/main.cpp src/screens/screen_manager.cpp src/screens/splashs
         src/utils/asset_loader.cpp src/screens/map/drawables/minimap.cpp src/utils/r.h
         src/screens/settings/settings_screen.cpp
         src/screens/map/map_mode.h)
-add_executable(MapGeneratorDeux WIN32 ${SOURCE_FILES})
+if (WIN32)
+    add_executable(MapGeneratorDeux WIN32 ${SOURCE_FILES})
+else ()
+    add_executable(MapGeneratorDeux ${SOURCE_FILES})
+endif ()
 
 # подключение SFML
 set(SFML_INSTALL "${PROJECT_SOURCE_DIR}/libs/SFML/install")
