@@ -16,20 +16,25 @@ else ()
 endif ()
 
 # подключение SFML
+message("Проверка подключения SFML")
 set(SFML_INSTALL "${PROJECT_SOURCE_DIR}/libs/SFML/install")
 set(SFML_DIR "${SFML_INSTALL}/lib/cmake/SFML")
-ExternalProject_Add(SFML
-        URL https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/libs/SFML/install
-        PREFIX ${CMAKE_SOURCE_DIR}/libs/SFML)
-add_dependencies(MapGeneratorDeux SFML)
-# если скачано успешно - подключаем
-message("Проверка подключения SFML")
-if (EXISTS ${SFML_DIR})
-    find_package(SFML COMPONENTS system window graphics network audio main REQUIRED)
+set(SFML_ROOT ${SFML_INSTALL})
+find_package(SFML COMPONENTS system window graphics network audio main)
+if (NOT ${SFML_FOUND})
+    message("SFML не обнаружен, скачивание")
+    ExternalProject_Add(SFML
+            URL https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${SFML_INSTALL}
+            PREFIX ${CMAKE_SOURCE_DIR}/libs/SFML)
+    add_dependencies(MapGeneratorDeux SFML)
+    find_package(SFML COMPONENTS system window graphics network audio main)
     target_include_directories(MapGeneratorDeux PUBLIC ${SFML_INSTALL}/include)
     target_link_libraries(MapGeneratorDeux sfml-system sfml-graphics sfml-main)
-    message("SFML подключена")
+else ()
+    message("SFML обнаружен")
+    target_include_directories(MapGeneratorDeux PUBLIC ${SFML_INSTALL}/include)
+    target_link_libraries(MapGeneratorDeux sfml-system sfml-graphics sfml-main)
 endif ()
 
 # подключение JSON For Modern C++
