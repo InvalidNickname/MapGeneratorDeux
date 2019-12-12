@@ -17,25 +17,10 @@ endif ()
 
 # подключение SFML
 message("Проверка подключения SFML")
-set(SFML_INSTALL "${PROJECT_SOURCE_DIR}/libs/SFML/install")
+set(SFML_INSTALL "${PROJECT_SOURCE_DIR}/libs/SFML-2.5.1")
 set(SFML_DIR "${SFML_INSTALL}/lib/cmake/SFML")
 set(SFML_ROOT ${SFML_INSTALL})
-find_package(SFML COMPONENTS system window graphics network audio main)
-if (NOT ${SFML_FOUND})
-    message("SFML не обнаружен, скачивание")
-    ExternalProject_Add(SFML
-            URL https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${SFML_INSTALL}
-            PREFIX ${CMAKE_SOURCE_DIR}/libs/SFML)
-    add_dependencies(MapGeneratorDeux SFML)
-    find_package(SFML COMPONENTS system window graphics network audio main)
-    target_include_directories(MapGeneratorDeux PUBLIC ${SFML_INSTALL}/include)
-    target_link_libraries(MapGeneratorDeux sfml-system sfml-graphics sfml-main)
-else ()
-    message("SFML обнаружен")
-    target_include_directories(MapGeneratorDeux PUBLIC ${SFML_INSTALL}/include)
-    target_link_libraries(MapGeneratorDeux sfml-system sfml-graphics sfml-main)
-endif ()
+find_package(SFML COMPONENTS system window graphics network audio main REQUIRED)
 
 # подключение JSON For Modern C++
 message("Проверка JSON For Modern C++")
@@ -66,6 +51,12 @@ target_link_libraries(MapGeneratorDeux generator ui)
 add_custom_command(TARGET MapGeneratorDeux POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${SFML_INSTALL}/bin"
+        $<TARGET_FILE_DIR:MapGeneratorDeux>)
+
+# копирование ассетов
+add_custom_command(TARGET MapGeneratorDeux POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJECT_SOURCE_DIR}/assets"
         $<TARGET_FILE_DIR:MapGeneratorDeux>)
 
 # установка
