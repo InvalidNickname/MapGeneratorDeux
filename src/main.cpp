@@ -23,8 +23,6 @@ int main() {
   screen_manager.AddScreen(SPLASHSCREEN, new SplashScreen(&window));
   screen_manager.AddScreen(MAP_SCREEN, new MapScreen(&window));
 
-  Random::Get().SetSeed(3);
-
   // отрисовка и прочие вещи
   while (window.isOpen()) {
     if (screen_manager.DoActiveScreenActions()) {

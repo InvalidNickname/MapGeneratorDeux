@@ -31,6 +31,7 @@ class SettingsScreen : public Screen {
   View ui_;
   map<string, string> settings_;
   uint32_t seed;
+  float mod;
 
   void Prepare() override;
 
