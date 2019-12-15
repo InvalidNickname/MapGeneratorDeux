@@ -93,6 +93,13 @@ void MapScreen::SetGUI() {
       20,
       AssetLoader::Get().GetFont("default"),
       Color::White));
+  // кнопка выхода
+  gui_->AddObject("exit", new Button(
+      Vector2s(window_size_.x - R::kSCheckSize / 2, 0),
+      {R::kSCheckSize / 2, R::kSCheckSize / 2},
+      AssetLoader::Get().GetTexture("exit_0"),
+      AssetLoader::Get().GetTexture("exit_1"),
+      [this]() { temp_state_ = EXIT; }));
 }
 
 GameState MapScreen::DoAction() {

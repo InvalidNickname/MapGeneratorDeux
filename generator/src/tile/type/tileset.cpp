@@ -1,13 +1,8 @@
 #include "tileset.h"
 
 Tileset::Tileset() {
-  // определение выбранного языка
-  std::ifstream locale("locale");
-  char loc[2];
-  locale.getline(loc, 80);
-  locale.close();
   // чтение json тайлов
-  std::ifstream input("jsons/tiles_" + string(loc) + ".json");
+  std::ifstream input("jsons/tiles_ru.json");
   Json base_file = Json::parse(input);
   input.close();
   base_file = base_file.at("data");

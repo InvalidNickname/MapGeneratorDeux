@@ -60,6 +60,8 @@ AssetLoader::AssetLoader() {
   LoadTexture("interface/check.png", "check_1", {50, 0, 50, 50});
   LoadTexture("interface/go.png", "go");
   LoadTexture("interface/seed_text_box.png", "seed");
+  LoadTexture("interface/exit.png", "exit_0", {0, 0, 50, 50});
+  LoadTexture("interface/exit.png", "exit_1", {50, 0, 50, 50});
 
   LoadTexture("background/settings_background.png", "s_background");
 
