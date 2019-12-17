@@ -20,7 +20,8 @@ message("Проверка подключения SFML")
 set(SFML_INSTALL "${PROJECT_SOURCE_DIR}/libs/SFML-2.5.1")
 set(SFML_DIR "${SFML_INSTALL}/lib/cmake/SFML")
 set(SFML_ROOT ${SFML_INSTALL})
-find_package(SFML COMPONENTS system window graphics network audio main REQUIRED)
+find_package(SFML COMPONENTS system graphics main REQUIRED)
+target_link_libraries(MapGeneratorDeux sfml-system sfml-graphics sfml-main)
 
 # подключение JSON For Modern C++
 message("Проверка JSON For Modern C++")
