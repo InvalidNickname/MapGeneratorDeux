@@ -154,7 +154,7 @@ void DrawableGrid::RenderTile(RenderTarget *target, MapMode mode, Vector2u coord
   }
   Vector2f render_pos = {
       R::kTileWidth * (pos.x + (fmod(pos.y, 2) == 1 ? 0.5f : 0)),
-      R::kTileHeight * (pos.y - (float) (pos.y / 2) / 2 - (fmod(pos.y, 2) == 1 ? 0.25f : 0))
+      R::kTileHeight * (pos.y - (float) (pos.y / 2) / 2.f - (fmod(pos.y, 2) == 1 ? 0.25f : 0.f))
   };
   RenderTileTriangles(target, color, render_pos);
   if (mode == NORMAL) RenderRiver(target, coords, render_pos);

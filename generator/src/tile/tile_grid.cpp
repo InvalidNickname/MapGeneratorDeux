@@ -107,3 +107,8 @@ bool TileGrid::GetRiver(Vector2u pos) const {
 void TileGrid::SetRiver(Vector2u pos, bool isRiver) {
   river_map_->at(pos.x)->at(pos.y) = isRiver;
 }
+
+TileGrid::~TileGrid() {
+  delete grid_;
+  delete river_map_;
+}

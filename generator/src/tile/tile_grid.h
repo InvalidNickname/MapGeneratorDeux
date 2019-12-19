@@ -77,6 +77,8 @@ class TileGrid {
    */
   [[nodiscard]] bool GetRiver(Vector2u pos) const;
 
+  ~TileGrid();
+
  private:
   vector<vector<Tile *> *> *grid_; ///< Карта гексом
   vector<vector<bool> *> *river_map_; ///< Карта рек
