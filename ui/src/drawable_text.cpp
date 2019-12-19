@@ -1,6 +1,6 @@
 #include "drawable_text.h"
 
-DrawableText::DrawableText(Vector2s position, const std::string &text, uint8_t charSize, Font *font, Color color) {
+DrawableText::DrawableText(Vector2f position, const std::string &text, uint8_t charSize, Font *font, Color color) {
   text_.setFont(*font);
   text_.setCharacterSize(charSize);
   text_.setPosition(position.x, position.y);

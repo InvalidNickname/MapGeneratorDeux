@@ -8,67 +8,57 @@ void MapScreen::Prepare() {
   // начальные размеры экрана
   initial_size_ = window_size_ / 2u;
   // установка камеры
-  map_.setSize(initial_size_.x, initial_size_.y);
+  map_.setSize((float) initial_size_.x, (float) initial_size_.y);
   Vector2f camera_pos = {
-      R::kTileWidth * (0.5f + grid_->GetSize().x) / 2,
-      0.125f * R::kTileHeight * (float) (3 * grid_->GetSize().y - 1)
+      0.5f * R::kTileWidth * (0.5f + grid_->GetSize().x),
+      0.125f * R::kTileHeight * (3.f * grid_->GetSize().y - 1.f)
   };
   map_.setCenter(camera_pos);
   // минимальный зум - сетка полностью помещается на экран по высоте
-  min_zoom_ = camera_pos.y * 2 / (float) initial_size_.y;
+  min_zoom_ = 2.f * camera_pos.y / initial_size_.y;
   map_.zoom(min_zoom_);
   zoom_ = min_zoom_;
   // создание GUI
   SetGUI();
   // установка view для интерфейса
-  ui_.setSize(window_size_.x, window_size_.y);
-  ui_.setCenter(initial_size_.x, initial_size_.y);
+  ui_.setSize((Vector2f) window_size_);
+  ui_.setCenter((Vector2f) initial_size_);
 }
 
 void MapScreen::SetGUI() {
   gui_ = new GUI();
   gui_->AddObject("map_mode", new RadioButtons(new map<string, Button *>{
       pair("default", new Button(
-          Vector2s(
-              window_size_.x - 5 * R::kMapModeButtonWidth,
-              window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight
-          ),
+          {(float) window_size_.x - 5 * R::kMapModeButtonWidth,
+           (float) window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight},
           {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::Get().GetTexture("map_mode_default_0"),
           AssetLoader::Get().GetTexture("map_mode_default_1"),
           [this]() { map_mode_ = NORMAL; })),
       pair("biomes", new Button(
-          Vector2s(
-              window_size_.x - 4 * R::kMapModeButtonWidth,
-              window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight
-          ),
+          {(float) window_size_.x - 4 * R::kMapModeButtonWidth,
+           (float) window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight},
           {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::Get().GetTexture("map_mode_biomes_0"),
           AssetLoader::Get().GetTexture("map_mode_biomes_1"),
           [this]() { map_mode_ = BIOMES; })),
       pair("temperature", new Button(
-          Vector2s(
-              window_size_.x - 3 * R::kMapModeButtonWidth,
-              window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight
-          ),
+          {(float) window_size_.x - 3 * R::kMapModeButtonWidth,
+           (float) window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight},
           {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::Get().GetTexture("map_mode_temperature_0"),
           AssetLoader::Get().GetTexture("map_mode_temperature_1"),
           [this]() { map_mode_ = TEMPERATURE; })),
       pair("height", new Button(
-          Vector2s(
-              window_size_.x - 2 * R::kMapModeButtonWidth,
-              window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight
-          ),
+          {(float) window_size_.x - 2 * R::kMapModeButtonWidth,
+           (float) window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight},
           {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::Get().GetTexture("map_mode_height_0"),
           AssetLoader::Get().GetTexture("map_mode_height_1"),
           [this]() { map_mode_ = HEIGHT; })),
       pair("moisture", new Button(
-          Vector2s(
-              window_size_.x - R::kMapModeButtonWidth,
-              window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight
-          ),
+          {(float) window_size_.x - R::kMapModeButtonWidth,
+           (float) window_size_.y - R::kMinimapHeight - R::kMapModeButtonHeight},
           {R::kMapModeButtonWidth, R::kMapModeButtonHeight},
           AssetLoader::Get().GetTexture("map_mode_moisture_0"),
           AssetLoader::Get().GetTexture("map_mode_moisture_1"),
@@ -76,27 +66,27 @@ void MapScreen::SetGUI() {
   }, "default"));
   gui_->AddObject("minimap", new Minimap(window_size_, grid_));
   gui_->AddObject("info_coords", new DrawableText(
-      Vector2s(20, window_size_.y - 60),
+      {20.f, window_size_.y - 60.f},
       "",
       20,
       AssetLoader::Get().GetFont("default"),
       Color::White));
   gui_->AddObject("info_type", new DrawableText(
-      Vector2s(20, window_size_.y - 95),
+      {20.f, window_size_.y - 95.f},
       "",
       30,
       AssetLoader::Get().GetFont("default"),
       Color::White));
   gui_->AddObject("info_temperature", new DrawableText(
-      Vector2s(20, window_size_.y - 40),
+      {20.f, window_size_.y - 40.f},
       "",
       20,
       AssetLoader::Get().GetFont("default"),
       Color::White));
   // кнопка выхода
   gui_->AddObject("exit", new Button(
-      Vector2s(window_size_.x - R::kSCheckSize / 2, 0),
-      {R::kSCheckSize / 2, R::kSCheckSize / 2},
+      {window_size_.x - R::kSCheckSize / 2.f, 0},
+      {R::kSCheckSize / 2.f, R::kSCheckSize / 2.f},
       AssetLoader::Get().GetTexture("exit_0"),
       AssetLoader::Get().GetTexture("exit_1"),
       [this]() { temp_state_ = EXIT; }));
@@ -116,7 +106,7 @@ void MapScreen::HandleInput() {
     }
     if (event.type == Event::MouseButtonPressed) {
       if (Mouse::isButtonPressed(Mouse::Left)) {
-        if (gui_->CheckClicked(Mouse::getPosition()));
+        if (gui_->CheckClicked((Vector2f) Mouse::getPosition()));
         else {
           Tile *tile = grid_->GetTile(grid_->UpdateSelection(
               window_->mapPixelToCoords(Mouse::getPosition(), map_)));
@@ -124,9 +114,9 @@ void MapScreen::HandleInput() {
           ((DrawableText *) gui_->Get("info_temperature"))->SetText(
               to_string(tile->GetTemperature() - 273).append(" °C"));
           string latitudeText
-              (to_string((int) tile->latitude_).append((tile->pos_.y < grid_->GetSize().y / 2 ? " °N" : " °S")));
+              (to_string((int) tile->latitude_).append((tile->pos_.y < grid_->GetSize().y / 2u ? " °N" : " °S")));
           string longitudeText
-              (to_string((int) tile->longitude_).append((tile->pos_.x > grid_->GetSize().x / 2 ? " °E" : " °W")));
+              (to_string((int) tile->longitude_).append((tile->pos_.x > grid_->GetSize().x / 2u ? " °E" : " °W")));
           ((DrawableText *) gui_->Get("info_coords"))->SetText(latitudeText.append(" ").append(longitudeText));
         }
       }
@@ -160,13 +150,13 @@ void MapScreen::HandleInput() {
   if (Keyboard::isKeyPressed(Keyboard::Left) || Mouse::getPosition().x < 5) {
     map_.move(-6 * zoom_, 0);
   }
-  if (Keyboard::isKeyPressed(Keyboard::Right) || Mouse::getPosition().x > window_size_.x - 5) {
+  if (Keyboard::isKeyPressed(Keyboard::Right) || Mouse::getPosition().x > window_size_.x - 5u) {
     map_.move(6 * zoom_, 0);
   }
   if (Keyboard::isKeyPressed(Keyboard::Up) || Mouse::getPosition().y < 5) {
     map_.move(0, -6 * zoom_);
   }
-  if (Keyboard::isKeyPressed(Keyboard::Down) || Mouse::getPosition().y > window_size_.y - 5) {
+  if (Keyboard::isKeyPressed(Keyboard::Down) || Mouse::getPosition().y > window_size_.y - 5u) {
     map_.move(0, 6 * zoom_);
   }
   // максимальный и минимальный зум

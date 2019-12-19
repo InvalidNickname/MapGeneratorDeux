@@ -6,8 +6,8 @@ void SettingsScreen::Prepare() {
   mod = window_size_.y / 1080.f;
   LoadPrevSettings();
   SetGUI();
-  ui_.setSize(window_size_.x, window_size_.y);
-  ui_.setCenter(window_size_.x / 2.f, window_size_.y / 2.f);
+  ui_.setSize((Vector2f) window_size_);
+  ui_.setCenter(ui_.getSize() / 2.f);
 }
 
 void SettingsScreen::LoadPrevSettings() {
@@ -39,264 +39,264 @@ void SettingsScreen::SetGUI() {
   gui_ = new GUI();
   gui_->AddObject("background", new DrawableImage(
       {0, 0},
-      Vector2s(window_size_.x, window_size_.y),
+      {(float) window_size_.x, (float) window_size_.y},
       AssetLoader::Get().GetTexture("s_background")));
   // кнопки настройки уровня моря
   gui_->AddObject("ocean_level_hint", new DrawableText(
-      Vector2s(mod * R::kSRadioWidth / 5, mod * 77),
+      {mod * R::kSRadioWidth / 5, mod * 77},
       "Уровень моря",
-      20 * mod,
+      (uint8_t) (20 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   gui_->AddObject("height", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          Vector2s(mod * R::kSRadioWidth / 5, mod * 100),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth / 5, mod * 100},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_height_-2_0"),
           AssetLoader::Get().GetTexture("s_height_-2_1"),
           [this]() { settings_["ocean_level"] = "-2"; })),
       pair("-1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 2 / 5, mod * 100),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 2 / 5, mod * 100},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_height_-1_0"),
           AssetLoader::Get().GetTexture("s_height_-1_1"),
           [this]() { settings_["ocean_level"] = "-1"; })),
       pair("0", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.6f, mod * 100),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.6f, mod * 100},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_height_0_0"),
           AssetLoader::Get().GetTexture("s_height_0_1"),
           [this]() { settings_["ocean_level"] = "0"; })),
       pair("1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.8f, mod * 100),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.8f, mod * 100},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_height_1_0"),
           AssetLoader::Get().GetTexture("s_height_1_1"),
           [this]() { settings_["ocean_level"] = "1"; })),
       pair("2", new Button(
-          Vector2s(mod * R::kSRadioWidth, mod * 100),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth, mod * 100},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_height_2_0"),
           AssetLoader::Get().GetTexture("s_height_2_1"),
           [this]() { settings_["ocean_level"] = "2"; }))
   }, settings_["ocean_level"]));
   // кнопки настройки температуры
   gui_->AddObject("temperature_hint", new DrawableText(
-      Vector2s(mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight + 97)),
+      {mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight + 97)},
       "Средняя температура",
-      20 * mod,
+      (uint8_t) (20 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   gui_->AddObject("temperature", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight + 120)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight + 120)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_temperature_-2_0"),
           AssetLoader::Get().GetTexture("s_temperature_-2_1"),
           [this]() { settings_["temperature"] = "-2"; })),
       pair("-1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.4f, mod * (R::kSRadioHeight + 120)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.4f, mod * (R::kSRadioHeight + 120)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_temperature_-1_0"),
           AssetLoader::Get().GetTexture("s_temperature_-1_1"),
           [this]() { settings_["temperature"] = "-1"; })),
       pair("0", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.6f, mod * (R::kSRadioHeight + 120)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.6f, mod * (R::kSRadioHeight + 120)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_temperature_0_0"),
           AssetLoader::Get().GetTexture("s_temperature_0_1"),
           [this]() { settings_["temperature"] = "0"; })),
       pair("1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.8f, mod * (R::kSRadioHeight + 120)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.8f, mod * (R::kSRadioHeight + 120)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_temperature_1_0"),
           AssetLoader::Get().GetTexture("s_temperature_1_1"),
           [this]() { settings_["temperature"] = "1"; })),
       pair("2", new Button(
-          Vector2s(mod * R::kSRadioWidth, mod * (R::kSRadioHeight + 120)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth, mod * (R::kSRadioHeight + 120)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_temperature_2_0"),
           AssetLoader::Get().GetTexture("s_temperature_2_1"),
           [this]() { settings_["temperature"] = "2"; }))
   }, settings_["temperature"]));
   // кнопки настройки влажности
   gui_->AddObject("moisture_hint", new DrawableText(
-      Vector2s(mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 2 + 117)),
+      {mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 2 + 117)},
       "Средняя влажность",
-      20 * mod,
+      (uint8_t) (20 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   gui_->AddObject("moisture", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 2 + 140)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 2 + 140)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_moisture_-2_0"),
           AssetLoader::Get().GetTexture("s_moisture_-2_1"),
           [this]() { settings_["moisture"] = "-2"; })),
       pair("-1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.4f, mod * (R::kSRadioHeight * 2 + 140)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.4f, mod * (R::kSRadioHeight * 2 + 140)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_moisture_-1_0"),
           AssetLoader::Get().GetTexture("s_moisture_-1_1"),
           [this]() { settings_["moisture"] = "-1"; })),
       pair("0", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.6f, mod * (R::kSRadioHeight * 2 + 140)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.6f, mod * (R::kSRadioHeight * 2 + 140)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_moisture_0_0"),
           AssetLoader::Get().GetTexture("s_moisture_0_1"),
           [this]() { settings_["moisture"] = "0"; })),
       pair("1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.8f, mod * (R::kSRadioHeight * 2 + 140)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.8f, mod * (R::kSRadioHeight * 2 + 140)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_moisture_1_0"),
           AssetLoader::Get().GetTexture("s_moisture_1_1"),
           [this]() { settings_["moisture"] = "1"; })),
       pair("2", new Button(
-          Vector2s(mod * R::kSRadioWidth, mod * (R::kSRadioHeight * 2 + 140)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth, mod * (R::kSRadioHeight * 2 + 140)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_moisture_2_0"),
           AssetLoader::Get().GetTexture("s_moisture_2_1"),
           [this]() { settings_["moisture"] = "2"; }))
   }, settings_["moisture"]));
   // кнопки настройки размера карты
   gui_->AddObject("size_hint", new DrawableText(
-      Vector2s(mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 4 + 157)),
+      {mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 4 + 157)},
       "Размер карты",
-      20 * mod,
+      (uint8_t) (20 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   gui_->AddObject("size", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 4 + 180)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 4 + 180)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_-2_0"),
           AssetLoader::Get().GetTexture("s_size_-2_1"),
           [this]() { settings_["size"] = "-2"; })),
       pair("-1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.4f, mod * (R::kSRadioHeight * 4 + 180)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.4f, mod * (R::kSRadioHeight * 4 + 180)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_-1_0"),
           AssetLoader::Get().GetTexture("s_size_-1_1"),
           [this]() { settings_["size"] = "-1"; })),
       pair("0", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.6f, mod * (R::kSRadioHeight * 4 + 180)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.6f, mod * (R::kSRadioHeight * 4 + 180)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_0_0"),
           AssetLoader::Get().GetTexture("s_size_0_1"),
           [this]() { settings_["size"] = "0"; })),
       pair("1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.8f, mod * (R::kSRadioHeight * 4 + 180)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.8f, mod * (R::kSRadioHeight * 4 + 180)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_1_0"),
           AssetLoader::Get().GetTexture("s_size_1_1"),
           [this]() { settings_["size"] = "1"; })),
       pair("2", new Button(
-          Vector2s(mod * R::kSRadioWidth, mod * (R::kSRadioHeight * 4 + 180)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth, mod * (R::kSRadioHeight * 4 + 180)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_size_2_0"),
           AssetLoader::Get().GetTexture("s_size_2_1"),
           [this]() { settings_["size"] = "2"; }))
   }, settings_["size"]));
   // кнопки настройки сглаживания карты
   gui_->AddObject("flatness_hint", new DrawableText(
-      Vector2s(mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 3 + 137)),
+      {mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 3 + 137)},
       "Сглаживание карты",
-      20 * mod,
+      (uint8_t) (20 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   gui_->AddObject("flatness", new RadioButtons(new map<string, Button *>{
       pair("-2", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 3 + 160)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.2f, mod * (R::kSRadioHeight * 3 + 160)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_flatness_-2_0"),
           AssetLoader::Get().GetTexture("s_flatness_-2_1"),
           [this]() { settings_["flatness"] = "-2"; })),
       pair("-1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.4f, mod * (R::kSRadioHeight * 3 + 160)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.4f, mod * (R::kSRadioHeight * 3 + 160)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_flatness_-1_0"),
           AssetLoader::Get().GetTexture("s_flatness_-1_1"),
           [this]() { settings_["flatness"] = "-1"; })),
       pair("0", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.6f, mod * (R::kSRadioHeight * 3 + 160)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.6f, mod * (R::kSRadioHeight * 3 + 160)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_flatness_0_0"),
           AssetLoader::Get().GetTexture("s_flatness_0_1"),
           [this]() { settings_["flatness"] = "0"; })),
       pair("1", new Button(
-          Vector2s(mod * R::kSRadioWidth * 0.8f, mod * (R::kSRadioHeight * 3 + 160)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth * 0.8f, mod * (R::kSRadioHeight * 3 + 160)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_flatness_1_0"),
           AssetLoader::Get().GetTexture("s_flatness_1_1"),
           [this]() { settings_["flatness"] = "1"; })),
       pair("2", new Button(
-          Vector2s(mod * R::kSRadioWidth, mod * (R::kSRadioHeight * 3 + 160)),
-          Vector2s(mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight),
+          {mod * R::kSRadioWidth, mod * (R::kSRadioHeight * 3 + 160)},
+          {mod * R::kSRadioWidth / 5, mod * R::kSRadioHeight},
           AssetLoader::Get().GetTexture("s_flatness_2_0"),
           AssetLoader::Get().GetTexture("s_flatness_2_1"),
           [this]() { settings_["flatness"] = "2"; }))
   }, settings_["flatness"]));
-  // TODO поле для ввода сида
+  // поле для ввода сида
   gui_->AddObject("seed_background", new DrawableImage(
-      Vector2s(mod * R::kSRadioWidth * 1.4f, mod * (R::kSRadioHeight * 2.5f + 140 - R::kSeedHeight * 0.5f)),
-      Vector2s(mod * R::kSeedWidth, mod * R::kSeedHeight),
+      {mod * R::kSRadioWidth * 1.4f, mod * (R::kSRadioHeight * 2.5f + 140 - R::kSeedHeight * 0.5f)},
+      {mod * R::kSeedWidth, mod * R::kSeedHeight},
       AssetLoader::Get().GetTexture("seed")
   ));
   gui_->AddObject("seed_hint", new DrawableText(
-      Vector2s(mod * R::kSRadioWidth * 1.4f, mod * (R::kSRadioHeight * 2.5f + 117 - R::kSeedHeight * 0.5f)),
+      {mod * R::kSRadioWidth * 1.4f, mod * (R::kSRadioHeight * 2.5f + 117 - R::kSeedHeight * 0.5f)},
       "Seed карты",
-      20 * mod,
+      (uint8_t) (20 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   gui_->AddObject("seed_text_box", new DrawableText(
-      Vector2s(mod * (R::kSRadioWidth * 1.4f + 20), mod * (R::kSRadioHeight * 2.5f + 120)),
+      {mod * (R::kSRadioWidth * 1.4f + 20), mod * (R::kSRadioHeight * 2.5f + 120)},
       settings_["seed"],
-      30 * mod,
+      (uint8_t) (30 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   // кнопка выбора типа генератора
   gui_->AddObject("generator", new RadioButtons(new map<string, Button *>{
       pair("best", new Button(
-          Vector2s(mod * R::kSRadioWidth * 1.4f, mod * ((R::kSRadioHeight * 0.5f - R::kSCheckSize) / 2 + 100)),
-          Vector2s(mod * R::kSCheckSize, mod * R::kSCheckSize),
+          {mod * R::kSRadioWidth * 1.4f, mod * ((R::kSRadioHeight * 0.5f - R::kSCheckSize) / 2 + 100)},
+          {mod * R::kSCheckSize, mod * R::kSCheckSize},
           AssetLoader::Get().GetTexture("check_0"),
           AssetLoader::Get().GetTexture("check_1"),
           [this]() { settings_["generator"] = "best"; })),
       pair("perlin", new Button(
-          Vector2s(mod * R::kSRadioWidth * 1.4f,
-                   mod * (R::kSRadioHeight * 0.5f + (R::kSRadioHeight * 0.5f - R::kSCheckSize) / 2 + 100)),
-          Vector2s(mod * R::kSCheckSize, mod * R::kSCheckSize),
+          {mod * R::kSRadioWidth * 1.4f,
+           mod * (R::kSRadioHeight * 0.5f + (R::kSRadioHeight * 0.5f - R::kSCheckSize) / 2 + 100)},
+          {mod * R::kSCheckSize, mod * R::kSCheckSize},
           AssetLoader::Get().GetTexture("check_0"),
           AssetLoader::Get().GetTexture("check_1"),
           [this]() { settings_["generator"] = "perlin"; }))
   }, settings_["generator"]));
   gui_->AddObject("gen_best_text", new DrawableText(
-      Vector2s(mod * (R::kSRadioWidth * 1.4f + R::kSCheckSize + 20),
-               mod * ((R::kSRadioHeight * 0.5f - R::kSCheckSize) / 2 + 100)),
+      {mod * (R::kSRadioWidth * 1.4f + R::kSCheckSize + 20),
+       mod * ((R::kSRadioHeight * 0.5f - R::kSCheckSize) / 2 + 100)},
       "генератор v1",
-      30 * mod,
+      (uint8_t) (30 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   gui_->AddObject("gen_perlin_text", new DrawableText(
-      Vector2s(mod * (R::kSRadioWidth * 1.4f + R::kSCheckSize + 20),
-               mod * (R::kSRadioHeight * 0.5f + (R::kSRadioHeight * 0.5f - R::kSCheckSize) / 2 + 100)),
+      {mod * (R::kSRadioWidth * 1.4f + R::kSCheckSize + 20),
+       mod * (R::kSRadioHeight * 0.5f + (R::kSRadioHeight * 0.5f - R::kSCheckSize) / 2 + 100)},
       "генератор v2",
-      30 * mod,
+      (uint8_t) (30 * mod),
       AssetLoader::Get().GetFont("default"),
       Color::Black
   ));
   // кнопка генерации карты
   gui_->AddObject("start_gen", new Button(
-      Vector2s(window_size_.x - mod * (100.f + R::kGoSize), window_size_.y - mod * (100.f + R::kGoSize)),
-      Vector2s(mod * R::kGoSize, mod * R::kGoSize),
+      {window_size_.x - mod * (100.f + R::kGoSize), window_size_.y - mod * (100.f + R::kGoSize)},
+      {mod * R::kGoSize, mod * R::kGoSize},
       AssetLoader::Get().GetTexture("go"),
       AssetLoader::Get().GetTexture("go"),
       [this]() {
@@ -305,8 +305,8 @@ void SettingsScreen::SetGUI() {
       }));
   // кнопка выхода
   gui_->AddObject("exit", new Button(
-      Vector2s(window_size_.x - mod * R::kSCheckSize / 2, 0),
-      Vector2s(mod * R::kSCheckSize / 2, mod * R::kSCheckSize / 2),
+      {window_size_.x - mod * R::kSCheckSize / 2, 0},
+      {mod * R::kSCheckSize / 2, mod * R::kSCheckSize / 2},
       AssetLoader::Get().GetTexture("exit_0"),
       AssetLoader::Get().GetTexture("exit_1"),
       [this]() { temp_state_ = EXIT; }));
@@ -342,7 +342,7 @@ void SettingsScreen::HandleInput() {
   while (window_->pollEvent(event)) {
     if (event.type == Event::MouseButtonPressed) {
       if (Mouse::isButtonPressed(Mouse::Left)) {
-        gui_->CheckClicked(Mouse::getPosition());
+        gui_->CheckClicked((Vector2f) Mouse::getPosition());
       }
     }
     if (event.type == Event::Closed) {

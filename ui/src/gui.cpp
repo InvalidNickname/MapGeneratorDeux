@@ -6,7 +6,7 @@ void GUI::Render(RenderWindow *window) {
   }
 }
 
-bool GUI::CheckClicked(Vector2i coords) {
+bool GUI::CheckClicked(Vector2f coords) {
   for (auto &i : drawables_) {
     if (i.second->CheckClicked(coords)) {
       return true;

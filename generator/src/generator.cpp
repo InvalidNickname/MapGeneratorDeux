@@ -1,7 +1,7 @@
 #include "generator.h"
 
 TileGrid *Generator::Generate() {
-  land_border_ = 0.07 * G::GetMapH();
+  land_border_ = (uint16_t) (0.07 * G::GetMapH());
   grid_ = new TileGrid({G::GetMapW(), G::GetMapH()});
   RaiseTerrain();
   FlattenTerrain();
@@ -38,7 +38,7 @@ void Generator::RaiseTerrain() {
           // если выбранный сосед за границей суши, уменьшается вероятность поднятия суши там
           if (neighbour->pos_.y < land_border_)
             factor = min(factor, (float) neighbour->pos_.y / land_border_);
-          if (neighbour->pos_.y > grid_->size_.y - land_border_ - 1)
+          if (neighbour->pos_.y > grid_->size_.y - land_border_ - 1u)
             factor = min(factor, (float) (grid_->size_.y - 1 - neighbour->pos_.y) / land_border_);
           if ((float) Random::Get().GetInt(10, 100) / 100.f < factor) {
             neighbour->IncreaseZ(1);
@@ -59,7 +59,7 @@ void Generator::RaiseTerrain() {
         Tile *tile = grid_->GetTile({i, j});
         float z = 1;
         if (tile->pos_.y < land_border_) z = (float) tile->pos_.y / land_border_;
-        if (tile->pos_.y > grid_->size_.y - land_border_ - 1) {
+        if (tile->pos_.y > grid_->size_.y - land_border_ - 1u) {
           z = (float) (grid_->size_.y - 1 - tile->pos_.y) / land_border_;
         }
         z *= (perlin_noise.Noise(
@@ -67,7 +67,7 @@ void Generator::RaiseTerrain() {
             0.01f * (float) j,
             grid_->size_.x * 0.01f,
             grid_->size_.y * 0.01f, 4) + 1) / 2.f;
-        tile->SetZ(1000 * z);
+        tile->SetZ((uint16_t) (1000 * z));
       }
   }
 }
@@ -105,7 +105,7 @@ void Generator::FindZLimits() {
       terrain_mass += tile->GetZ();
     }
   terrain_mass /= grid_->size_.y * grid_->size_.x;
-  ocean_level_ = (float) terrain_mass * G::GetOceanLevel();
+  ocean_level_ = (uint16_t) (terrain_mass * G::GetOceanLevel());
 }
 
 void Generator::SetTemperature() {
@@ -123,7 +123,7 @@ void Generator::SetTemperature() {
         temperature *= 1 - (float) (tile->GetZ() - ocean_level_) / (float) (grid_->GetMaxZ() - ocean_level_);
       }
       temperature = pow(temperature, 1.f / 3);
-      tile->SetTemperature(G::GetMinTemp() + temperature * (G::GetMaxTemp() - G::GetMinTemp()));
+      tile->SetTemperature((uint16_t) (G::GetMinTemp() + temperature * (G::GetMaxTemp() - G::GetMinTemp())));
     }
 }
 
@@ -212,7 +212,7 @@ void Generator::SetTerrainFromTileset() {
 }
 
 void Generator::SetRivers() {
-  factor_ = vector<vector<float>>(grid_->size_.x, vector<float>(grid_->size_.y, 0.05));
+  factor_ = vector<vector<float>>(grid_->size_.x, vector<float>(grid_->size_.y, 0.05f));
   for (uint16_t i = 0; i < grid_->size_.x; i++) {
     for (uint16_t j = 0; j < grid_->size_.y; j++) {
       Tile *tile = grid_->GetTile({i, j});

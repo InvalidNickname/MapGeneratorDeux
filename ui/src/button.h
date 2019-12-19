@@ -13,11 +13,11 @@ using namespace std;
 class Button : public UIDrawable {
 
  public:
-  Button(Vector2s position, Vector2s size, Texture *normal, Texture *clicked, function<void()> onClick);
+  Button(Vector2f position, Vector2f size, Texture *normal, Texture *clicked, function<void()> onClick);
 
   void Render(RenderWindow *window) override;
 
-  bool CheckClicked(Vector2i coords) override;
+  bool CheckClicked(Vector2f coords) override;
 
   void SetClicked(bool clicked);
 

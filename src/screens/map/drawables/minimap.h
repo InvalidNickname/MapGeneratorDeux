@@ -16,7 +16,7 @@ class Minimap : public UIDrawable {
 
   bool IsClickable() override { return false; };
 
-  bool CheckClicked(Vector2i coords) override { return false; };
+  bool CheckClicked(Vector2f coords) override { return false; };
 
   void UpdateViewRegion(Vector2s lower_left, Vector2s upper_right);
 

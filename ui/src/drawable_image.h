@@ -5,11 +5,11 @@
 
 class DrawableImage : public UIDrawable {
  public:
-  DrawableImage(Vector2s position, Vector2s size, Texture *texture);
+  DrawableImage(Vector2f position, Vector2f size, Texture *texture);
 
   void Render(RenderWindow *window) override;
 
-  [[nodiscard]] bool CheckClicked(Vector2i coords) override { return false; };
+  [[nodiscard]] bool CheckClicked(Vector2f coords) override { return false; };
 
   [[nodiscard]] bool IsClickable() override { return false; };
 

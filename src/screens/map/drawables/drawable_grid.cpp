@@ -92,28 +92,28 @@ Vector2s DrawableGrid::GetTileByCoords(Vector2f coords) {
   Vector2s tile;
   if (relative.y >= 0.5 && relative.y < 1.5)
     // точка нахожится в центральной части гекса
-    tile.y = floor(temp.y / 1.5);
+    tile.y = (uint16_t) floor(temp.y / 1.5);
   else {
     // в верхней или нижней части гекса
     // четный ряд
     if (fmod(temp.y, 1) > 0.5 && fmod(temp.y, 1) < 1) {
       if (relative.x < 0.5) {
         if (relative.y / relative.x < 1)
-          tile.y = floor(temp.y / 1.5) - 1;
-        else tile.y = floor(temp.y / 1.5);
+          tile.y = (uint16_t) floor(temp.y / 1.5) - 1u;
+        else tile.y = (uint16_t) floor(temp.y / 1.5);
       } else {
         if (relative.y < 1 - relative.x)
-          tile.y = floor(temp.y / 1.5) - 1;
-        else tile.y = floor(temp.y / 1.5);
+          tile.y = (uint16_t) floor(temp.y / 1.5) - 1u;
+        else tile.y = (uint16_t) floor(temp.y / 1.5);
       }
     } else { // нечетный ряд, есть смещение гексов
       if (relative.y < abs(relative.x - 0.5))
-        tile.y = floor(temp.y / 1.5) - 1;
-      else tile.y = floor(temp.y / 1.5);
+        tile.y = (uint16_t) floor(temp.y / 1.5) - 1u;
+      else tile.y = (uint16_t) floor(temp.y / 1.5);
     }
   }
 
-  tile.x = floor(temp.x - (tile.y % 2 == 0 ? 0 : 0.5));
+  tile.x = (uint16_t) floor(temp.x - (tile.y % 2 == 0 ? 0 : 0.5));
 
   return tile;
 }
@@ -198,11 +198,11 @@ void DrawableGrid::RenderRiver(RenderTarget *target, Vector2u coords, Vector2f p
     river[3].position = {pos.x, pos.y + R::kTileHeight};
     // все текстуры рек должны быть одинаковыми по размеру, так то пофиг какую брать
     Vector2u tex_size = AssetLoader::Get().GetTexture("river_end")->getSize();
-    river[3].texCoords = Vector2f(0, 0);
-    river[2].texCoords = Vector2f(tex_size.x, 0);
-    river[1].texCoords = Vector2f(tex_size.x, tex_size.y);
-    river[0].texCoords = Vector2f(0, tex_size.y);
-    Vector2f rot_center = {pos.x + R::kTileWidth / 2, pos.y + R::kTileHeight / 2};
+    river[3].texCoords = Vector2f(0.f, 0.f);
+    river[2].texCoords = Vector2f((float) tex_size.x, 0.f);
+    river[1].texCoords = Vector2f((float) tex_size.x, (float) tex_size.y);
+    river[0].texCoords = Vector2f(0.f, (float) tex_size.y);
+    Vector2f rot_center = {pos.x + R::kTileWidth / 2.f, pos.y + R::kTileHeight / 2.f};
 
     uint8_t from_dir{0}, to_dir{0};
     uint8_t dirs = 0;

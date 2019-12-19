@@ -1,6 +1,6 @@
 #include "button.h"
 
-Button::Button(Vector2s position, Vector2s size, Texture *normal, Texture *clicked, function<void()> onClick)
+Button::Button(Vector2f position, Vector2f size, Texture *normal, Texture *clicked, function<void()> onClick)
     : normal_(normal), clicked_(clicked), onClick_(move(onClick)) {
   sprite_.setTexture(*normal);
   auto texture_size = normal->getSize();
@@ -12,7 +12,7 @@ void Button::Render(RenderWindow *window) {
   window->draw(sprite_);
 }
 
-bool Button::CheckClicked(Vector2i coords) {
+bool Button::CheckClicked(Vector2f coords) {
   if (sprite_.getGlobalBounds().contains(coords.x, coords.y)) {
     SetClicked(true);
     return true;

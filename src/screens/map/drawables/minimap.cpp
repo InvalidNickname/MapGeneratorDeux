@@ -1,8 +1,8 @@
 #include "minimap.h"
 
 Minimap::Minimap(Vector2u window_size, DrawableGrid *dg) : window_size_(window_size), size_(dg->GetSize()) {
-  pos_.x = window_size.x - R::kMinimapWidth;
-  pos_.y = window_size.y - R::kMinimapHeight;
+  pos_.x = (float) (window_size.x - R::kMinimapWidth);
+  pos_.y = (float) (window_size.y - R::kMinimapHeight);
 
   CreateMinimapImage(dg);
   CreateViewRectangles();

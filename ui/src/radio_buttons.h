@@ -14,7 +14,7 @@ class RadioButtons : public UIDrawable {
 
   void Render(RenderWindow *window) override;
 
-  [[nodiscard]] bool CheckClicked(Vector2i coords) override;
+  [[nodiscard]] bool CheckClicked(Vector2f coords) override;
 
   [[nodiscard]] bool IsClickable() override { return true; }
 

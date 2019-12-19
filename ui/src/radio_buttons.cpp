@@ -10,7 +10,7 @@ void RadioButtons::Render(RenderWindow *window) {
   }
 }
 
-bool RadioButtons::CheckClicked(Vector2i coords) {
+bool RadioButtons::CheckClicked(Vector2f coords) {
   bool check = false;
   for (auto &i : *buttons_) {
     if (i.second->CheckClicked(coords)) {

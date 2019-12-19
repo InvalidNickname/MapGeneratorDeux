@@ -7,6 +7,7 @@ string Type::GetName(Level level) const {
     case MEDIUM:return name.at(1);
     case HIGH:return name.at(0);
   }
+  return string(); // недостижимо
 }
 
 Color Type::GetBaseColor(Level level) const {
@@ -16,4 +17,5 @@ Color Type::GetBaseColor(Level level) const {
     case MEDIUM:return base_color.at(1);
     case HIGH:return base_color.at(0);
   }
+  return Color(); // недостижимо
 }

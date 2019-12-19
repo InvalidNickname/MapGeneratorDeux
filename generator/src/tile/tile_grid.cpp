@@ -29,15 +29,15 @@ Tile *TileGrid::GetNeighbour(int direction, Vector2u pos) const {
         else
           return GetTile({size_.x - 1u, pos.y});
       case 1:
-        if (pos.x > 0 && pos.y < size_.y - 1)
+        if (pos.x > 0 && pos.y < size_.y - 1u)
           return GetTile({pos.x - 1, pos.y + 1});
-        else if (pos.y < size_.y - 1)
+        else if (pos.y < size_.y - 1u)
           return GetTile({size_.x - 1u, pos.y + 1});
       case 2:
-        if (pos.y < size_.y - 1)
+        if (pos.y < size_.y - 1u)
           return GetTile({pos.x, pos.y + 1});
       case 3:
-        if (pos.x < size_.x - 1)
+        if (pos.x < size_.x - 1u)
           return GetTile({pos.x + 1, pos.y});
         else if (pos.x == size_.x - 1)
           return GetTile({0, pos.y});
@@ -59,20 +59,20 @@ Tile *TileGrid::GetNeighbour(int direction, Vector2u pos) const {
         else
           return GetTile({size_.x - 1u, pos.y});
       case 1:
-        if (pos.y < size_.y - 1)
+        if (pos.y < size_.y - 1u)
           return GetTile({pos.x, pos.y + 1});
       case 2:
-        if (pos.y < size_.y - 1 && pos.x < size_.x - 1)
+        if (pos.y < size_.y - 1u && pos.x < size_.x - 1u)
           return GetTile({pos.x + 1, pos.y + 1});
-        else if (pos.y < size_.y - 1)
+        else if (pos.y < size_.y - 1u)
           return GetTile({0, pos.y + 1});
       case 3:
-        if (pos.x < size_.x - 1)
+        if (pos.x < size_.x - 1u)
           return GetTile({pos.x + 1, pos.y});
         else
           return GetTile({0, pos.y});
       case 4:
-        if (pos.y > 0 && pos.x < size_.x - 1)
+        if (pos.y > 0 && pos.x < size_.x - 1u)
           return GetTile({pos.x + 1, pos.y - 1});
         else if (pos.y > 0)
           return GetTile({0, pos.y - 1});

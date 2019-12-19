@@ -13,7 +13,7 @@ class GUI {
  public:
   void Render(RenderWindow *window);
 
-  bool CheckClicked(Vector2i coords);
+  bool CheckClicked(Vector2f coords);
 
   void AddObject(const string &name, UIDrawable *drawable);
 
