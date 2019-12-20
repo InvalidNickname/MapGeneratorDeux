@@ -239,44 +239,55 @@ void Generator::SetRivers() {
 }
 
 void Generator::ContinueRiver(Vector2u pos) {
-  // находим соседний тайл с минимальной высотой
-  int8_t min_dir = -1;
-  float min_z = 2;
-  for (uint8_t i = 0; i < 6; ++i) {
-    Vector2u n_pos = grid_->GetNeighbour(i, pos)->pos_;
-    // или земля с фактором выше 0, или вода
-    if ((factor_[n_pos.x][n_pos.y] < min_z && factor_[n_pos.x][n_pos.y] > 0) ||
-        !grid_->GetTile(n_pos)->GetType()->above_sea_level) {
-      min_dir = i;
-      min_z = factor_[n_pos.x][n_pos.y];
-    }
-  }
-  if (min_dir > -1) {
+  bool cont_river = true;
+  while (cont_river) {
+    cont_river = false;
+    // находим соседний тайл с минимальной высотой
+    int8_t min_dir = -1;
+    float min_z = 2;
     for (uint8_t i = 0; i < 6; ++i) {
       Vector2u n_pos = grid_->GetNeighbour(i, pos)->pos_;
-      factor_[n_pos.x][n_pos.y] = 0;
+      // или земля с фактором выше 0, или вода
+      if ((factor_[n_pos.x][n_pos.y] < min_z && factor_[n_pos.x][n_pos.y] > 0) ||
+          !grid_->GetTile(n_pos)->GetType()->above_sea_level) {
+        min_dir = i;
+        min_z = factor_[n_pos.x][n_pos.y];
+      }
     }
-    if (grid_->GetNeighbour(min_dir, pos)->GetType()->above_sea_level) {
-      Vector2u min_pos = grid_->GetNeighbour(min_dir, pos)->pos_;
-      grid_->SetRiver(min_pos, true);
-      river_length_++;
-      ContinueRiver(min_pos);
-    } else if (river_length_ == 1) {
-      grid_->SetRiver(pos, false);
+    if (min_dir > -1) {
+      for (uint8_t i = 0; i < 6; ++i) {
+        Vector2u n_pos = grid_->GetNeighbour(i, pos)->pos_;
+        factor_[n_pos.x][n_pos.y] = 0;
+      }
+      if (grid_->GetNeighbour(min_dir, pos)->GetType()->above_sea_level) {
+        Vector2u min_pos = grid_->GetNeighbour(min_dir, pos)->pos_;
+        grid_->SetRiver(min_pos, true);
+        river_length_++;
+        pos = min_pos;
+        cont_river = true;
+      } else if (river_length_ == 1) {
+        grid_->SetRiver(pos, false);
+      }
+    } else {
+      // река не впадает в океан, удалить
+      DeleteRiver(pos);
     }
-  } else {
-    // река не впадает в океан, удалить
-    DeleteRiver(pos);
   }
 }
 
 void Generator::DeleteRiver(Vector2u pos) {
-  factor_[pos.x][pos.y] = 0;
-  grid_->SetRiver(pos, false);
-  for (uint8_t i = 0; i < 6; ++i) {
-    Vector2u tile_pos = grid_->GetNeighbour(i, pos)->pos_;
-    if (grid_->GetRiver(tile_pos)) {
-      DeleteRiver(tile_pos);
+  bool delete_river = true;
+  while (delete_river) {
+    delete_river = false;
+    factor_[pos.x][pos.y] = 0;
+    grid_->SetRiver(pos, false);
+    for (uint8_t i = 0; i < 6; ++i) {
+      Vector2u tile_pos = grid_->GetNeighbour(i, pos)->pos_;
+      if (grid_->GetRiver(tile_pos)) {
+        pos = tile_pos;
+        delete_river = true;
+        break;
+      }
     }
   }
 }
