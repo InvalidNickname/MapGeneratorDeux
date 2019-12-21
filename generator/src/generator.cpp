@@ -3,6 +3,7 @@
 TileGrid *Generator::Generate() {
   land_border_ = (uint16_t) (0.07 * G::GetMapH());
   grid_ = new TileGrid({G::GetMapW(), G::GetMapH()});
+  Random::Get().SetSeed(Random::Get().GetSeed() % 300);
   RaiseTerrain();
   FlattenTerrain();
   FindZLimits();
