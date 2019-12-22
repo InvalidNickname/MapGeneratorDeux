@@ -146,8 +146,7 @@ void Generator::FlattenContinentBorders() {
         Tile *tile = grid_->GetTile({i, j});
         if (tile->GetType()->type_name == "GenWater" && CountNeighboursWithType("GenWater", tile) <= 2) {
           DeleteTilePaths("GenWater", "GenLand", tile);
-        } else if (tile->GetType()->type_name == "GenLand" &&
-            CountNeighboursWithType("GenLand", tile) <= 2) {
+        } else if (tile->GetType()->type_name == "GenLand" && CountNeighboursWithType("GenLand", tile) <= 2) {
           DeleteTilePaths("GenLand", "GenWater", tile);
         }
       }
@@ -246,19 +245,26 @@ void Generator::ContinueRiver(Vector2u pos) {
     int8_t min_dir = -1;
     float min_z = 2;
     for (uint8_t i = 0; i < 6; ++i) {
-      Vector2u n_pos = grid_->GetNeighbour(i, pos)->pos_;
-      // или земля с фактором выше 0, или вода
-      if ((factor_[n_pos.x][n_pos.y] < min_z && factor_[n_pos.x][n_pos.y] > 0) ||
-          !grid_->GetTile(n_pos)->GetType()->above_sea_level) {
-        min_dir = i;
-        min_z = factor_[n_pos.x][n_pos.y];
+      Tile *neighbour = grid_->GetNeighbour(i, pos);
+      if (neighbour != nullptr) {
+        Vector2u n_pos = neighbour->pos_;
+        // или земля с фактором выше 0, или вода
+        if ((factor_[n_pos.x][n_pos.y] < min_z && factor_[n_pos.x][n_pos.y] > 0) ||
+            !grid_->GetTile(n_pos)->GetType()->above_sea_level) {
+          min_dir = i;
+          min_z = factor_[n_pos.x][n_pos.y];
+        }
       }
     }
     if (min_dir > -1) {
       for (uint8_t i = 0; i < 6; ++i) {
-        Vector2u n_pos = grid_->GetNeighbour(i, pos)->pos_;
-        factor_[n_pos.x][n_pos.y] = 0;
+        Tile *neighbour = grid_->GetNeighbour(i, pos);
+        if (neighbour != nullptr) {
+          Vector2u n_pos = neighbour->pos_;
+          factor_[n_pos.x][n_pos.y] = 0;
+        }
       }
+      // если есть min_dir, то тайл по определению не нулевой
       if (grid_->GetNeighbour(min_dir, pos)->GetType()->above_sea_level) {
         Vector2u min_pos = grid_->GetNeighbour(min_dir, pos)->pos_;
         grid_->SetRiver(min_pos, true);
@@ -282,11 +288,14 @@ void Generator::DeleteRiver(Vector2u pos) {
     factor_[pos.x][pos.y] = 0;
     grid_->SetRiver(pos, false);
     for (uint8_t i = 0; i < 6; ++i) {
-      Vector2u tile_pos = grid_->GetNeighbour(i, pos)->pos_;
-      if (grid_->GetRiver(tile_pos)) {
-        pos = tile_pos;
-        delete_river = true;
-        break;
+      Tile *neighbour = grid_->GetNeighbour(i, pos);
+      if (neighbour != nullptr) {
+        Vector2u tile_pos = neighbour->pos_;
+        if (grid_->GetRiver(tile_pos)) {
+          pos = tile_pos;
+          delete_river = true;
+          break;
+        }
       }
     }
   }
@@ -308,8 +317,11 @@ void Generator::DeleteTilePaths(const string &type, const string &change_to, Til
 uint8_t Generator::CountNeighboursWithType(const string &type, Tile *tile) {
   uint8_t count = 0;
   for (uint8_t i = 0; i < 6; i++)
-    if (grid_->GetNeighbour(i, tile) != nullptr)
+    if (grid_->GetNeighbour(i, tile) != nullptr) {
       if (grid_->GetNeighbour(i, tile)->GetType()->type_name == type)
         count++;
+    } else {
+      count++;
+    }
   return count;
 }

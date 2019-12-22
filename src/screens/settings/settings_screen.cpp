@@ -314,7 +314,7 @@ void SettingsScreen::SetGUI() {
 
 void SettingsScreen::WriteSettings() {
   settings_["seed"] = to_string(seed);
-  Random::Get().SetSeed(seed % 300);
+  Random::Get().SetSeed(seed);
 
   Json current = settings_;
   ofstream output("last_settings.json");

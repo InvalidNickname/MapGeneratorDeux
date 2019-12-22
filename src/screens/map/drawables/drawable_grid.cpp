@@ -207,24 +207,30 @@ void DrawableGrid::RenderRiver(RenderTarget *target, Vector2u coords, Vector2f p
     uint8_t from_dir{0}, to_dir{0};
     uint8_t dirs = 0;
     for (uint8_t i = 0; i < 6; ++i) {
-      Vector2u n_pos = grid_->GetNeighbour(i, coords)->pos_;
-      if (grid_->GetRiver(n_pos) && dirs == 0) {
-        from_dir = i;
-        dirs++;
-      } else if (grid_->GetRiver(n_pos)) {
-        to_dir = i;
-        dirs++;
-        break;
+      Tile *neighbour = grid_->GetNeighbour(i, coords);
+      if (neighbour != nullptr) {
+        Vector2u n_pos = neighbour->pos_;
+        if (grid_->GetRiver(n_pos) && dirs == 0) {
+          from_dir = i;
+          dirs++;
+        } else if (grid_->GetRiver(n_pos)) {
+          to_dir = i;
+          dirs++;
+          break;
+        }
       }
     }
     // если это конец реки, она впадает в океан
     if (dirs == 1) {
       for (uint8_t i = 0; i < 6; ++i) {
-        Vector2u n_pos = grid_->GetNeighbour(i, coords)->pos_;
-        if (!grid_->GetTile(n_pos)->GetType()->above_sea_level) {
-          to_dir = i;
-          dirs++;
-          break;
+        Tile *neighbour = grid_->GetNeighbour(i, coords);
+        if (neighbour != nullptr) {
+          Vector2u n_pos = neighbour->pos_;
+          if (!grid_->GetTile(n_pos)->GetType()->above_sea_level) {
+            to_dir = i;
+            dirs++;
+            break;
+          }
         }
       }
     }
